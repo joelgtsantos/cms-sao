@@ -17,8 +17,8 @@ var _ = API("SAO v1", func() {
 var _ = Resource("entry", func() {
 	Description("A document to be evaluated and ranked")
 	BasePath("/entries")
-	Response(Unauthorized) // , ErrorMedia) // TODO: ErrorMedia
-	Response(BadRequest)   // , ErrorMedia)
+	Response(Unauthorized, ErrorMedia)
+	Response(BadRequest, ErrorMedia)
 
 	Action("show", func() {
 		Description("List all the entries, which is not allowed in the current implementation")
@@ -45,8 +45,8 @@ var _ = Resource("entry", func() {
 var _ = Resource("testentry", func() {
 	Description("A document to be only evaluated")
 	BasePath("/testentries")
-	Response(Unauthorized) // , ErrorMedia) // TODO: ErrorMedia
-	Response(BadRequest)   // , ErrorMedia)
+	Response(Unauthorized, ErrorMedia)
+	Response(BadRequest, ErrorMedia)
 
 	Action("show", func() {
 		Description("List all the entries, which is not allowed in the current implementation")
@@ -76,7 +76,7 @@ var _ = Resource("result", func() {
 	DefaultMedia(ResultMedia)
 	Response(OK)
 	Response(NotFound)
-	Response(BadRequest) // , ErrorMedia) // TODO: Define ErrorMedia
+	Response(BadRequest, ErrorMedia)
 
 	Action("show", func() {
 		Description("List all the results delimited by the query params")
@@ -105,7 +105,7 @@ var _ = Resource("scores", func() {
 	DefaultMedia(ScoreMedia)
 	Response(OK)
 	Response(NotFound)
-	Response(BadRequest) // , ErrorMedia) // TODO: Define ErrorMedia
+	Response(BadRequest, ErrorMedia)
 
 	Action("show", func() {
 		Description("List all the scores delimited by the query params")
