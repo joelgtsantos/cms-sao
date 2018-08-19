@@ -61,6 +61,10 @@ var _ = Resource("result", func() {
 				Enum("asc", "desc")
 				Default("desc")
 			})
+			Param("ranked", func() {
+				Enum("true", "false")
+				Default("true")
+			})
 		})
 		Response(OK, CollectionOf(ResultMedia))
 	})
@@ -71,9 +75,9 @@ var _ = Resource("result", func() {
 		Params(func() {
 			Param("resultID", Integer, "Result ID")
 			Param("testcaseID", Integer, "Testcase ID")
-			Param("type", func() {
-				Enum("ranked", "test")
-				Default("ranked")
+			Param("ranked", func() {
+				Enum("true", "false")
+				Default("true")
 			})
 		})
 		Response(OK, ResultMedia)
