@@ -7,8 +7,12 @@ import (
 
 var AbstractEntry = Type("AbstractEntry", func() {
 	Description("Abstracts the common attributes from EntryPayload and EntryFormPayload")
-	Attribute("contestSlug", String, "Contest unique and human readble string identifier")
-	Attribute("taskSlug", String, "Task unique and human readble string identifier")
+	Attribute("contestSlug", String, "Contest unique and human readble string identifier", func() {
+		Pattern("[a-zA-Z]+")
+	})
+	Attribute("taskSlug", String, "Task unique and human readble string identifier", func() {
+		Pattern("[a-zA-Z]+")
+	})
 	Attribute("ranked", Boolean, "Indenties if the entry should be ranked or taken as an user test", func() {
 		Default(true)
 	})
