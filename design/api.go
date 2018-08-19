@@ -33,14 +33,6 @@ var _ = Resource("entry", func() {
 		Payload(EntryPayload)
 		Response(Created)
 	})
-
-	Action("submit", func() {
-		Description("Submit a new entry as multipart form")
-		Routing(POST("/"))
-		MultipartForm()
-		Payload(EntryFormPayload)
-		Response(Created)
-	})
 })
 
 var _ = Resource("result", func() {
