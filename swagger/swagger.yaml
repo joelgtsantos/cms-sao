@@ -1,0 +1,899 @@
+basePath: /sao/v1
+consumes:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+definitions:
+  ComJossemargtSaoEntry:
+    description: Any source code or input to be compiled, executed and evaluated (default
+      view)
+    example:
+      contestSlug: con_test
+      href: /entries/re-1236
+      id: re-1236
+      ranked: true
+      taskSlug: simpleBatch-95
+    properties:
+      contestSlug:
+        description: Contest unique and human readble string identifier
+        example: con_test
+        pattern: '[_a-zA-Z0-9\-]+'
+        type: string
+      href:
+        description: API href for making requests on the entry
+        example: /entries/re-1236
+        type: string
+      id:
+        description: Unique entry ID
+        example: re-1236
+        type: string
+      ranked:
+        default: true
+        description: Indenties if the entry should be ranked or taken as an user test
+        example: true
+        type: boolean
+      taskSlug:
+        description: Task unique and human readble string identifier
+        example: simpleBatch-95
+        pattern: '[_a-zA-Z0-9\-]+'
+        type: string
+    required:
+    - id
+    - href
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.entry+json; view=default'
+    type: object
+  ComJossemargtSaoEntryCollection:
+    description: ComJossemargtSaoEntryCollection is the media type for an array of
+      ComJossemargtSaoEntry (default view)
+    example:
+    - contestSlug: con_test
+      href: /entries/re-1236
+      id: re-1236
+      ranked: true
+      taskSlug: simpleBatch-95
+    items:
+      $ref: '#/definitions/ComJossemargtSaoEntry'
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.entry+json; type=collection;
+      view=default'
+    type: array
+  ComJossemargtSaoEntryFull:
+    description: Any source code or input to be compiled, executed and evaluated (full
+      view)
+    example:
+      contestSlug: con_test
+      href: /entries/re-1236
+      id: re-1236
+      links:
+        result:
+          href: /results/ut-1236-5689
+          id: ut-1236-5689
+        score:
+          href: /scores/1236-5689
+          id: 1236-5689
+      ranked: true
+      taskSlug: simpleBatch-95
+    properties:
+      contestSlug:
+        description: Contest unique and human readble string identifier
+        example: con_test
+        pattern: '[_a-zA-Z0-9\-]+'
+        type: string
+      href:
+        description: API href for making requests on the entry
+        example: /entries/re-1236
+        type: string
+      id:
+        description: Unique entry ID
+        example: re-1236
+        type: string
+      links:
+        $ref: '#/definitions/ComJossemargtSaoEntryLinks'
+      ranked:
+        default: true
+        description: Indenties if the entry should be ranked or taken as an user test
+        example: true
+        type: boolean
+      taskSlug:
+        description: Task unique and human readble string identifier
+        example: simpleBatch-95
+        pattern: '[_a-zA-Z0-9\-]+'
+        type: string
+    required:
+    - id
+    - href
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.entry+json; view=full'
+    type: object
+  ComJossemargtSaoEntryLinks:
+    description: ComJossemargtSaoEntryLinks contains links to related resources of
+      ComJossemargtSaoEntry.
+    example:
+      result:
+        href: /results/ut-1236-5689
+        id: ut-1236-5689
+      score:
+        href: /scores/1236-5689
+        id: 1236-5689
+    properties:
+      result:
+        $ref: '#/definitions/ComJossemargtSaoResultLink'
+      score:
+        $ref: '#/definitions/ComJossemargtSaoScoreLink'
+    title: ComJossemargtSaoEntryLinks
+    type: object
+  ComJossemargtSaoResult:
+    description: The representation of the result of an entry compile, execute or
+      evaluation process (default view)
+    example:
+      evaluation:
+        status: ok
+        tries: 0
+      href: /results/ut-1236-5689
+      id: ut-1236-5689
+    properties:
+      evaluation:
+        $ref: '#/definitions/EvaluationResult'
+      href:
+        description: API href for making requests on the result
+        example: /results/ut-1236-5689
+        type: string
+      id:
+        description: Unique result ID
+        example: ut-1236-5689
+        type: string
+    required:
+    - id
+    - href
+    - evaluation
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.result+json;
+      view=default'
+    type: object
+  ComJossemargtSaoResultCollection:
+    description: ComJossemargtSaoResultCollection is the media type for an array of
+      ComJossemargtSaoResult (default view)
+    example:
+    - evaluation:
+        status: ok
+        tries: 0
+      href: /results/ut-1236-5689
+      id: ut-1236-5689
+    - evaluation:
+        status: ok
+        tries: 0
+      href: /results/ut-1236-5689
+      id: ut-1236-5689
+    items:
+      $ref: '#/definitions/ComJossemargtSaoResult'
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.result+json;
+      type=collection; view=default'
+    type: array
+  ComJossemargtSaoResultFull:
+    description: The representation of the result of an entry compile, execute or
+      evaluation process (full view)
+    example:
+      compilation:
+        memory: 64
+        status: ok
+        stderr: Quae accusamus id deserunt.
+        stdout: Voluptates dignissimos consequuntur.
+        time: 0.035
+        tries: 2
+        wallClockTime: 0.568
+      evaluation:
+        status: ok
+        tries: 0
+      execution:
+      - memory: 64
+        status: ok
+        time: 0.035
+        wallClockTime: 0.568
+      - memory: 64
+        status: ok
+        time: 0.035
+        wallClockTime: 0.568
+      href: /results/ut-1236-5689
+      id: ut-1236-5689
+      links:
+        score:
+          href: /scores/1236-5689
+          id: 1236-5689
+    properties:
+      compilation:
+        $ref: '#/definitions/CompilationResult'
+      evaluation:
+        $ref: '#/definitions/EvaluationResult'
+      execution:
+        description: Entry execution result
+        example:
+        - memory: 64
+          status: ok
+          time: 0.035
+          wallClockTime: 0.568
+        - memory: 64
+          status: ok
+          time: 0.035
+          wallClockTime: 0.568
+        items:
+          $ref: '#/definitions/ExecutionResult'
+        type: array
+      href:
+        description: API href for making requests on the result
+        example: /results/ut-1236-5689
+        type: string
+      id:
+        description: Unique result ID
+        example: ut-1236-5689
+        type: string
+      links:
+        $ref: '#/definitions/ComJossemargtSaoResultLinks'
+    required:
+    - id
+    - href
+    - evaluation
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.result+json;
+      view=full'
+    type: object
+  ComJossemargtSaoResultLink:
+    description: The representation of the result of an entry compile, execute or
+      evaluation process (link view)
+    example:
+      href: /results/ut-1236-5689
+      id: ut-1236-5689
+    properties:
+      href:
+        description: API href for making requests on the result
+        example: /results/ut-1236-5689
+        type: string
+      id:
+        description: Unique result ID
+        example: ut-1236-5689
+        type: string
+    required:
+    - id
+    - href
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.result+json;
+      view=link'
+    type: object
+  ComJossemargtSaoResultLinks:
+    description: ComJossemargtSaoResultLinks contains links to related resources of
+      ComJossemargtSaoResult.
+    example:
+      score:
+        href: /scores/1236-5689
+        id: 1236-5689
+    properties:
+      score:
+        $ref: '#/definitions/ComJossemargtSaoScoreLink'
+    title: ComJossemargtSaoResultLinks
+    type: object
+  ComJossemargtSaoScore:
+    description: The representation of the entry's scoring after being evaluated (default
+      view)
+    example:
+      href: /scores/1236-5689
+      id: 1236-5689
+      value: 10.5
+    properties:
+      href:
+        description: API href for making requests on the score
+        example: /scores/1236-5689
+        type: string
+      id:
+        description: Unique score ID
+        example: 1236-5689
+        type: string
+      value:
+        description: An official graded score with a token
+        example: 10.5
+        format: double
+        type: number
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.score+json; view=default'
+    type: object
+  ComJossemargtSaoScoreCollection:
+    description: ComJossemargtSaoScoreCollection is the media type for an array of
+      ComJossemargtSaoScore (default view)
+    example:
+    - href: /scores/1236-5689
+      id: 1236-5689
+      value: 10.5
+    - href: /scores/1236-5689
+      id: 1236-5689
+      value: 10.5
+    items:
+      $ref: '#/definitions/ComJossemargtSaoScore'
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.score+json; type=collection;
+      view=default'
+    type: array
+  ComJossemargtSaoScoreFull:
+    description: The representation of the entry's scoring after being evaluated (full
+      view)
+    example:
+      href: /scores/1236-5689
+      id: 1236-5689
+      untokenedValue: 20
+      value: 10.5
+    properties:
+      href:
+        description: API href for making requests on the score
+        example: /scores/1236-5689
+        type: string
+      id:
+        description: Unique score ID
+        example: 1236-5689
+        type: string
+      untokenedValue:
+        description: An un-official graded score
+        example: 20
+        format: double
+        type: number
+      value:
+        description: An official graded score with a token
+        example: 10.5
+        format: double
+        type: number
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.score+json; view=full'
+    type: object
+  ComJossemargtSaoScoreLink:
+    description: The representation of the entry's scoring after being evaluated (link
+      view)
+    example:
+      href: /scores/1236-5689
+      id: 1236-5689
+    properties:
+      href:
+        description: API href for making requests on the score
+        example: /scores/1236-5689
+        type: string
+      id:
+        description: Unique score ID
+        example: 1236-5689
+        type: string
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.score+json; view=link'
+    type: object
+  CompilationResult:
+    description: Embedded reprensentation of an entry compilation result
+    example:
+      memory: 64
+      status: ok
+      stderr: Quae accusamus id deserunt.
+      stdout: Voluptates dignissimos consequuntur.
+      time: 0.035
+      tries: 2
+      wallClockTime: 0.568
+    properties:
+      memory:
+        description: Memory consumed
+        example: 64
+        format: int64
+        type: integer
+      status:
+        default: unprocessed
+        description: Execution result status
+        enum:
+        - ok
+        - fail
+        - unprocessed
+        example: ok
+        type: string
+      stderr:
+        description: Compilation process' standard error
+        example: Quae accusamus id deserunt.
+        type: string
+      stdout:
+        description: Compilation process' standard output
+        example: Voluptates dignissimos consequuntur.
+        type: string
+      time:
+        description: The spent execution CPU time
+        example: 0.035
+        format: double
+        type: number
+      tries:
+        description: Compilation retries
+        example: 2
+        minimum: 0
+        type: integer
+      wallClockTime:
+        description: The spent execution human perceived time
+        example: 0.568
+        format: double
+        type: number
+    title: CompilationResult
+    type: object
+  EntryPayload:
+    description: Any source code or input that should be compiled, executed or evaluated
+    example:
+      contestSlug: con_test
+      ranked: false
+      sources:
+      - content: Architecto nostrum.
+        encoding: Dolor magnam sed est iusto.
+        language: Python 3
+        name: my_solution.py
+      - content: Architecto nostrum.
+        encoding: Dolor magnam sed est iusto.
+        language: Python 3
+        name: my_solution.py
+      - content: Architecto nostrum.
+        encoding: Dolor magnam sed est iusto.
+        language: Python 3
+        name: my_solution.py
+      taskSlug: simpleBatch-95
+    properties:
+      contestSlug:
+        description: Contest unique and human readble string identifier
+        example: con_test
+        pattern: '[_a-zA-Z0-9\-]+'
+        type: string
+      ranked:
+        default: true
+        description: Indenties if the entry should be ranked or taken as an user test
+        example: false
+        type: boolean
+      sources:
+        description: Source files representation
+        example:
+        - content: Architecto nostrum.
+          encoding: Dolor magnam sed est iusto.
+          language: Python 3
+          name: my_solution.py
+        - content: Architecto nostrum.
+          encoding: Dolor magnam sed est iusto.
+          language: Python 3
+          name: my_solution.py
+        - content: Architecto nostrum.
+          encoding: Dolor magnam sed est iusto.
+          language: Python 3
+          name: my_solution.py
+        items:
+          $ref: '#/definitions/EntrySource'
+        minItems: 1
+        type: array
+      taskSlug:
+        description: Task unique and human readble string identifier
+        example: simpleBatch-95
+        pattern: '[_a-zA-Z0-9\-]+'
+        type: string
+    required:
+    - contestSlug
+    - taskSlug
+    - ranked
+    - sources
+    title: EntryPayload
+    type: object
+  EntrySource:
+    description: Entry's embed type which represents a source file
+    example:
+      content: Architecto nostrum.
+      encoding: Dolor magnam sed est iusto.
+      language: Python 3
+      name: my_solution.py
+    properties:
+      content:
+        description: Source content
+        example: Architecto nostrum.
+        type: string
+      encoding:
+        default: utf8
+        description: Source content's encoding
+        example: Dolor magnam sed est iusto.
+        type: string
+      language:
+        description: Source programming languague or none when using plain text
+        example: Python 3
+        type: string
+      name:
+        description: Source file name including its extension
+        example: my_solution.py
+        type: string
+    title: EntrySource
+    type: object
+  EvaluationResult:
+    description: Embedded reprensentation of an entry evaluation result
+    example:
+      status: ok
+      tries: 0
+    properties:
+      status:
+        default: unprocessed
+        description: Execution result status
+        enum:
+        - ok
+        - unprocessed
+        example: ok
+        type: string
+      tries:
+        description: Evaluation retries
+        example: 0
+        minimum: 0
+        type: integer
+    title: EvaluationResult
+    type: object
+  ExecutionResult:
+    description: Embedded reprensentation of an entry execution result
+    example:
+      memory: 64
+      status: ok
+      time: 0.035
+      wallClockTime: 0.568
+    properties:
+      memory:
+        description: Memory consumed
+        example: 64
+        format: int64
+        type: integer
+      status:
+        description: Execution result status
+        example: ok
+        type: string
+      time:
+        description: The spent execution CPU time
+        example: 0.035
+        format: double
+        type: number
+      wallClockTime:
+        description: The spent execution human perceived time
+        example: 0.568
+        format: double
+        type: number
+    title: ExecutionResult
+    type: object
+  error:
+    description: Error response media type (default view)
+    example:
+      code: invalid_value
+      detail: Value of ID must be an integer
+      id: 3F1FKVRR
+      meta:
+        timestamp: 1.458609066e+09
+      status: "400"
+    properties:
+      code:
+        description: an application-specific error code, expressed as a string value.
+        example: invalid_value
+        type: string
+      detail:
+        description: a human-readable explanation specific to this occurrence of the
+          problem.
+        example: Value of ID must be an integer
+        type: string
+      id:
+        description: a unique identifier for this particular occurrence of the problem.
+        example: 3F1FKVRR
+        type: string
+      meta:
+        additionalProperties: true
+        description: a meta object containing non-standard meta-information about
+          the error.
+        example:
+          timestamp: 1.458609066e+09
+        type: object
+      status:
+        description: the HTTP status code applicable to this problem, expressed as
+          a string value.
+        example: "400"
+        type: string
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+host: localhost:8080
+info:
+  description: Exposes CMS platform entry and score resources
+  title: Sao
+  version: "1.0"
+paths:
+  /entries/:
+    get:
+      description: List all the ranked entries without their sources.
+      operationId: entry#show
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        minimum: 1
+        name: page
+        required: false
+        type: integer
+      - default: 20
+        description: Item amount per page
+        in: query
+        minimum: 5
+        name: page_size
+        required: false
+        type: integer
+      produces:
+      - application/vnd.com.jossemargt.sao.entry+json; type=collection
+      - application/vnd.goa.error
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ComJossemargtSaoEntryCollection'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: show entry
+      tags:
+      - entry
+    post:
+      description: Create a new entry
+      operationId: entry#create
+      parameters:
+      - description: Any source code or input that should be compiled, executed or
+          evaluated
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/EntryPayload'
+      produces:
+      - application/vnd.com.jossemargt.sao.entry+json
+      - application/vnd.goa.error
+      responses:
+        "201":
+          description: Created
+          headers:
+            Location:
+              description: href to created entry
+              pattern: /entries/\w{2}-\d+
+              type: string
+          schema:
+            $ref: '#/definitions/ComJossemargtSaoEntryFull'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: create entry
+      tags:
+      - entry
+  /entries/{entryID}:
+    get:
+      description: Returns all the entry metadata (without the sources) for the given
+        ID
+      operationId: entry#get
+      parameters:
+      - description: Result ID
+        in: path
+        name: entryID
+        required: true
+        type: string
+      produces:
+      - application/vnd.com.jossemargt.sao.entry+json
+      - application/vnd.goa.error
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ComJossemargtSaoEntryFull'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: get entry
+      tags:
+      - entry
+  /results/:
+    get:
+      description: List all the results delimited by the query params
+      operationId: result#show
+      parameters:
+      - description: Contest ID
+        in: query
+        name: contest
+        required: false
+        type: integer
+      - description: Entry ID
+        in: query
+        name: entry
+        required: false
+        type: integer
+      - default: 1
+        description: Page number
+        in: query
+        minimum: 1
+        name: page
+        required: false
+        type: integer
+      - default: 20
+        description: Item amount per page
+        in: query
+        minimum: 5
+        name: page_size
+        required: false
+        type: integer
+      - default: "true"
+        enum:
+        - "true"
+        - "false"
+        in: query
+        name: ranked
+        required: false
+        type: string
+      - default: desc
+        enum:
+        - asc
+        - desc
+        in: query
+        name: sort
+        required: false
+        type: string
+      - description: Task ID
+        in: query
+        name: task
+        required: false
+        type: integer
+      - description: User ID
+        in: query
+        name: user
+        required: false
+        type: integer
+      produces:
+      - application/vnd.com.jossemargt.sao.result+json; type=collection
+      - application/vnd.goa.error
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ComJossemargtSaoResultCollection'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: show result
+      tags:
+      - result
+  /results/{resultID}:
+    get:
+      description: Returns an specific result with the given entry and testcase ID
+      operationId: result#get
+      parameters:
+      - description: Result ID
+        in: path
+        name: resultID
+        required: true
+        type: string
+      produces:
+      - application/vnd.com.jossemargt.sao.result+json
+      - application/vnd.goa.error
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ComJossemargtSaoResultFull'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: get result
+      tags:
+      - result
+  /scores/:
+    get:
+      description: List all the scores delimited by the query params
+      operationId: scores#show
+      parameters:
+      - description: Contest ID
+        in: query
+        name: contest
+        required: false
+        type: integer
+      - description: Entry ID
+        in: query
+        name: entry
+        required: false
+        type: integer
+      - default: 1
+        description: Page number
+        in: query
+        minimum: 1
+        name: page
+        required: false
+        type: integer
+      - default: 20
+        description: Item amount per page
+        in: query
+        minimum: 5
+        name: page_size
+        required: false
+        type: integer
+      - default: desc
+        enum:
+        - asc
+        - desc
+        in: query
+        name: sort
+        required: false
+        type: string
+      - description: Task ID
+        in: query
+        name: task
+        required: false
+        type: integer
+      - description: User ID
+        in: query
+        name: user
+        required: false
+        type: integer
+      produces:
+      - application/vnd.com.jossemargt.sao.score+json; type=collection
+      - application/vnd.goa.error
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ComJossemargtSaoScoreCollection'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: show scores
+      tags:
+      - scores
+  /scores/{scoreID}:
+    get:
+      description: Returns an specific score with the given entry and testcase ID
+      operationId: scores#get
+      parameters:
+      - description: Score ID
+        in: path
+        name: scoreID
+        required: true
+        type: string
+      produces:
+      - application/vnd.com.jossemargt.sao.score+json
+      - application/vnd.goa.error
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ComJossemargtSaoScoreFull'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: get scores
+      tags:
+      - scores
+produces:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+responses:
+  NotFound:
+    description: Not Found
+schemes:
+- http
+swagger: "2.0"

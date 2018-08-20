@@ -17,21 +17,53 @@ var _ = API("SAO v1", func() {
 var _ = Resource("entry", func() {
 	Description("A document to be evaluated and ranked")
 	BasePath("/entries")
-	DefaultMedia(EntryMedia)
 	Response(Unauthorized, ErrorMedia)
 	Response(BadRequest, ErrorMedia)
 
 	Action("show", func() {
-		Description("List all the entries without their sources.")
+		Description("List all the ranked entries without their sources.")
 		Routing(GET("/"))
-		Response(OK)
+		Params(func() {
+			Param("page", Integer, "Page number", func() {
+				Default(1)
+				Minimum(1)
+			})
+			Param("page_size", Integer, "Item amount per page", func() {
+				Default(20)
+				Minimum(5)
+			})
+		})
+		Response(OK, CollectionOf(EntryMedia))
+	})
+
+	Action("get", func() {
+		Description("Returns all the entry metadata (without the sources) for the given ID")
+		Routing(GET("/:entryID"))
+		Params(func() {
+			Param("entryID", String, "Result ID", func() {
+				Example("ut-123588")
+				Example("re-124588")
+			})
+		})
+		Response(OK, func() {
+			Media(EntryMedia, "full")
+		})
+		Response(NotFound)
 	})
 
 	Action("create", func() {
 		Description("Create a new entry")
 		Routing(POST("/"))
 		Payload(EntryPayload)
-		Response(Created)
+		Response(Created, func() {
+			Media(EntryMedia, "full")
+			Headers(func() {
+				Header("Location", String, "href to created entry", func() {
+					Pattern("/entries/\\w{2}-\\d+")
+					Example("/entries/re-124588")
+				})
+			})
+		})
 	})
 })
 
@@ -49,6 +81,14 @@ var _ = Resource("result", func() {
 			Param("contest", Integer, "Contest ID")
 			Param("user", Integer, "User ID")
 			Param("entry", Integer, "Entry ID")
+			Param("page", Integer, "Page number", func() {
+				Default(1)
+				Minimum(1)
+			})
+			Param("page_size", Integer, "Item amount per page", func() {
+				Default(20)
+				Minimum(5)
+			})
 			Param("sort", func() {
 				Enum("asc", "desc")
 				Default("desc")
@@ -63,16 +103,16 @@ var _ = Resource("result", func() {
 
 	Action("get", func() {
 		Description("Returns an specific result with the given entry and testcase ID")
-		Routing(GET("/:entryID-:testcaseID"))
+		Routing(GET("/:resultID"))
 		Params(func() {
-			Param("resultID", Integer, "Result ID")
-			Param("testcaseID", Integer, "Testcase ID")
-			Param("ranked", func() {
-				Enum("true", "false")
-				Default("true")
+			Param("resultID", String, "Result ID", func() {
+				Example("re-1235-6988") // For ranked entries
+				Example("ut-4590-1325") // For user tests
 			})
 		})
-		Response(OK, ResultMedia)
+		Response(OK, func() {
+			Media(ResultMedia, "full")
+		})
 		Response(NotFound)
 	})
 })
@@ -91,6 +131,14 @@ var _ = Resource("scores", func() {
 			Param("contest", Integer, "Contest ID")
 			Param("user", Integer, "User ID")
 			Param("entry", Integer, "Entry ID")
+			Param("page", Integer, "Page number", func() {
+				Default(1)
+				Minimum(1)
+			})
+			Param("page_size", Integer, "Item amount per page", func() {
+				Default(20)
+				Minimum(5)
+			})
 			Param("sort", func() {
 				Enum("asc", "desc")
 				Default("desc")
@@ -101,12 +149,15 @@ var _ = Resource("scores", func() {
 
 	Action("get", func() {
 		Description("Returns an specific score with the given entry and testcase ID")
-		Routing(GET("/:entryID-:testcaseID"))
+		Routing(GET("/:scoreID"))
 		Params(func() {
-			Param("resultID", Integer, "Result ID")
-			Param("testcaseID", Integer, "Testcase ID")
+			Param("scoreID", String, "Score ID", func() {
+				Example("1234-5987")
+			})
 		})
-		Response(OK, ScoreMedia)
+		Response(OK, func() {
+			Media(ScoreMedia, "full")
+		})
 		Response(NotFound)
 	})
 })

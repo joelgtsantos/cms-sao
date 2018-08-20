@@ -8,10 +8,12 @@ import (
 var AbstractEntry = Type("AbstractEntry", func() {
 	Description("Abstracts the common attributes from EntryPayload and EntryFormPayload")
 	Attribute("contestSlug", String, "Contest unique and human readble string identifier", func() {
-		Pattern("[a-zA-Z]+")
+		Pattern("[_a-zA-Z0-9\\-]+")
+		Example("con_test")
 	})
 	Attribute("taskSlug", String, "Task unique and human readble string identifier", func() {
-		Pattern("[a-zA-Z]+")
+		Pattern("[_a-zA-Z0-9\\-]+")
+		Example("simpleBatch-95")
 	})
 	Attribute("ranked", Boolean, "Indenties if the entry should be ranked or taken as an user test", func() {
 		Default(true)
@@ -20,11 +22,13 @@ var AbstractEntry = Type("AbstractEntry", func() {
 
 var SourceType = Type("EntrySource", func() {
 	Description("Entry's embed type which represents a source file")
-	Attribute("name", String, "Source file name")
+	Attribute("name", String, "Source file name including its extension", func() {
+		Example("my_solution.py")
+	})
 	Attribute("content", String, "Source content")
 	Attribute("language", String, "Source programming languague or none when using plain text", func() {
-		Example("Python 3")
 		Example("none")
+		Example("Python 3")
 	})
 	Attribute("encoding", String, "Source content's encoding", func() {
 		Default("utf8")

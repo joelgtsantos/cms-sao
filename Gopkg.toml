@@ -1,0 +1,11 @@
+[[constraint]]
+  name = "github.com/goadesign/goa"
+  version = "1.4.0"
+
+[[override]]
+  name = "github.com/satori/go.uuid"
+  revision = "master"
+
+[prune]
+  go-tests = true
+  unused-packages = true
