@@ -45,7 +45,15 @@ var _ = Resource("entry", func() {
 		Description("Create a new entry")
 		Routing(POST("/"))
 		Payload(EntryPayload)
-		Response(Created)
+		Response(Created, func() {
+			Media(EntryMedia, "full")
+			Headers(func() {
+				Header("Location", String, "href to created entry", func() {
+					Pattern("/entries/\\w{2}-\\d+")
+					Example("/entries/re-124588")
+				})
+			})
+		})
 	})
 })
 
