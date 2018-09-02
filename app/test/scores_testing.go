@@ -221,6 +221,10 @@ func GetScoresOK(t goatest.TInterface, ctx context.Context, service *goa.Service
 		if !_ok {
 			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoScore", resp, resp)
 		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
+		}
 	}
 
 	// Return results
@@ -291,6 +295,10 @@ func GetScoresOKFull(t goatest.TInterface, ctx context.Context, service *goa.Ser
 		if !_ok {
 			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoScoreFull", resp, resp)
 		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
+		}
 	}
 
 	// Return results
@@ -360,6 +368,10 @@ func GetScoresOKLink(t goatest.TInterface, ctx context.Context, service *goa.Ser
 		mt, _ok = resp.(*app.ComJossemargtSaoScoreLink)
 		if !_ok {
 			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoScoreLink", resp, resp)
+		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
 		}
 	}
 
@@ -614,6 +626,10 @@ func ShowScoresOK(t goatest.TInterface, ctx context.Context, service *goa.Servic
 		if !_ok {
 			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoScoreCollection", resp, resp)
 		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
+		}
 	}
 
 	// Return results
@@ -741,6 +757,10 @@ func ShowScoresOKFull(t goatest.TInterface, ctx context.Context, service *goa.Se
 		if !_ok {
 			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoScoreFullCollection", resp, resp)
 		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
+		}
 	}
 
 	// Return results
@@ -867,6 +887,385 @@ func ShowScoresOKLink(t goatest.TInterface, ctx context.Context, service *goa.Se
 		mt, _ok = resp.(app.ComJossemargtSaoScoreLinkCollection)
 		if !_ok {
 			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoScoreLinkCollection", resp, resp)
+		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
+		}
+	}
+
+	// Return results
+	return rw, mt
+}
+
+// SummarizeScoresBadRequest runs the method Summarize of the given controller with the given parameters.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func SummarizeScoresBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ScoresController, contest *int, groupBy string, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, error) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	query := url.Values{}
+	if contest != nil {
+		sliceVal := []string{strconv.Itoa(*contest)}
+		query["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{groupBy}
+		query["groupBy"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
+		query["page"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(pageSize)}
+		query["page_size"] = sliceVal
+	}
+	{
+		sliceVal := []string{sort}
+		query["sort"] = sliceVal
+	}
+	if task != nil {
+		sliceVal := []string{strconv.Itoa(*task)}
+		query["task"] = sliceVal
+	}
+	if user != nil {
+		sliceVal := []string{strconv.Itoa(*user)}
+		query["user"] = sliceVal
+	}
+	u := &url.URL{
+		Path:     fmt.Sprintf("/sao/v1/scores/sum"),
+		RawQuery: query.Encode(),
+	}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	prms := url.Values{}
+	if contest != nil {
+		sliceVal := []string{strconv.Itoa(*contest)}
+		prms["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{groupBy}
+		prms["groupBy"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
+		prms["page"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(pageSize)}
+		prms["page_size"] = sliceVal
+	}
+	{
+		sliceVal := []string{sort}
+		prms["sort"] = sliceVal
+	}
+	if task != nil {
+		sliceVal := []string{strconv.Itoa(*task)}
+		prms["task"] = sliceVal
+	}
+	if user != nil {
+		sliceVal := []string{strconv.Itoa(*user)}
+		prms["user"] = sliceVal
+	}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "ScoresTest"), rw, req, prms)
+	summarizeCtx, _err := app.NewSummarizeScoresContext(goaCtx, req, service)
+	if _err != nil {
+		e, ok := _err.(goa.ServiceError)
+		if !ok {
+			panic("invalid test data " + _err.Error()) // bug
+		}
+		return nil, e
+	}
+
+	// Perform action
+	_err = ctrl.Summarize(summarizeCtx)
+
+	// Validate response
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
+	}
+	if rw.Code != 400 {
+		t.Errorf("invalid response status code: got %+v, expected 400", rw.Code)
+	}
+	var mt error
+	if resp != nil {
+		var _ok bool
+		mt, _ok = resp.(error)
+		if !_ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of error", resp, resp)
+		}
+	}
+
+	// Return results
+	return rw, mt
+}
+
+// SummarizeScoresNotFound runs the method Summarize of the given controller with the given parameters.
+// It returns the response writer so it's possible to inspect the response headers.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func SummarizeScoresNotFound(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ScoresController, contest *int, groupBy string, page int, pageSize int, sort string, task *int, user *int) http.ResponseWriter {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) {}
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	query := url.Values{}
+	if contest != nil {
+		sliceVal := []string{strconv.Itoa(*contest)}
+		query["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{groupBy}
+		query["groupBy"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
+		query["page"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(pageSize)}
+		query["page_size"] = sliceVal
+	}
+	{
+		sliceVal := []string{sort}
+		query["sort"] = sliceVal
+	}
+	if task != nil {
+		sliceVal := []string{strconv.Itoa(*task)}
+		query["task"] = sliceVal
+	}
+	if user != nil {
+		sliceVal := []string{strconv.Itoa(*user)}
+		query["user"] = sliceVal
+	}
+	u := &url.URL{
+		Path:     fmt.Sprintf("/sao/v1/scores/sum"),
+		RawQuery: query.Encode(),
+	}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	prms := url.Values{}
+	if contest != nil {
+		sliceVal := []string{strconv.Itoa(*contest)}
+		prms["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{groupBy}
+		prms["groupBy"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
+		prms["page"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(pageSize)}
+		prms["page_size"] = sliceVal
+	}
+	{
+		sliceVal := []string{sort}
+		prms["sort"] = sliceVal
+	}
+	if task != nil {
+		sliceVal := []string{strconv.Itoa(*task)}
+		prms["task"] = sliceVal
+	}
+	if user != nil {
+		sliceVal := []string{strconv.Itoa(*user)}
+		prms["user"] = sliceVal
+	}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "ScoresTest"), rw, req, prms)
+	summarizeCtx, _err := app.NewSummarizeScoresContext(goaCtx, req, service)
+	if _err != nil {
+		e, ok := _err.(goa.ServiceError)
+		if !ok {
+			panic("invalid test data " + _err.Error()) // bug
+		}
+		t.Errorf("unexpected parameter validation error: %+v", e)
+		return nil
+	}
+
+	// Perform action
+	_err = ctrl.Summarize(summarizeCtx)
+
+	// Validate response
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
+	}
+	if rw.Code != 404 {
+		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
+	}
+
+	// Return results
+	return rw
+}
+
+// SummarizeScoresOK runs the method Summarize of the given controller with the given parameters.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func SummarizeScoresOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ScoresController, contest *int, groupBy string, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoScoresumCollection) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	query := url.Values{}
+	if contest != nil {
+		sliceVal := []string{strconv.Itoa(*contest)}
+		query["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{groupBy}
+		query["groupBy"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
+		query["page"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(pageSize)}
+		query["page_size"] = sliceVal
+	}
+	{
+		sliceVal := []string{sort}
+		query["sort"] = sliceVal
+	}
+	if task != nil {
+		sliceVal := []string{strconv.Itoa(*task)}
+		query["task"] = sliceVal
+	}
+	if user != nil {
+		sliceVal := []string{strconv.Itoa(*user)}
+		query["user"] = sliceVal
+	}
+	u := &url.URL{
+		Path:     fmt.Sprintf("/sao/v1/scores/sum"),
+		RawQuery: query.Encode(),
+	}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	prms := url.Values{}
+	if contest != nil {
+		sliceVal := []string{strconv.Itoa(*contest)}
+		prms["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{groupBy}
+		prms["groupBy"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
+		prms["page"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(pageSize)}
+		prms["page_size"] = sliceVal
+	}
+	{
+		sliceVal := []string{sort}
+		prms["sort"] = sliceVal
+	}
+	if task != nil {
+		sliceVal := []string{strconv.Itoa(*task)}
+		prms["task"] = sliceVal
+	}
+	if user != nil {
+		sliceVal := []string{strconv.Itoa(*user)}
+		prms["user"] = sliceVal
+	}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "ScoresTest"), rw, req, prms)
+	summarizeCtx, _err := app.NewSummarizeScoresContext(goaCtx, req, service)
+	if _err != nil {
+		e, ok := _err.(goa.ServiceError)
+		if !ok {
+			panic("invalid test data " + _err.Error()) // bug
+		}
+		t.Errorf("unexpected parameter validation error: %+v", e)
+		return nil, nil
+	}
+
+	// Perform action
+	_err = ctrl.Summarize(summarizeCtx)
+
+	// Validate response
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
+	}
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+	var mt app.ComJossemargtSaoScoresumCollection
+	if resp != nil {
+		var _ok bool
+		mt, _ok = resp.(app.ComJossemargtSaoScoresumCollection)
+		if !_ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoScoresumCollection", resp, resp)
+		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
 		}
 	}
 

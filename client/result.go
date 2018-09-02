@@ -27,7 +27,8 @@ func GetResultPath(resultID string) string {
 	return fmt.Sprintf("/sao/v1/results/%s", param0)
 }
 
-// Returns an specific result with the given entry and testcase ID
+// Get complete result data for the given entry and testcase ID.
+// The "re" and "ut" prefix delimits the entry type as "ranked entry" or "user test" respectively.
 func (c *Client) GetResult(ctx context.Context, path string) (*http.Response, error) {
 	req, err := c.NewGetResultRequest(ctx, path)
 	if err != nil {
@@ -56,8 +57,8 @@ func ShowResultPath() string {
 	return fmt.Sprintf("/sao/v1/results/")
 }
 
-// List all the results delimited by the query params
-func (c *Client) ShowResult(ctx context.Context, path string, contest *int, entry *int, page *int, pageSize *int, ranked *string, sort *string, task *int, user *int) (*http.Response, error) {
+// List the results delimited and grouped by contest, task, entry or user identifier
+func (c *Client) ShowResult(ctx context.Context, path string, contest *int, entry *int, page *int, pageSize *int, ranked *bool, sort *string, task *int, user *int) (*http.Response, error) {
 	req, err := c.NewShowResultRequest(ctx, path, contest, entry, page, pageSize, ranked, sort, task, user)
 	if err != nil {
 		return nil, err
@@ -66,7 +67,7 @@ func (c *Client) ShowResult(ctx context.Context, path string, contest *int, entr
 }
 
 // NewShowResultRequest create the request corresponding to the show action endpoint of the result resource.
-func (c *Client) NewShowResultRequest(ctx context.Context, path string, contest *int, entry *int, page *int, pageSize *int, ranked *string, sort *string, task *int, user *int) (*http.Request, error) {
+func (c *Client) NewShowResultRequest(ctx context.Context, path string, contest *int, entry *int, page *int, pageSize *int, ranked *bool, sort *string, task *int, user *int) (*http.Request, error) {
 	scheme := c.Scheme
 	if scheme == "" {
 		scheme = "http"
@@ -90,18 +91,19 @@ func (c *Client) NewShowResultRequest(ctx context.Context, path string, contest 
 		values.Set("page_size", tmp6)
 	}
 	if ranked != nil {
-		values.Set("ranked", *ranked)
+		tmp7 := strconv.FormatBool(*ranked)
+		values.Set("ranked", tmp7)
 	}
 	if sort != nil {
 		values.Set("sort", *sort)
 	}
 	if task != nil {
-		tmp7 := strconv.Itoa(*task)
-		values.Set("task", tmp7)
+		tmp8 := strconv.Itoa(*task)
+		values.Set("task", tmp8)
 	}
 	if user != nil {
-		tmp8 := strconv.Itoa(*user)
-		values.Set("user", tmp8)
+		tmp9 := strconv.Itoa(*user)
+		values.Set("user", tmp9)
 	}
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("GET", u.String(), nil)

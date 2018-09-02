@@ -71,7 +71,7 @@ func GetEntryPath(entryID string) string {
 	return fmt.Sprintf("/sao/v1/entries/%s", param0)
 }
 
-// Returns all the entry metadata (without the sources) for the given ID
+// Get the complete entry metadata (excluding the associated sources) for the given ID
 func (c *Client) GetEntry(ctx context.Context, path string) (*http.Response, error) {
 	req, err := c.NewGetEntryRequest(ctx, path)
 	if err != nil {
@@ -100,7 +100,7 @@ func ShowEntryPath() string {
 	return fmt.Sprintf("/sao/v1/entries/")
 }
 
-// List all the ranked entries without their sources.
+// List the ranked entries without their sources.
 func (c *Client) ShowEntry(ctx context.Context, path string, page *int, pageSize *int) (*http.Response, error) {
 	req, err := c.NewShowEntryRequest(ctx, path, page, pageSize)
 	if err != nil {

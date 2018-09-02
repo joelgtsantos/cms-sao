@@ -272,7 +272,7 @@ type ShowResultContext struct {
 	Entry    *int
 	Page     int
 	PageSize int
-	Ranked   string
+	Ranked   bool
 	Sort     string
 	Task     *int
 	User     *int
@@ -339,12 +339,13 @@ func NewShowResultContext(ctx context.Context, r *http.Request, service *goa.Ser
 	}
 	paramRanked := req.Params["ranked"]
 	if len(paramRanked) == 0 {
-		rctx.Ranked = "true"
+		rctx.Ranked = true
 	} else {
 		rawRanked := paramRanked[0]
-		rctx.Ranked = rawRanked
-		if !(rctx.Ranked == "true" || rctx.Ranked == "false") {
-			err = goa.MergeErrors(err, goa.InvalidEnumValueError(`ranked`, rctx.Ranked, []interface{}{"true", "false"}))
+		if ranked, err2 := strconv.ParseBool(rawRanked); err2 == nil {
+			rctx.Ranked = ranked
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("ranked", rawRanked, "boolean"))
 		}
 	}
 	paramSort := req.Params["sort"]
@@ -361,9 +362,9 @@ func NewShowResultContext(ctx context.Context, r *http.Request, service *goa.Ser
 	if len(paramTask) > 0 {
 		rawTask := paramTask[0]
 		if task, err2 := strconv.Atoi(rawTask); err2 == nil {
-			tmp10 := task
-			tmp9 := &tmp10
-			rctx.Task = tmp9
+			tmp11 := task
+			tmp10 := &tmp11
+			rctx.Task = tmp10
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("task", rawTask, "integer"))
 		}
@@ -372,9 +373,9 @@ func NewShowResultContext(ctx context.Context, r *http.Request, service *goa.Ser
 	if len(paramUser) > 0 {
 		rawUser := paramUser[0]
 		if user, err2 := strconv.Atoi(rawUser); err2 == nil {
-			tmp12 := user
-			tmp11 := &tmp12
-			rctx.User = tmp11
+			tmp13 := user
+			tmp12 := &tmp13
+			rctx.User = tmp12
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("user", rawUser, "integer"))
 		}
@@ -497,9 +498,9 @@ func NewShowScoresContext(ctx context.Context, r *http.Request, service *goa.Ser
 	if len(paramContest) > 0 {
 		rawContest := paramContest[0]
 		if contest, err2 := strconv.Atoi(rawContest); err2 == nil {
-			tmp14 := contest
-			tmp13 := &tmp14
-			rctx.Contest = tmp13
+			tmp15 := contest
+			tmp14 := &tmp15
+			rctx.Contest = tmp14
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("contest", rawContest, "integer"))
 		}
@@ -508,9 +509,9 @@ func NewShowScoresContext(ctx context.Context, r *http.Request, service *goa.Ser
 	if len(paramEntry) > 0 {
 		rawEntry := paramEntry[0]
 		if entry, err2 := strconv.Atoi(rawEntry); err2 == nil {
-			tmp16 := entry
-			tmp15 := &tmp16
-			rctx.Entry = tmp15
+			tmp17 := entry
+			tmp16 := &tmp17
+			rctx.Entry = tmp16
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("entry", rawEntry, "integer"))
 		}
@@ -557,9 +558,9 @@ func NewShowScoresContext(ctx context.Context, r *http.Request, service *goa.Ser
 	if len(paramTask) > 0 {
 		rawTask := paramTask[0]
 		if task, err2 := strconv.Atoi(rawTask); err2 == nil {
-			tmp20 := task
-			tmp19 := &tmp20
-			rctx.Task = tmp19
+			tmp21 := task
+			tmp20 := &tmp21
+			rctx.Task = tmp20
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("task", rawTask, "integer"))
 		}
@@ -568,9 +569,9 @@ func NewShowScoresContext(ctx context.Context, r *http.Request, service *goa.Ser
 	if len(paramUser) > 0 {
 		rawUser := paramUser[0]
 		if user, err2 := strconv.Atoi(rawUser); err2 == nil {
-			tmp22 := user
-			tmp21 := &tmp22
-			rctx.User = tmp21
+			tmp23 := user
+			tmp22 := &tmp23
+			rctx.User = tmp22
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("user", rawUser, "integer"))
 		}
@@ -617,4 +618,136 @@ func (ctx *ShowScoresContext) BadRequest(r error) error {
 		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
+}
+
+// SummarizeScoresContext provides the scores summarize action context.
+type SummarizeScoresContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Contest  *int
+	GroupBy  string
+	Page     int
+	PageSize int
+	Sort     string
+	Task     *int
+	User     *int
+}
+
+// NewSummarizeScoresContext parses the incoming request URL and body, performs validations and creates the
+// context used by the scores controller summarize action.
+func NewSummarizeScoresContext(ctx context.Context, r *http.Request, service *goa.Service) (*SummarizeScoresContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := SummarizeScoresContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramContest := req.Params["contest"]
+	if len(paramContest) > 0 {
+		rawContest := paramContest[0]
+		if contest, err2 := strconv.Atoi(rawContest); err2 == nil {
+			tmp25 := contest
+			tmp24 := &tmp25
+			rctx.Contest = tmp24
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("contest", rawContest, "integer"))
+		}
+	}
+	paramGroupBy := req.Params["groupBy"]
+	if len(paramGroupBy) == 0 {
+		rctx.GroupBy = "none"
+	} else {
+		rawGroupBy := paramGroupBy[0]
+		rctx.GroupBy = rawGroupBy
+		if !(rctx.GroupBy == "contest" || rctx.GroupBy == "task" || rctx.GroupBy == "user" || rctx.GroupBy == "none") {
+			err = goa.MergeErrors(err, goa.InvalidEnumValueError(`groupBy`, rctx.GroupBy, []interface{}{"contest", "task", "user", "none"}))
+		}
+	}
+	paramPage := req.Params["page"]
+	if len(paramPage) == 0 {
+		rctx.Page = 1
+	} else {
+		rawPage := paramPage[0]
+		if page, err2 := strconv.Atoi(rawPage); err2 == nil {
+			rctx.Page = page
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("page", rawPage, "integer"))
+		}
+		if rctx.Page < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`page`, rctx.Page, 1, true))
+		}
+	}
+	paramPageSize := req.Params["page_size"]
+	if len(paramPageSize) == 0 {
+		rctx.PageSize = 20
+	} else {
+		rawPageSize := paramPageSize[0]
+		if pageSize, err2 := strconv.Atoi(rawPageSize); err2 == nil {
+			rctx.PageSize = pageSize
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("page_size", rawPageSize, "integer"))
+		}
+		if rctx.PageSize < 5 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`page_size`, rctx.PageSize, 5, true))
+		}
+	}
+	paramSort := req.Params["sort"]
+	if len(paramSort) == 0 {
+		rctx.Sort = "desc"
+	} else {
+		rawSort := paramSort[0]
+		rctx.Sort = rawSort
+		if !(rctx.Sort == "asc" || rctx.Sort == "desc") {
+			err = goa.MergeErrors(err, goa.InvalidEnumValueError(`sort`, rctx.Sort, []interface{}{"asc", "desc"}))
+		}
+	}
+	paramTask := req.Params["task"]
+	if len(paramTask) > 0 {
+		rawTask := paramTask[0]
+		if task, err2 := strconv.Atoi(rawTask); err2 == nil {
+			tmp29 := task
+			tmp28 := &tmp29
+			rctx.Task = tmp28
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("task", rawTask, "integer"))
+		}
+	}
+	paramUser := req.Params["user"]
+	if len(paramUser) > 0 {
+		rawUser := paramUser[0]
+		if user, err2 := strconv.Atoi(rawUser); err2 == nil {
+			tmp31 := user
+			tmp30 := &tmp31
+			rctx.User = tmp30
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("user", rawUser, "integer"))
+		}
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *SummarizeScoresContext) OK(r ComJossemargtSaoScoresumCollection) error {
+	if ctx.ResponseData.Header().Get("Content-Type") == "" {
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.scoresum+json; type=collection")
+	}
+	if r == nil {
+		r = ComJossemargtSaoScoresumCollection{}
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *SummarizeScoresContext) BadRequest(r error) error {
+	if ctx.ResponseData.Header().Get("Content-Type") == "" {
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *SummarizeScoresContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
 }

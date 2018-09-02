@@ -162,6 +162,7 @@ type ScoresController interface {
 	goa.Muxer
 	Get(*GetScoresContext) error
 	Show(*ShowScoresContext) error
+	Summarize(*SummarizeScoresContext) error
 }
 
 // MountScoresController "mounts" a Scores resource controller on the given service.
@@ -198,4 +199,19 @@ func MountScoresController(service *goa.Service, ctrl ScoresController) {
 	}
 	service.Mux.Handle("GET", "/sao/v1/scores/", ctrl.MuxHandler("show", h, nil))
 	service.LogInfo("mount", "ctrl", "Scores", "action", "Show", "route", "GET /sao/v1/scores/")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewSummarizeScoresContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.Summarize(rctx)
+	}
+	service.Mux.Handle("GET", "/sao/v1/scores/sum", ctrl.MuxHandler("summarize", h, nil))
+	service.LogInfo("mount", "ctrl", "Scores", "action", "Summarize", "route", "GET /sao/v1/scores/sum")
 }

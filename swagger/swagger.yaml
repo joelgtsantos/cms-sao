@@ -30,11 +30,14 @@ definitions:
         type: string
       ranked:
         default: true
-        description: Indenties if the entry should be ranked or taken as an user test
+        description: "Identifies if the entry should taken as a ranked entry or as
+          an user test.\n\t\t\t\t\t\t\t\t\t\t When omitted the value will be set to
+          true, in other words any submited entry \n\t\t\t\t\t\t\t\t\t\t will be ranked
+          (non user test) by deafult\""
         example: true
         type: boolean
       taskSlug:
-        description: Task unique and human readble string identifier
+        description: Task unique and human readable string identifier
         example: simpleBatch-95
         pattern: '[_a-zA-Z0-9\-]+'
         type: string
@@ -47,6 +50,16 @@ definitions:
     description: ComJossemargtSaoEntryCollection is the media type for an array of
       ComJossemargtSaoEntry (default view)
     example:
+    - contestSlug: con_test
+      href: /entries/re-1236
+      id: re-1236
+      ranked: true
+      taskSlug: simpleBatch-95
+    - contestSlug: con_test
+      href: /entries/re-1236
+      id: re-1236
+      ranked: true
+      taskSlug: simpleBatch-95
     - contestSlug: con_test
       href: /entries/re-1236
       id: re-1236
@@ -91,11 +104,14 @@ definitions:
         $ref: '#/definitions/ComJossemargtSaoEntryLinks'
       ranked:
         default: true
-        description: Indenties if the entry should be ranked or taken as an user test
+        description: "Identifies if the entry should taken as a ranked entry or as
+          an user test.\n\t\t\t\t\t\t\t\t\t\t When omitted the value will be set to
+          true, in other words any submited entry \n\t\t\t\t\t\t\t\t\t\t will be ranked
+          (non user test) by deafult\""
         example: true
         type: boolean
       taskSlug:
-        description: Task unique and human readble string identifier
+        description: Task unique and human readable string identifier
         example: simpleBatch-95
         pattern: '[_a-zA-Z0-9\-]+'
         type: string
@@ -287,15 +303,16 @@ definitions:
         example: 10.5
         format: double
         type: number
+    required:
+    - id
+    - href
+    - value
     title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.score+json; view=default'
     type: object
   ComJossemargtSaoScoreCollection:
     description: ComJossemargtSaoScoreCollection is the media type for an array of
       ComJossemargtSaoScore (default view)
     example:
-    - href: /scores/1236-5689
-      id: 1236-5689
-      value: 10.5
     - href: /scores/1236-5689
       id: 1236-5689
       value: 10.5
@@ -331,6 +348,10 @@ definitions:
         example: 10.5
         format: double
         type: number
+    required:
+    - id
+    - href
+    - value
     title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.score+json; view=full'
     type: object
   ComJossemargtSaoScoreLink:
@@ -348,8 +369,65 @@ definitions:
         description: Unique score ID
         example: 1236-5689
         type: string
+    required:
+    - id
+    - href
     title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.score+json; view=link'
     type: object
+  ComJossemargtSaoScoresum:
+    description: The representation of a summarized entry's score (default view)
+    example:
+      contestID: 1
+      taskID: 1
+      untokenedValue: 20
+      userID: 1
+      value: 10.5
+    properties:
+      contestID:
+        description: Contest Identifier associated with this score
+        example: 1
+        minimum: 1
+        type: integer
+      taskID:
+        description: Contest Identifier associated with this score
+        example: 1
+        minimum: 1
+        type: integer
+      untokenedValue:
+        description: An un-official graded score
+        example: 20
+        format: double
+        type: number
+      userID:
+        description: Contest Identifier associated with this score
+        example: 1
+        minimum: 1
+        type: integer
+      value:
+        description: An official graded score with a token
+        example: 10.5
+        format: double
+        type: number
+    required:
+    - untokenedValue
+    - value
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.scoresum+json;
+      view=default'
+    type: object
+  ComJossemargtSaoScoresumCollection:
+    description: ComJossemargtSaoScoresumCollection is the media type for an array
+      of ComJossemargtSaoScoresum (default view)
+    example:
+    - contestID: 1
+      taskID: 1
+      untokenedValue: 20
+      userID: 1
+      value: 10.5
+    items:
+      $ref: '#/definitions/ComJossemargtSaoScoresum'
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.scoresum+json;
+      type=collection; view=default'
+    type: array
   CompilationResult:
     description: Embedded reprensentation of an entry compilation result
     example:
@@ -404,18 +482,14 @@ definitions:
     description: Any source code or input that should be compiled, executed or evaluated
     example:
       contestSlug: con_test
-      ranked: false
+      ranked: true
       sources:
-      - content: Architecto nostrum.
-        encoding: Dolor magnam sed est iusto.
+      - content: Nostrum minima dolor magnam sed.
+        encoding: Iusto voluptatum ducimus id possimus.
         language: Python 3
         name: my_solution.py
-      - content: Architecto nostrum.
-        encoding: Dolor magnam sed est iusto.
-        language: Python 3
-        name: my_solution.py
-      - content: Architecto nostrum.
-        encoding: Dolor magnam sed est iusto.
+      - content: Nostrum minima dolor magnam sed.
+        encoding: Iusto voluptatum ducimus id possimus.
         language: Python 3
         name: my_solution.py
       taskSlug: simpleBatch-95
@@ -427,22 +501,22 @@ definitions:
         type: string
       ranked:
         default: true
-        description: Indenties if the entry should be ranked or taken as an user test
-        example: false
+        description: "Identifies if the entry should taken as a ranked entry or as
+          an user test.\n\t\t\t\t\t\t\t\t\t\t When omitted the value will be set to
+          true, in other words any submited entry \n\t\t\t\t\t\t\t\t\t\t will be ranked
+          (non user test) by deafult\""
+        example: true
         type: boolean
       sources:
-        description: Source files representation
+        description: "Source files representation. Within this list the source code
+          files and input files can be \n\t\t\t\t\t\t  sent alike."
         example:
-        - content: Architecto nostrum.
-          encoding: Dolor magnam sed est iusto.
+        - content: Nostrum minima dolor magnam sed.
+          encoding: Iusto voluptatum ducimus id possimus.
           language: Python 3
           name: my_solution.py
-        - content: Architecto nostrum.
-          encoding: Dolor magnam sed est iusto.
-          language: Python 3
-          name: my_solution.py
-        - content: Architecto nostrum.
-          encoding: Dolor magnam sed est iusto.
+        - content: Nostrum minima dolor magnam sed.
+          encoding: Iusto voluptatum ducimus id possimus.
           language: Python 3
           name: my_solution.py
         items:
@@ -450,7 +524,7 @@ definitions:
         minItems: 1
         type: array
       taskSlug:
-        description: Task unique and human readble string identifier
+        description: Task unique and human readable string identifier
         example: simpleBatch-95
         pattern: '[_a-zA-Z0-9\-]+'
         type: string
@@ -464,26 +538,33 @@ definitions:
   EntrySource:
     description: Entry's embed type which represents a source file
     example:
-      content: Architecto nostrum.
-      encoding: Dolor magnam sed est iusto.
+      content: Nostrum minima dolor magnam sed.
+      encoding: Iusto voluptatum ducimus id possimus.
       language: Python 3
       name: my_solution.py
     properties:
       content:
         description: Source content
-        example: Architecto nostrum.
+        example: Nostrum minima dolor magnam sed.
         type: string
       encoding:
         default: utf8
         description: Source content's encoding
-        example: Dolor magnam sed est iusto.
+        example: Iusto voluptatum ducimus id possimus.
         type: string
       language:
-        description: Source programming languague or none when using plain text
+        description: "Identifies the programming language used in the entry's content.
+          The special\n\t\t\t\t\t\t\t\t\t\t  keyword \"none\" should be used instead
+          when submitting plain text, which are \n\t\t\t\t\t\t\t\t\t\t  used for user
+          test inputs and  diff based grading"
         example: Python 3
         type: string
       name:
-        description: Source file name including its extension
+        description: "Source file name including its extension. This field's value
+          should comply with the \n\t\t\t\t\t\t\t\t\t  name format constraint declared
+          by the task resource. Taking the \"batch.%l\" format\n                                      as
+          example, the valid source code file names could be \"batch.py\", \"batch.cpp\"
+          or \"batch.js\""
         example: my_solution.py
         type: string
     title: EntrySource
@@ -583,7 +664,7 @@ info:
 paths:
   /entries/:
     get:
-      description: List all the ranked entries without their sources.
+      description: List the ranked entries without their sources.
       operationId: entry#show
       parameters:
       - default: 1
@@ -660,8 +741,8 @@ paths:
       - entry
   /entries/{entryID}:
     get:
-      description: Returns all the entry metadata (without the sources) for the given
-        ID
+      description: Get the complete entry metadata (excluding the associated sources)
+        for the given ID
       operationId: entry#get
       parameters:
       - description: Result ID
@@ -694,7 +775,8 @@ paths:
       - entry
   /results/:
     get:
-      description: List all the results delimited by the query params
+      description: List the results delimited and grouped by contest, task, entry
+        or user identifier
       operationId: result#show
       parameters:
       - description: Contest ID
@@ -721,15 +803,14 @@ paths:
         name: page_size
         required: false
         type: integer
-      - default: "true"
-        enum:
-        - "true"
-        - "false"
+      - default: true
+        description: List the ranked entries or the user tests
         in: query
         name: ranked
         required: false
-        type: string
+        type: boolean
       - default: desc
+        description: Sorting order
         enum:
         - asc
         - desc
@@ -766,7 +847,9 @@ paths:
       - result
   /results/{resultID}:
     get:
-      description: Returns an specific result with the given entry and testcase ID
+      description: "Get complete result data for the given entry and testcase ID.\n\t\t\t\t\t\tThe
+        \"re\" and \"ut\" prefix delimits the entry type as \"ranked entry\" or \"user
+        test\" respectively."
       operationId: result#get
       parameters:
       - description: Result ID
@@ -823,6 +906,7 @@ paths:
         required: false
         type: integer
       - default: desc
+        description: Sorting order
         enum:
         - asc
         - desc
@@ -884,6 +968,79 @@ paths:
       schemes:
       - http
       summary: get scores
+      tags:
+      - scores
+  /scores/sum:
+    get:
+      description: List scores and its total grouped and filter by contest, task or
+        user
+      operationId: scores#summarize
+      parameters:
+      - description: Contest ID
+        in: query
+        name: contest
+        required: false
+        type: integer
+      - default: none
+        enum:
+        - contest
+        - task
+        - user
+        - none
+        in: query
+        name: groupBy
+        required: false
+        type: string
+      - default: 1
+        description: Page number
+        in: query
+        minimum: 1
+        name: page
+        required: false
+        type: integer
+      - default: 20
+        description: Item amount per page
+        in: query
+        minimum: 5
+        name: page_size
+        required: false
+        type: integer
+      - default: desc
+        description: Sorting order based on score value
+        enum:
+        - asc
+        - desc
+        in: query
+        name: sort
+        required: false
+        type: string
+      - description: Task ID
+        in: query
+        name: task
+        required: false
+        type: integer
+      - description: User ID
+        in: query
+        name: user
+        required: false
+        type: integer
+      produces:
+      - application/vnd.com.jossemargt.sao.scoresum+json; type=collection
+      - application/vnd.goa.error
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ComJossemargtSaoScoresumCollection'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: summarize scores
       tags:
       - scores
 produces:

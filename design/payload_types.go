@@ -11,22 +11,29 @@ var AbstractEntry = Type("AbstractEntry", func() {
 		Pattern("[_a-zA-Z0-9\\-]+")
 		Example("con_test")
 	})
-	Attribute("taskSlug", String, "Task unique and human readble string identifier", func() {
+	Attribute("taskSlug", String, "Task unique and human readable string identifier", func() {
 		Pattern("[_a-zA-Z0-9\\-]+")
 		Example("simpleBatch-95")
 	})
-	Attribute("ranked", Boolean, "Indenties if the entry should be ranked or taken as an user test", func() {
+	Attribute("ranked", Boolean, `Identifies if the entry should taken as a ranked entry or as an user test.
+										 When omitted the value will be set to true, in other words any submited entry 
+										 will be ranked (non user test) by deafult"`, func() {
 		Default(true)
 	})
 })
 
 var SourceType = Type("EntrySource", func() {
 	Description("Entry's embed type which represents a source file")
-	Attribute("name", String, "Source file name including its extension", func() {
+	Attribute("name", String, `Source file name including its extension. This field's value should comply with the 
+									  name format constraint declared by the task resource. Taking the "batch.%l" format
+                                      as example, the valid source code file names could be "batch.py", "batch.cpp" or "batch.js"`,
+                                      func() {
 		Example("my_solution.py")
 	})
 	Attribute("content", String, "Source content")
-	Attribute("language", String, "Source programming languague or none when using plain text", func() {
+	Attribute("language", String, `Identifies the programming language used in the entry's content. The special
+										  keyword "none" should be used instead when submitting plain text, which are 
+										  used for user test inputs and  diff based grading`, func() {
 		Example("none")
 		Example("Python 3")
 	})
@@ -42,7 +49,9 @@ var EntryPayload = Type("EntryPayload", func() {
 	Attribute("taskSlug")
 	Attribute("ranked")
 
-	Attribute("sources", ArrayOf(SourceType), "Source files representation", func() {
+	Attribute("sources", ArrayOf(SourceType), func() {
+		Description( `Source files representation. Within this list the source code files and input files can be 
+						  sent alike.`)
 		MinLength(1)
 	})
 
@@ -57,7 +66,9 @@ var EntryFormPayload = Type("EntryFormPayload", func() {
 	Attribute("taskSlug")
 	Attribute("ranked")
 
-	Attribute("sources", ArrayOf(File), "Source files", func() {
+	Attribute("sources", ArrayOf(File), func() {
+		Description( `Source files representation. Within this list the source code files and input files can be 
+						  sent alike.`)
 		MinLength(1)
 	})
 

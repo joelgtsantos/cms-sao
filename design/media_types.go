@@ -71,6 +71,7 @@ var ScoreMedia = MediaType("application/vnd.com.jossemargt.sao.score+json", func
 			Example(10.50)
 		})
 
+		Required("id", "href", "value")
 	})
 
 	View("link", func() {
@@ -87,6 +88,40 @@ var ScoreMedia = MediaType("application/vnd.com.jossemargt.sao.score+json", func
 	View("full", func() {
 		Attribute("id")
 		Attribute("href")
+		Attribute("untokenedValue")
+		Attribute("value")
+	})
+})
+
+var ScoreSumMedia = MediaType("application/vnd.com.jossemargt.sao.scoresum+json", func() {
+	Description("The representation of a summarized entry's score")
+	Attributes(func() {
+		Attribute("contestID", Integer, "Contest Identifier associated with this score", func() {
+			Example(1)
+			Minimum(1)
+		})
+		Attribute("userID", Integer, "Contest Identifier associated with this score", func() {
+			Example(1)
+			Minimum(1)
+		})
+		Attribute("taskID", Integer, "Contest Identifier associated with this score", func() {
+			Example(1)
+			Minimum(1)
+		})
+		Attribute("untokenedValue", Number, "An un-official graded score", func() {
+			Example(20.00)
+		})
+		Attribute("value", Number, "An official graded score with a token", func() {
+			Example(10.50)
+		})
+
+		Required("untokenedValue", "value")
+	})
+
+	View("default", func() {
+		Attribute("contestID")
+		Attribute("userID")
+		Attribute("taskID")
 		Attribute("untokenedValue")
 		Attribute("value")
 	})

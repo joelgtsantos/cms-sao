@@ -21,7 +21,7 @@ var _ = Resource("entry", func() {
 	Response(BadRequest, ErrorMedia)
 
 	Action("show", func() {
-		Description("List all the ranked entries without their sources.")
+		Description("List the ranked entries without their sources.")
 		Routing(GET("/"))
 		Params(func() {
 			Param("page", Integer, "Page number", func() {
@@ -37,7 +37,7 @@ var _ = Resource("entry", func() {
 	})
 
 	Action("get", func() {
-		Description("Returns all the entry metadata (without the sources) for the given ID")
+		Description("Get the complete entry metadata (excluding the associated sources) for the given ID")
 		Routing(GET("/:entryID"))
 		Params(func() {
 			Param("entryID", String, "Result ID", func() {
@@ -74,13 +74,16 @@ var _ = Resource("result", func() {
 	Response(BadRequest, ErrorMedia)
 
 	Action("show", func() {
-		Description("List all the results delimited by the query params")
+		Description("List the results delimited and grouped by contest, task, entry or user identifier")
 		Routing(GET("/"))
 		Params(func() {
-			Param("task", Integer, "Task ID")
 			Param("contest", Integer, "Contest ID")
+			Param("task", Integer, "Task ID")
 			Param("user", Integer, "User ID")
 			Param("entry", Integer, "Entry ID")
+			Param("ranked", Boolean, "List the ranked entries or the user tests", func() {
+				Default(true)
+			})
 			Param("page", Integer, "Page number", func() {
 				Default(1)
 				Minimum(1)
@@ -89,20 +92,17 @@ var _ = Resource("result", func() {
 				Default(20)
 				Minimum(5)
 			})
-			Param("sort", func() {
+			Param("sort", String, "Sorting order", func() {
 				Enum("asc", "desc")
 				Default("desc")
-			})
-			Param("ranked", func() {
-				Enum("true", "false")
-				Default("true")
 			})
 		})
 		Response(OK, CollectionOf(ResultMedia))
 	})
 
 	Action("get", func() {
-		Description("Returns an specific result with the given entry and testcase ID")
+		Description(`Get complete result data for the given entry and testcase ID.
+						The "re" and "ut" prefix delimits the entry type as "ranked entry" or "user test" respectively.`)
 		Routing(GET("/:resultID"))
 		Params(func() {
 			Param("resultID", String, "Result ID", func() {
@@ -127,8 +127,8 @@ var _ = Resource("scores", func() {
 		Description("List all the scores delimited by the query params")
 		Routing(GET("/"))
 		Params(func() {
-			Param("task", Integer, "Task ID")
 			Param("contest", Integer, "Contest ID")
+			Param("task", Integer, "Task ID")
 			Param("user", Integer, "User ID")
 			Param("entry", Integer, "Entry ID")
 			Param("page", Integer, "Page number", func() {
@@ -139,7 +139,7 @@ var _ = Resource("scores", func() {
 				Default(20)
 				Minimum(5)
 			})
-			Param("sort", func() {
+			Param("sort", String, "Sorting order", func() {
 				Enum("asc", "desc")
 				Default("desc")
 			})
@@ -158,6 +158,34 @@ var _ = Resource("scores", func() {
 		Response(OK, func() {
 			Media(ScoreMedia, "full")
 		})
+		Response(NotFound)
+	})
+
+	Action("summarize", func() {
+		Description("List scores and its total grouped and filter by contest, task or user")
+		Routing(GET("/sum"))
+		Params(func() {
+			Param("contest", Integer, "Contest ID")
+			Param("task", Integer, "Task ID")
+			Param("user", Integer, "User ID")
+			Param("groupBy", String, "", func() {
+				Enum("contest", "task", "user", "none")
+				Default("none")
+			})
+			Param("sort", String, "Sorting order based on score value", func() {
+				Enum("asc", "desc")
+				Default("desc")
+			})
+			Param("page", Integer, "Page number", func() {
+				Default(1)
+				Minimum(1)
+			})
+			Param("page_size", Integer, "Item amount per page", func() {
+				Default(20)
+				Minimum(5)
+			})
+		})
+		Response(OK, CollectionOf(ScoreSumMedia))
 		Response(NotFound)
 	})
 })
