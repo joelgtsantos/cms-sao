@@ -74,6 +74,19 @@
   revision = "master"
 
 [[projects]]
+  digest = "1:c7f8bd544bca4dae68122b69b087b163b4c5842e2e356d81260c193823315e54"
+  name = "github.com/ufoscout/go-up"
+  packages = [
+    ".",
+    "reader",
+    "reader/decorator",
+    "util",
+  ]
+  pruneopts = "UT"
+  revision = "c1b1853f2ed5e85be2d1d563686a010924fbc6e9"
+  version = "v0.5.0"
+
+[[projects]]
   branch = "master"
   digest = "1:6f7f5a5452e6dc8b0665b0fd2b779c3c6b7e70a121e0661aeb03daef7baae58d"
   name = "github.com/zach-klippenstein/goregen"
@@ -99,6 +112,7 @@
     "github.com/goadesign/goa/design/apidsl",
     "github.com/goadesign/goa/goatest",
     "github.com/goadesign/goa/middleware",
+    "github.com/ufoscout/go-up",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

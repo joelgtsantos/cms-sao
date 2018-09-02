@@ -1,0 +1,12 @@
+# General configurations
+server.port=8080
+server.log.request=false
+server.response.tracedump=false
+
+# CMS as dependency configurations
+cms.url=http://localhost/
+
+# PostgreSQL data source configurations
+datasource.username=cmsuser
+datasource.password=notsecure
+datasource.url=postgresql://localhost:5432

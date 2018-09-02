@@ -1,6 +1,9 @@
 # Vendored Dependencies
 vendor
 
+# Env configurations
+config.properties
+
 # Binaries
 /cms-sao
 *.out
