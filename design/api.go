@@ -5,8 +5,8 @@ import (
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
-var _ = API("SAO v1", func() {
-	Title("Sao")
+var _ = API("SAO", func() {
+	Title("Sao v1")
 	Description("Exposes CMS platform entry and score resources")
 	Version("1.0")
 	Host("localhost:8080")
@@ -155,7 +155,6 @@ var _ = Resource("actions", func() {
 	Response(BadRequest, ErrorMedia)
 
 	Action("submitEntry", func() {
-		//TODO: This action endpoint logic will be completely handled with middlewares, so is needed to determine the goa requirements for it
 		Description("Orchestrates the resource creation related to a entry submition (Entry, Token, Result and Score).")
 		Routing(POST("/submit-entry"))
 		Payload(EntryPayload)

@@ -12,7 +12,7 @@ definitions:
       contestSlug: con_test
       href: /entries/re-1236
       id: re-1236
-      ranked: true
+      ranked: false
       taskSlug: simpleBatch-95
     properties:
       contestSlug:
@@ -34,7 +34,7 @@ definitions:
           an user test.\n\t\t\t\t\t\t\t\t\t\t When omitted the value will be set to
           true, in other words any submited entry \n\t\t\t\t\t\t\t\t\t\t will be ranked
           (non user test) by deafult\""
-        example: true
+        example: false
         type: boolean
       taskSlug:
         description: Task unique and human readable string identifier
@@ -53,12 +53,12 @@ definitions:
     - contestSlug: con_test
       href: /entries/re-1236
       id: re-1236
-      ranked: true
+      ranked: false
       taskSlug: simpleBatch-95
     - contestSlug: con_test
       href: /entries/re-1236
       id: re-1236
-      ranked: true
+      ranked: false
       taskSlug: simpleBatch-95
     items:
       $ref: '#/definitions/ComJossemargtSaoEntry'
@@ -79,7 +79,7 @@ definitions:
         score:
           href: /scores/1236-5689
           id: 1236-5689
-      ranked: true
+      ranked: false
       taskSlug: simpleBatch-95
     properties:
       contestSlug:
@@ -103,7 +103,7 @@ definitions:
           an user test.\n\t\t\t\t\t\t\t\t\t\t When omitted the value will be set to
           true, in other words any submited entry \n\t\t\t\t\t\t\t\t\t\t will be ranked
           (non user test) by deafult\""
-        example: true
+        example: false
         type: boolean
       taskSlug:
         description: Task unique and human readable string identifier
@@ -138,7 +138,7 @@ definitions:
     example:
       evaluation:
         status: ok
-        tries: 0
+        tries: 2
       href: /results/ut-1236-5689
       id: ut-1236-5689
     properties:
@@ -165,7 +165,12 @@ definitions:
     example:
     - evaluation:
         status: ok
-        tries: 0
+        tries: 2
+      href: /results/ut-1236-5689
+      id: ut-1236-5689
+    - evaluation:
+        status: ok
+        tries: 2
       href: /results/ut-1236-5689
       id: ut-1236-5689
     items:
@@ -180,15 +185,19 @@ definitions:
       compilation:
         memory: 64
         status: ok
-        stderr: Quae accusamus id deserunt.
-        stdout: Voluptates dignissimos consequuntur.
+        stderr: Amet culpa qui rem.
+        stdout: Nihil adipisci exercitationem veniam labore et minima.
         time: 0.035
-        tries: 2
+        tries: 1
         wallClockTime: 0.568
       evaluation:
         status: ok
-        tries: 0
+        tries: 2
       execution:
+      - memory: 64
+        status: ok
+        time: 0.035
+        wallClockTime: 0.568
       - memory: 64
         status: ok
         time: 0.035
@@ -211,6 +220,10 @@ definitions:
       execution:
         description: Entry execution result
         example:
+        - memory: 64
+          status: ok
+          time: 0.035
+          wallClockTime: 0.568
         - memory: 64
           status: ok
           time: 0.035
@@ -433,10 +446,10 @@ definitions:
     example:
       memory: 64
       status: ok
-      stderr: Quae accusamus id deserunt.
-      stdout: Voluptates dignissimos consequuntur.
+      stderr: Amet culpa qui rem.
+      stdout: Nihil adipisci exercitationem veniam labore et minima.
       time: 0.035
-      tries: 2
+      tries: 1
       wallClockTime: 0.568
     properties:
       memory:
@@ -455,11 +468,11 @@ definitions:
         type: string
       stderr:
         description: Compilation process' standard error
-        example: Quae accusamus id deserunt.
+        example: Amet culpa qui rem.
         type: string
       stdout:
         description: Compilation process' standard output
-        example: Voluptates dignissimos consequuntur.
+        example: Nihil adipisci exercitationem veniam labore et minima.
         type: string
       time:
         description: The spent execution CPU time
@@ -468,7 +481,7 @@ definitions:
         type: number
       tries:
         description: Compilation retries
-        example: 2
+        example: 1
         minimum: 0
         type: integer
       wallClockTime:
@@ -484,12 +497,16 @@ definitions:
       contestSlug: con_test
       ranked: true
       sources:
-      - content: Nostrum minima dolor magnam sed.
-        encoding: Iusto voluptatum ducimus id possimus.
+      - content: Itaque suscipit odit voluptatibus provident.
+        encoding: Sunt totam perspiciatis iste ut.
         language: Python 3
         name: my_solution.py
-      - content: Nostrum minima dolor magnam sed.
-        encoding: Iusto voluptatum ducimus id possimus.
+      - content: Itaque suscipit odit voluptatibus provident.
+        encoding: Sunt totam perspiciatis iste ut.
+        language: Python 3
+        name: my_solution.py
+      - content: Itaque suscipit odit voluptatibus provident.
+        encoding: Sunt totam perspiciatis iste ut.
         language: Python 3
         name: my_solution.py
       taskSlug: simpleBatch-95
@@ -511,12 +528,16 @@ definitions:
         description: "Source files representation. Within this list the source code
           files and input files can be \n\t\t\t\t\t\t  sent alike."
         example:
-        - content: Nostrum minima dolor magnam sed.
-          encoding: Iusto voluptatum ducimus id possimus.
+        - content: Itaque suscipit odit voluptatibus provident.
+          encoding: Sunt totam perspiciatis iste ut.
           language: Python 3
           name: my_solution.py
-        - content: Nostrum minima dolor magnam sed.
-          encoding: Iusto voluptatum ducimus id possimus.
+        - content: Itaque suscipit odit voluptatibus provident.
+          encoding: Sunt totam perspiciatis iste ut.
+          language: Python 3
+          name: my_solution.py
+        - content: Itaque suscipit odit voluptatibus provident.
+          encoding: Sunt totam perspiciatis iste ut.
           language: Python 3
           name: my_solution.py
         items:
@@ -538,19 +559,19 @@ definitions:
   EntrySource:
     description: Entry's embed type which represents a source file
     example:
-      content: Nostrum minima dolor magnam sed.
-      encoding: Iusto voluptatum ducimus id possimus.
+      content: Itaque suscipit odit voluptatibus provident.
+      encoding: Sunt totam perspiciatis iste ut.
       language: Python 3
       name: my_solution.py
     properties:
       content:
         description: Source content
-        example: Nostrum minima dolor magnam sed.
+        example: Itaque suscipit odit voluptatibus provident.
         type: string
       encoding:
         default: utf8
         description: Source content's encoding
-        example: Iusto voluptatum ducimus id possimus.
+        example: Sunt totam perspiciatis iste ut.
         type: string
       language:
         description: "Identifies the programming language used in the entry's content.
@@ -573,7 +594,7 @@ definitions:
     description: Embedded reprensentation of an entry evaluation result
     example:
       status: ok
-      tries: 0
+      tries: 2
     properties:
       status:
         default: unprocessed
@@ -585,7 +606,7 @@ definitions:
         type: string
       tries:
         description: Evaluation retries
-        example: 0
+        example: 2
         minimum: 0
         type: integer
     title: EvaluationResult
@@ -626,7 +647,7 @@ definitions:
       detail: Value of ID must be an integer
       id: 3F1FKVRR
       meta:
-        timestamp: 1.458609066e+09
+        timestamp: 1458609066
       status: "400"
     properties:
       code:
@@ -647,7 +668,7 @@ definitions:
         description: a meta object containing non-standard meta-information about
           the error.
         example:
-          timestamp: 1.458609066e+09
+          timestamp: 1458609066
         type: object
       status:
         description: the HTTP status code applicable to this problem, expressed as
@@ -659,7 +680,7 @@ definitions:
 host: localhost:8080
 info:
   description: Exposes CMS platform entry and score resources
-  title: Sao
+  title: Sao v1
   version: "1.0"
 paths:
   /entries/:

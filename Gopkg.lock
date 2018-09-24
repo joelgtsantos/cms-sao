@@ -26,7 +26,7 @@
   version = "v5.0.1"
 
 [[projects]]
-  digest = "1:47a1d4d8cc26e4d552e85366494ba4ad95a13a95e781e9c32ae276391ca479a7"
+  digest = "1:24e947bb2bf0f4e86b26b665556f20fee3dfad38fffc687472b54c99bd1ff692"
   name = "github.com/goadesign/goa"
   packages = [
     ".",
@@ -39,8 +39,24 @@
     "uuid",
   ]
   pruneopts = "UT"
-  revision = "e01bb31dd9403fa9d40747e1f93345bc96ea675e"
-  version = "v1.4.0"
+  revision = "d96a9e2548f5803f6bbb0a5ffb0bee24863cd19b"
+  version = "v1.4.1"
+
+[[projects]]
+  digest = "1:bed9d72d596f94e65fff37f4d6c01398074a6bb1c3f3ceff963516bd01db6ff5"
+  name = "github.com/gofrs/uuid"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "6b08a5c5172ba18946672b49749cde22873dd7c2"
+  version = "v3.2.0"
+
+[[projects]]
+  digest = "1:f47d6109c2034cb16bd62b220e18afd5aa9d5a1630fe5d937ad96a4fb7cbb277"
+  name = "github.com/hashicorp/go-cleanhttp"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "e8ab9daed8d1ddd2d3c4efba338fe2eeae2e4f18"
+  version = "v0.5.0"
 
 [[projects]]
   branch = "master"
@@ -49,6 +65,13 @@
   packages = ["."]
   pruneopts = "UT"
   revision = "7f3cd4390caab3250a57f30efdb2a65dd7649ecf"
+
+[[projects]]
+  digest = "1:183f00c472fb9b2446659618eebf4899872fa267b92f926539411abdc8b941df"
+  name = "github.com/hashicorp/go-retryablehttp"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "master"
 
 [[projects]]
   branch = "master"
@@ -65,13 +88,6 @@
   packages = ["."]
   pruneopts = "UT"
   revision = "9fbc68a78c4dbc7914e1a23f88f126bea4383b97"
-
-[[projects]]
-  digest = "1:ff6b0586c0621a76832cf783eee58cbb9d9795d2ce8acbc199a4131db11c42a9"
-  name = "github.com/satori/go.uuid"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "master"
 
 [[projects]]
   digest = "1:c7f8bd544bca4dae68122b69b087b163b4c5842e2e356d81260c193823315e54"
@@ -112,6 +128,7 @@
     "github.com/goadesign/goa/design/apidsl",
     "github.com/goadesign/goa/goatest",
     "github.com/goadesign/goa/middleware",
+    "github.com/hashicorp/go-retryablehttp",
     "github.com/ufoscout/go-up",
   ]
   solver-name = "gps-cdcl"
