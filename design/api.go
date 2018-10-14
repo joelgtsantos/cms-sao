@@ -50,21 +50,6 @@ var _ = Resource("entry", func() {
 		})
 		Response(NotFound)
 	})
-
-	Action("create", func() {
-		Description("Create a new entry")
-		Routing(POST("/"))
-		Payload(EntryPayload)
-		Response(Created, func() {
-			Media(EntryMedia, "full")
-			Headers(func() {
-				Header("Location", String, "href to created entry", func() {
-					Pattern("/entries/\\w{2}-\\d+")
-					Example("/entries/re-124588")
-				})
-			})
-		})
-	})
 })
 
 var _ = Resource("result", func() {
@@ -161,9 +146,35 @@ var _ = Resource("scores", func() {
 		Response(NotFound)
 	})
 
-	Action("summarize", func() {
+})
+
+var _ = Resource("actions", func() {
+	Description("All the non RESTful http actions supported by this API")
+	BasePath("")
+	Response(NotImplemented)
+	Response(BadRequest, ErrorMedia)
+
+	Action("submitEntry", func() {
+		//TODO: This action endpoint logic will be completely handled with middlewares, so is needed to determine the goa requirements for it
+		Description("Orchestrates the resource creation related to a entry submition (Entry, Token, Result and Score).")
+		Routing(POST("/submit-entry"))
+		Payload(EntryPayload)
+
+		Response(Created, func() {
+			Media(EntryMedia, "full")
+			Headers(func() {
+				Header("Location", String, "href to created entry", func() {
+					Pattern("/entries/\\w{2}-\\d+")
+					Example("/entries/re-124588")
+				})
+			})
+		})
+	})
+
+	Action("summarizeScore", func() {
+		//TODO: Temporal "score board" resources should replace this action endpoint
 		Description("List scores and its total grouped and filter by contest, task or user")
-		Routing(GET("/sum"))
+		Routing(GET("/summarize-score"))
 		Params(func() {
 			Param("contest", Integer, "Contest ID")
 			Param("task", Integer, "Task ID")
@@ -189,4 +200,3 @@ var _ = Resource("scores", func() {
 		Response(NotFound)
 	})
 })
-

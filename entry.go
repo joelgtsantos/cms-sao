@@ -15,16 +15,6 @@ func NewEntryController(service *goa.Service) *EntryController {
 	return &EntryController{Controller: service.NewController("EntryController")}
 }
 
-// Create runs the create action.
-func (c *EntryController) Create(ctx *app.CreateEntryContext) error {
-	// EntryController_Create: start_implement
-
-	// Put your logic here
-
-	return nil
-	// EntryController_Create: end_implement
-}
-
 // Get runs the get action.
 func (c *EntryController) Get(ctx *app.GetEntryContext) error {
 	// EntryController_Get: start_implement

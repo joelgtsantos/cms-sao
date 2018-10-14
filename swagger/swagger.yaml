@@ -60,11 +60,6 @@ definitions:
       id: re-1236
       ranked: true
       taskSlug: simpleBatch-95
-    - contestSlug: con_test
-      href: /entries/re-1236
-      id: re-1236
-      ranked: true
-      taskSlug: simpleBatch-95
     items:
       $ref: '#/definitions/ComJossemargtSaoEntry'
     title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.entry+json; type=collection;
@@ -168,11 +163,6 @@ definitions:
     description: ComJossemargtSaoResultCollection is the media type for an array of
       ComJossemargtSaoResult (default view)
     example:
-    - evaluation:
-        status: ok
-        tries: 0
-      href: /results/ut-1236-5689
-      id: ut-1236-5689
     - evaluation:
         status: ok
         tries: 0
@@ -418,6 +408,16 @@ definitions:
     description: ComJossemargtSaoScoresumCollection is the media type for an array
       of ComJossemargtSaoScoresum (default view)
     example:
+    - contestID: 1
+      taskID: 1
+      untokenedValue: 20
+      userID: 1
+      value: 10.5
+    - contestID: 1
+      taskID: 1
+      untokenedValue: 20
+      userID: 1
+      value: 10.5
     - contestID: 1
       taskID: 1
       untokenedValue: 20
@@ -702,43 +702,6 @@ paths:
       summary: show entry
       tags:
       - entry
-    post:
-      description: Create a new entry
-      operationId: entry#create
-      parameters:
-      - description: Any source code or input that should be compiled, executed or
-          evaluated
-        in: body
-        name: payload
-        required: true
-        schema:
-          $ref: '#/definitions/EntryPayload'
-      produces:
-      - application/vnd.com.jossemargt.sao.entry+json
-      - application/vnd.goa.error
-      responses:
-        "201":
-          description: Created
-          headers:
-            Location:
-              description: href to created entry
-              pattern: /entries/\w{2}-\d+
-              type: string
-          schema:
-            $ref: '#/definitions/ComJossemargtSaoEntryFull'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/error'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/error'
-      schemes:
-      - http
-      summary: create entry
-      tags:
-      - entry
   /entries/{entryID}:
     get:
       description: Get the complete entry metadata (excluding the associated sources)
@@ -970,11 +933,48 @@ paths:
       summary: get scores
       tags:
       - scores
-  /scores/sum:
+  /submit-entry:
+    post:
+      description: Orchestrates the resource creation related to a entry submition
+        (Entry, Token, Result and Score).
+      operationId: actions#submitEntry
+      parameters:
+      - description: Any source code or input that should be compiled, executed or
+          evaluated
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/EntryPayload'
+      produces:
+      - application/vnd.com.jossemargt.sao.entry+json
+      - application/vnd.goa.error
+      responses:
+        "201":
+          description: Created
+          headers:
+            Location:
+              description: href to created entry
+              pattern: /entries/\w{2}-\d+
+              type: string
+          schema:
+            $ref: '#/definitions/ComJossemargtSaoEntryFull'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "501":
+          description: Not Implemented
+      schemes:
+      - http
+      summary: submitEntry actions
+      tags:
+      - actions
+  /summarize-score:
     get:
       description: List scores and its total grouped and filter by contest, task or
         user
-      operationId: scores#summarize
+      operationId: actions#summarizeScore
       parameters:
       - description: Contest ID
         in: query
@@ -1038,11 +1038,13 @@ paths:
             $ref: '#/definitions/error'
         "404":
           description: Not Found
+        "501":
+          description: Not Implemented
       schemes:
       - http
-      summary: summarize scores
+      summary: summarizeScore actions
       tags:
-      - scores
+      - actions
 produces:
 - application/json
 - application/xml

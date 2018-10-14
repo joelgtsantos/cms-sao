@@ -13,56 +13,12 @@
 package client
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"net/http"
 	"net/url"
 	"strconv"
 )
-
-// CreateEntryPath computes a request path to the create action of entry.
-func CreateEntryPath() string {
-
-	return fmt.Sprintf("/sao/v1/entries/")
-}
-
-// Create a new entry
-func (c *Client) CreateEntry(ctx context.Context, path string, payload *EntryPayload, contentType string) (*http.Response, error) {
-	req, err := c.NewCreateEntryRequest(ctx, path, payload, contentType)
-	if err != nil {
-		return nil, err
-	}
-	return c.Client.Do(ctx, req)
-}
-
-// NewCreateEntryRequest create the request corresponding to the create action endpoint of the entry resource.
-func (c *Client) NewCreateEntryRequest(ctx context.Context, path string, payload *EntryPayload, contentType string) (*http.Request, error) {
-	var body bytes.Buffer
-	if contentType == "" {
-		contentType = "*/*" // Use default encoder
-	}
-	err := c.Encoder.Encode(payload, &body, contentType)
-	if err != nil {
-		return nil, fmt.Errorf("failed to encode body: %s", err)
-	}
-	scheme := c.Scheme
-	if scheme == "" {
-		scheme = "http"
-	}
-	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
-	req, err := http.NewRequest("POST", u.String(), &body)
-	if err != nil {
-		return nil, err
-	}
-	header := req.Header
-	if contentType == "*/*" {
-		header.Set("Content-Type", "application/json")
-	} else {
-		header.Set("Content-Type", contentType)
-	}
-	return req, nil
-}
 
 // GetEntryPath computes a request path to the get action of entry.
 func GetEntryPath(entryID string) string {
@@ -118,12 +74,12 @@ func (c *Client) NewShowEntryRequest(ctx context.Context, path string, page *int
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	values := u.Query()
 	if page != nil {
-		tmp1 := strconv.Itoa(*page)
-		values.Set("page", tmp1)
+		tmp6 := strconv.Itoa(*page)
+		values.Set("page", tmp6)
 	}
 	if pageSize != nil {
-		tmp2 := strconv.Itoa(*pageSize)
-		values.Set("page_size", tmp2)
+		tmp7 := strconv.Itoa(*pageSize)
+		values.Set("page_size", tmp7)
 	}
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("GET", u.String(), nil)

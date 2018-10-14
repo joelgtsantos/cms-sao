@@ -33,16 +33,15 @@ func initService(service *goa.Service) {
 	service.Decoder.Register(goa.NewJSONDecoder, "*/*")
 }
 
-// EntryController is the controller interface for the Entry actions.
-type EntryController interface {
+// ActionsController is the controller interface for the Actions actions.
+type ActionsController interface {
 	goa.Muxer
-	Create(*CreateEntryContext) error
-	Get(*GetEntryContext) error
-	Show(*ShowEntryContext) error
+	SubmitEntry(*SubmitEntryActionsContext) error
+	SummarizeScore(*SummarizeScoreActionsContext) error
 }
 
-// MountEntryController "mounts" a Entry resource controller on the given service.
-func MountEntryController(service *goa.Service, ctrl EntryController) {
+// MountActionsController "mounts" a Actions resource controller on the given service.
+func MountActionsController(service *goa.Service, ctrl ActionsController) {
 	initService(service)
 	var h goa.Handler
 
@@ -52,7 +51,7 @@ func MountEntryController(service *goa.Service, ctrl EntryController) {
 			return err
 		}
 		// Build the context
-		rctx, err := NewCreateEntryContext(ctx, req, service)
+		rctx, err := NewSubmitEntryActionsContext(ctx, req, service)
 		if err != nil {
 			return err
 		}
@@ -62,10 +61,54 @@ func MountEntryController(service *goa.Service, ctrl EntryController) {
 		} else {
 			return goa.MissingPayloadError()
 		}
-		return ctrl.Create(rctx)
+		return ctrl.SubmitEntry(rctx)
 	}
-	service.Mux.Handle("POST", "/sao/v1/entries/", ctrl.MuxHandler("create", h, unmarshalCreateEntryPayload))
-	service.LogInfo("mount", "ctrl", "Entry", "action", "Create", "route", "POST /sao/v1/entries/")
+	service.Mux.Handle("POST", "/sao/v1/submit-entry", ctrl.MuxHandler("submitEntry", h, unmarshalSubmitEntryActionsPayload))
+	service.LogInfo("mount", "ctrl", "Actions", "action", "SubmitEntry", "route", "POST /sao/v1/submit-entry")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewSummarizeScoreActionsContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.SummarizeScore(rctx)
+	}
+	service.Mux.Handle("GET", "/sao/v1/summarize-score", ctrl.MuxHandler("summarizeScore", h, nil))
+	service.LogInfo("mount", "ctrl", "Actions", "action", "SummarizeScore", "route", "GET /sao/v1/summarize-score")
+}
+
+// unmarshalSubmitEntryActionsPayload unmarshals the request body into the context request data Payload field.
+func unmarshalSubmitEntryActionsPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &entryPayload{}
+	if err := service.DecodeRequest(req, payload); err != nil {
+		return err
+	}
+	payload.Finalize()
+	if err := payload.Validate(); err != nil {
+		// Initialize payload with private data structure so it can be logged
+		goa.ContextRequest(ctx).Payload = payload
+		return err
+	}
+	goa.ContextRequest(ctx).Payload = payload.Publicize()
+	return nil
+}
+
+// EntryController is the controller interface for the Entry actions.
+type EntryController interface {
+	goa.Muxer
+	Get(*GetEntryContext) error
+	Show(*ShowEntryContext) error
+}
+
+// MountEntryController "mounts" a Entry resource controller on the given service.
+func MountEntryController(service *goa.Service, ctrl EntryController) {
+	initService(service)
+	var h goa.Handler
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -96,22 +139,6 @@ func MountEntryController(service *goa.Service, ctrl EntryController) {
 	}
 	service.Mux.Handle("GET", "/sao/v1/entries/", ctrl.MuxHandler("show", h, nil))
 	service.LogInfo("mount", "ctrl", "Entry", "action", "Show", "route", "GET /sao/v1/entries/")
-}
-
-// unmarshalCreateEntryPayload unmarshals the request body into the context request data Payload field.
-func unmarshalCreateEntryPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
-	payload := &entryPayload{}
-	if err := service.DecodeRequest(req, payload); err != nil {
-		return err
-	}
-	payload.Finalize()
-	if err := payload.Validate(); err != nil {
-		// Initialize payload with private data structure so it can be logged
-		goa.ContextRequest(ctx).Payload = payload
-		return err
-	}
-	goa.ContextRequest(ctx).Payload = payload.Publicize()
-	return nil
 }
 
 // ResultController is the controller interface for the Result actions.
@@ -162,7 +189,6 @@ type ScoresController interface {
 	goa.Muxer
 	Get(*GetScoresContext) error
 	Show(*ShowScoresContext) error
-	Summarize(*SummarizeScoresContext) error
 }
 
 // MountScoresController "mounts" a Scores resource controller on the given service.
@@ -199,19 +225,4 @@ func MountScoresController(service *goa.Service, ctrl ScoresController) {
 	}
 	service.Mux.Handle("GET", "/sao/v1/scores/", ctrl.MuxHandler("show", h, nil))
 	service.LogInfo("mount", "ctrl", "Scores", "action", "Show", "route", "GET /sao/v1/scores/")
-
-	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
-		// Check if there was an error loading the request
-		if err := goa.ContextError(ctx); err != nil {
-			return err
-		}
-		// Build the context
-		rctx, err := NewSummarizeScoresContext(ctx, req, service)
-		if err != nil {
-			return err
-		}
-		return ctrl.Summarize(rctx)
-	}
-	service.Mux.Handle("GET", "/sao/v1/scores/sum", ctrl.MuxHandler("summarize", h, nil))
-	service.LogInfo("mount", "ctrl", "Scores", "action", "Summarize", "route", "GET /sao/v1/scores/sum")
 }

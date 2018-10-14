@@ -104,6 +104,9 @@ var ScoreSumMedia = MediaType("application/vnd.com.jossemargt.sao.scoresum+json"
 			Example(1)
 			Minimum(1)
 		})
+		Attribute("username", String, "Contest Identifier associated with this score", func() {
+			Example("foobar")
+		})
 		Attribute("taskID", Integer, "Contest Identifier associated with this score", func() {
 			Example(1)
 			Minimum(1)

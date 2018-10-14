@@ -36,14 +36,3 @@ func (c *ScoresController) Show(ctx *app.ShowScoresContext) error {
 	return ctx.OK(res)
 	// ScoresController_Show: end_implement
 }
-
-// Summarize runs the summarize action.
-func (c *ScoresController) Summarize(ctx *app.SummarizeScoresContext) error {
-	// ScoresController_Summarize: start_implement
-
-	// Put your logic here
-
-	res := app.ComJossemargtSaoScoresumCollection{}
-	return ctx.OK(res)
-	// ScoresController_Summarize: end_implement
-}

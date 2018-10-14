@@ -74,69 +74,12 @@ func (c *Client) NewShowScoresRequest(ctx context.Context, path string, contest 
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	values := u.Query()
 	if contest != nil {
-		tmp10 := strconv.Itoa(*contest)
-		values.Set("contest", tmp10)
+		tmp15 := strconv.Itoa(*contest)
+		values.Set("contest", tmp15)
 	}
 	if entry != nil {
-		tmp11 := strconv.Itoa(*entry)
-		values.Set("entry", tmp11)
-	}
-	if page != nil {
-		tmp12 := strconv.Itoa(*page)
-		values.Set("page", tmp12)
-	}
-	if pageSize != nil {
-		tmp13 := strconv.Itoa(*pageSize)
-		values.Set("page_size", tmp13)
-	}
-	if sort != nil {
-		values.Set("sort", *sort)
-	}
-	if task != nil {
-		tmp14 := strconv.Itoa(*task)
-		values.Set("task", tmp14)
-	}
-	if user != nil {
-		tmp15 := strconv.Itoa(*user)
-		values.Set("user", tmp15)
-	}
-	u.RawQuery = values.Encode()
-	req, err := http.NewRequest("GET", u.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// SummarizeScoresPath computes a request path to the summarize action of scores.
-func SummarizeScoresPath() string {
-
-	return fmt.Sprintf("/sao/v1/scores/sum")
-}
-
-// List scores and its total grouped and filter by contest, task or user
-func (c *Client) SummarizeScores(ctx context.Context, path string, contest *int, groupBy *string, page *int, pageSize *int, sort *string, task *int, user *int) (*http.Response, error) {
-	req, err := c.NewSummarizeScoresRequest(ctx, path, contest, groupBy, page, pageSize, sort, task, user)
-	if err != nil {
-		return nil, err
-	}
-	return c.Client.Do(ctx, req)
-}
-
-// NewSummarizeScoresRequest create the request corresponding to the summarize action endpoint of the scores resource.
-func (c *Client) NewSummarizeScoresRequest(ctx context.Context, path string, contest *int, groupBy *string, page *int, pageSize *int, sort *string, task *int, user *int) (*http.Request, error) {
-	scheme := c.Scheme
-	if scheme == "" {
-		scheme = "http"
-	}
-	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
-	values := u.Query()
-	if contest != nil {
-		tmp16 := strconv.Itoa(*contest)
-		values.Set("contest", tmp16)
-	}
-	if groupBy != nil {
-		values.Set("groupBy", *groupBy)
+		tmp16 := strconv.Itoa(*entry)
+		values.Set("entry", tmp16)
 	}
 	if page != nil {
 		tmp17 := strconv.Itoa(*page)
