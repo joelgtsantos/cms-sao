@@ -26,6 +26,14 @@
   version = "v5.0.1"
 
 [[projects]]
+  branch = "master"
+  digest = "1:97fc9e0cda8cdf339065aa818bc5ab90de24bdcf809a326cecda172cd37eef9c"
+  name = "github.com/elgris/sqrl"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "90ecf730640af15b296b0613b5d74848b3675e53"
+
+[[projects]]
   digest = "1:24e947bb2bf0f4e86b26b665556f20fee3dfad38fffc687472b54c99bd1ff692"
   name = "github.com/goadesign/goa"
   packages = [
@@ -82,12 +90,42 @@
   revision = "0fb14efe8c47ae851c0034ed7a448854d3d34cf3"
 
 [[projects]]
+  digest = "1:6c41d4f998a03b6604227ccad36edaed6126c397e5d78709ef4814a1145a6757"
+  name = "github.com/jmoiron/sqlx"
+  packages = [
+    ".",
+    "reflectx",
+  ]
+  pruneopts = "UT"
+  revision = "d161d7a76b5661016ad0b085869f77fd410f3e6a"
+  version = "v1.2.0"
+
+[[projects]]
+  digest = "1:8ef506fc2bb9ced9b151dafa592d4046063d744c646c1bbe801982ce87e4bc24"
+  name = "github.com/lib/pq"
+  packages = [
+    ".",
+    "oid",
+  ]
+  pruneopts = "UT"
+  revision = "4ded0e9383f75c197b3a2aaa6d590ac52df6fd79"
+  version = "v1.0.0"
+
+[[projects]]
   branch = "master"
   digest = "1:393f23e872c9141dbe315c428dc3eac9406f029be7ab0e1cae2374486c07aa54"
   name = "github.com/manveru/faker"
   packages = ["."]
   pruneopts = "UT"
   revision = "9fbc68a78c4dbc7914e1a23f88f126bea4383b97"
+
+[[projects]]
+  digest = "1:cf31692c14422fa27c83a05292eb5cbe0fb2775972e8f1f8446a71549bd8980b"
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "ba968bfe8b2f7e042a574c888954fccecfa385b4"
+  version = "v0.8.1"
 
 [[projects]]
   digest = "1:c7f8bd544bca4dae68122b69b087b163b4c5842e2e356d81260c193823315e54"
@@ -122,6 +160,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/elgris/sqrl",
     "github.com/goadesign/goa",
     "github.com/goadesign/goa/client",
     "github.com/goadesign/goa/design",
@@ -129,6 +168,9 @@
     "github.com/goadesign/goa/goatest",
     "github.com/goadesign/goa/middleware",
     "github.com/hashicorp/go-retryablehttp",
+    "github.com/jmoiron/sqlx",
+    "github.com/lib/pq",
+    "github.com/pkg/errors",
     "github.com/ufoscout/go-up",
   ]
   solver-name = "gps-cdcl"
