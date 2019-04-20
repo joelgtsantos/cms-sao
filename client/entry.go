@@ -5,7 +5,6 @@
 // Command:
 // $ goagen
 // --design=github.com/jossemargt/cms-sao/design
-// --force=true
 // --notool=true
 // --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
 // --version=v1.4.1
@@ -21,8 +20,8 @@ import (
 )
 
 // GetEntryPath computes a request path to the get action of entry.
-func GetEntryPath(entryID string) string {
-	param0 := entryID
+func GetEntryPath(entryID int) string {
+	param0 := strconv.Itoa(entryID)
 
 	return fmt.Sprintf("/sao/v1/entries/%s", param0)
 }
@@ -57,8 +56,8 @@ func ShowEntryPath() string {
 }
 
 // List the ranked entries without their sources.
-func (c *Client) ShowEntry(ctx context.Context, path string, page *int, pageSize *int) (*http.Response, error) {
-	req, err := c.NewShowEntryRequest(ctx, path, page, pageSize)
+func (c *Client) ShowEntry(ctx context.Context, path string, contest *int, contestSlug *string, page *int, pageSize *int, sort *string, task *int, taskSlug *string, user *int) (*http.Response, error) {
+	req, err := c.NewShowEntryRequest(ctx, path, contest, contestSlug, page, pageSize, sort, task, taskSlug, user)
 	if err != nil {
 		return nil, err
 	}
@@ -66,20 +65,41 @@ func (c *Client) ShowEntry(ctx context.Context, path string, page *int, pageSize
 }
 
 // NewShowEntryRequest create the request corresponding to the show action endpoint of the entry resource.
-func (c *Client) NewShowEntryRequest(ctx context.Context, path string, page *int, pageSize *int) (*http.Request, error) {
+func (c *Client) NewShowEntryRequest(ctx context.Context, path string, contest *int, contestSlug *string, page *int, pageSize *int, sort *string, task *int, taskSlug *string, user *int) (*http.Request, error) {
 	scheme := c.Scheme
 	if scheme == "" {
 		scheme = "http"
 	}
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	values := u.Query()
+	if contest != nil {
+		tmp17 := strconv.Itoa(*contest)
+		values.Set("contest", tmp17)
+	}
+	if contestSlug != nil {
+		values.Set("contest_slug", *contestSlug)
+	}
 	if page != nil {
-		tmp6 := strconv.Itoa(*page)
-		values.Set("page", tmp6)
+		tmp18 := strconv.Itoa(*page)
+		values.Set("page", tmp18)
 	}
 	if pageSize != nil {
-		tmp7 := strconv.Itoa(*pageSize)
-		values.Set("page_size", tmp7)
+		tmp19 := strconv.Itoa(*pageSize)
+		values.Set("page_size", tmp19)
+	}
+	if sort != nil {
+		values.Set("sort", *sort)
+	}
+	if task != nil {
+		tmp20 := strconv.Itoa(*task)
+		values.Set("task", tmp20)
+	}
+	if taskSlug != nil {
+		values.Set("task_slug", *taskSlug)
+	}
+	if user != nil {
+		tmp21 := strconv.Itoa(*user)
+		values.Set("user", tmp21)
 	}
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("GET", u.String(), nil)

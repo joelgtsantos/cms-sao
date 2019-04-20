@@ -5,7 +5,6 @@
 // Command:
 // $ goagen
 // --design=github.com/jossemargt/cms-sao/design
-// --force=true
 // --notool=true
 // --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
 // --version=v1.4.1
@@ -27,8 +26,7 @@ func GetResultPath(resultID string) string {
 	return fmt.Sprintf("/sao/v1/results/%s", param0)
 }
 
-// Get complete result data for the given entry and testcase ID.
-// The "re" and "ut" prefix delimits the entry type as "ranked entry" or "user test" respectively.
+// Get complete Entry Result data for the given entry and testcase ID.
 func (c *Client) GetResult(ctx context.Context, path string) (*http.Response, error) {
 	req, err := c.NewGetResultRequest(ctx, path)
 	if err != nil {
@@ -57,7 +55,7 @@ func ShowResultPath() string {
 	return fmt.Sprintf("/sao/v1/results/")
 }
 
-// List the results delimited and grouped by contest, task, entry or user identifier
+// List the Results delimited and grouped by contest, task, entry or user identifier
 func (c *Client) ShowResult(ctx context.Context, path string, contest *int, entry *int, page *int, pageSize *int, ranked *bool, sort *string, task *int, user *int) (*http.Response, error) {
 	req, err := c.NewShowResultRequest(ctx, path, contest, entry, page, pageSize, ranked, sort, task, user)
 	if err != nil {
@@ -75,35 +73,35 @@ func (c *Client) NewShowResultRequest(ctx context.Context, path string, contest 
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	values := u.Query()
 	if contest != nil {
-		tmp8 := strconv.Itoa(*contest)
-		values.Set("contest", tmp8)
+		tmp22 := strconv.Itoa(*contest)
+		values.Set("contest", tmp22)
 	}
 	if entry != nil {
-		tmp9 := strconv.Itoa(*entry)
-		values.Set("entry", tmp9)
+		tmp23 := strconv.Itoa(*entry)
+		values.Set("entry", tmp23)
 	}
 	if page != nil {
-		tmp10 := strconv.Itoa(*page)
-		values.Set("page", tmp10)
+		tmp24 := strconv.Itoa(*page)
+		values.Set("page", tmp24)
 	}
 	if pageSize != nil {
-		tmp11 := strconv.Itoa(*pageSize)
-		values.Set("page_size", tmp11)
+		tmp25 := strconv.Itoa(*pageSize)
+		values.Set("page_size", tmp25)
 	}
 	if ranked != nil {
-		tmp12 := strconv.FormatBool(*ranked)
-		values.Set("ranked", tmp12)
+		tmp26 := strconv.FormatBool(*ranked)
+		values.Set("ranked", tmp26)
 	}
 	if sort != nil {
 		values.Set("sort", *sort)
 	}
 	if task != nil {
-		tmp13 := strconv.Itoa(*task)
-		values.Set("task", tmp13)
+		tmp27 := strconv.Itoa(*task)
+		values.Set("task", tmp27)
 	}
 	if user != nil {
-		tmp14 := strconv.Itoa(*user)
-		values.Set("user", tmp14)
+		tmp28 := strconv.Itoa(*user)
+		values.Set("user", tmp28)
 	}
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("GET", u.String(), nil)

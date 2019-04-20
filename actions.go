@@ -25,6 +25,16 @@ func (c *ActionsController) SubmitEntry(ctx *app.SubmitEntryActionsContext) erro
 	// ActionsController_SubmitEntry: end_implement
 }
 
+// SubmitEntryDraft runs the submitEntryDraft action.
+func (c *ActionsController) SubmitEntryDraft(ctx *app.SubmitEntryDraftActionsContext) error {
+	// ActionsController_SubmitEntryDraft: start_implement
+
+	// Put your logic here
+
+	return nil
+	// ActionsController_SubmitEntryDraft: end_implement
+}
+
 // SummarizeScore runs the summarizeScore action.
 func (c *ActionsController) SummarizeScore(ctx *app.SummarizeScoreActionsContext) error {
 	// ActionsController_SummarizeScore: start_implement

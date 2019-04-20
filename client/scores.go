@@ -5,7 +5,6 @@
 // Command:
 // $ goagen
 // --design=github.com/jossemargt/cms-sao/design
-// --force=true
 // --notool=true
 // --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
 // --version=v1.4.1
@@ -74,31 +73,31 @@ func (c *Client) NewShowScoresRequest(ctx context.Context, path string, contest 
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	values := u.Query()
 	if contest != nil {
-		tmp15 := strconv.Itoa(*contest)
-		values.Set("contest", tmp15)
+		tmp29 := strconv.Itoa(*contest)
+		values.Set("contest", tmp29)
 	}
 	if entry != nil {
-		tmp16 := strconv.Itoa(*entry)
-		values.Set("entry", tmp16)
+		tmp30 := strconv.Itoa(*entry)
+		values.Set("entry", tmp30)
 	}
 	if page != nil {
-		tmp17 := strconv.Itoa(*page)
-		values.Set("page", tmp17)
+		tmp31 := strconv.Itoa(*page)
+		values.Set("page", tmp31)
 	}
 	if pageSize != nil {
-		tmp18 := strconv.Itoa(*pageSize)
-		values.Set("page_size", tmp18)
+		tmp32 := strconv.Itoa(*pageSize)
+		values.Set("page_size", tmp32)
 	}
 	if sort != nil {
 		values.Set("sort", *sort)
 	}
 	if task != nil {
-		tmp19 := strconv.Itoa(*task)
-		values.Set("task", tmp19)
+		tmp33 := strconv.Itoa(*task)
+		values.Set("task", tmp33)
 	}
 	if user != nil {
-		tmp20 := strconv.Itoa(*user)
-		values.Set("user", tmp20)
+		tmp34 := strconv.Itoa(*user)
+		values.Set("user", tmp34)
 	}
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("GET", u.String(), nil)

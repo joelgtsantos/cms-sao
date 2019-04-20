@@ -5,7 +5,6 @@
 // Command:
 // $ goagen
 // --design=github.com/jossemargt/cms-sao/design
-// --force=true
 // --notool=true
 // --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
 // --version=v1.4.1
@@ -21,37 +20,30 @@ import (
 //
 // Identifier: application/vnd.com.jossemargt.sao.entry+json; view=default
 type ComJossemargtSaoEntry struct {
-	// Contest unique and human readble string identifier
-	ContestSlug *string `form:"contestSlug,omitempty" json:"contestSlug,omitempty" yaml:"contestSlug,omitempty" xml:"contestSlug,omitempty"`
+	// Contest unique and human readable string identifier
+	ContestSlug string `form:"contestSlug" json:"contestSlug" yaml:"contestSlug" xml:"contestSlug"`
 	// API href for making requests on the entry
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Unique entry ID
-	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
-	// Identifies if the entry should taken as a ranked entry or as an user test.
-	// 										 When omitted the value will be set to true, in other words any submited entry
-	// 										 will be ranked (non user test) by deafult"
+	ID int `form:"id" json:"id" yaml:"id" xml:"id"`
+	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
+	// 		any submitted Entry will use a CMS Token
 	Ranked bool `form:"ranked" json:"ranked" yaml:"ranked" xml:"ranked"`
 	// Task unique and human readable string identifier
-	TaskSlug *string `form:"taskSlug,omitempty" json:"taskSlug,omitempty" yaml:"taskSlug,omitempty" xml:"taskSlug,omitempty"`
+	TaskSlug string `form:"taskSlug" json:"taskSlug" yaml:"taskSlug" xml:"taskSlug"`
 }
 
 // Validate validates the ComJossemargtSaoEntry media type instance.
 func (mt *ComJossemargtSaoEntry) Validate() (err error) {
-	if mt.ID == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
-	}
+
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
-	if mt.ContestSlug != nil {
-		if ok := goa.ValidatePattern(`[_a-zA-Z0-9\-]+`, *mt.ContestSlug); !ok {
-			err = goa.MergeErrors(err, goa.InvalidPatternError(`response.contestSlug`, *mt.ContestSlug, `[_a-zA-Z0-9\-]+`))
-		}
+	if ok := goa.ValidatePattern(`[_a-zA-Z0-9\-]+`, mt.ContestSlug); !ok {
+		err = goa.MergeErrors(err, goa.InvalidPatternError(`response.contestSlug`, mt.ContestSlug, `[_a-zA-Z0-9\-]+`))
 	}
-	if mt.TaskSlug != nil {
-		if ok := goa.ValidatePattern(`[_a-zA-Z0-9\-]+`, *mt.TaskSlug); !ok {
-			err = goa.MergeErrors(err, goa.InvalidPatternError(`response.taskSlug`, *mt.TaskSlug, `[_a-zA-Z0-9\-]+`))
-		}
+	if ok := goa.ValidatePattern(`[_a-zA-Z0-9\-]+`, mt.TaskSlug); !ok {
+		err = goa.MergeErrors(err, goa.InvalidPatternError(`response.taskSlug`, mt.TaskSlug, `[_a-zA-Z0-9\-]+`))
 	}
 	return
 }
@@ -60,44 +52,41 @@ func (mt *ComJossemargtSaoEntry) Validate() (err error) {
 //
 // Identifier: application/vnd.com.jossemargt.sao.entry+json; view=full
 type ComJossemargtSaoEntryFull struct {
-	// Contest unique and human readble string identifier
-	ContestSlug *string `form:"contestSlug,omitempty" json:"contestSlug,omitempty" yaml:"contestSlug,omitempty" xml:"contestSlug,omitempty"`
+	// Contest ID
+	ContestID int `form:"contestID" json:"contestID" yaml:"contestID" xml:"contestID"`
+	// Contest unique and human readable string identifier
+	ContestSlug string `form:"contestSlug" json:"contestSlug" yaml:"contestSlug" xml:"contestSlug"`
 	// API href for making requests on the entry
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Unique entry ID
-	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
+	ID int `form:"id" json:"id" yaml:"id" xml:"id"`
 	// Links to related resources
 	Links *ComJossemargtSaoEntryLinks `form:"links,omitempty" json:"links,omitempty" yaml:"links,omitempty" xml:"links,omitempty"`
-	// Identifies if the entry should taken as a ranked entry or as an user test.
-	// 										 When omitted the value will be set to true, in other words any submited entry
-	// 										 will be ranked (non user test) by deafult"
+	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
+	// 		any submitted Entry will use a CMS Token
 	Ranked bool `form:"ranked" json:"ranked" yaml:"ranked" xml:"ranked"`
+	// Task ID
+	TaskID int `form:"taskID" json:"taskID" yaml:"taskID" xml:"taskID"`
 	// Task unique and human readable string identifier
-	TaskSlug *string `form:"taskSlug,omitempty" json:"taskSlug,omitempty" yaml:"taskSlug,omitempty" xml:"taskSlug,omitempty"`
+	TaskSlug string `form:"taskSlug" json:"taskSlug" yaml:"taskSlug" xml:"taskSlug"`
 }
 
 // Validate validates the ComJossemargtSaoEntryFull media type instance.
 func (mt *ComJossemargtSaoEntryFull) Validate() (err error) {
-	if mt.ID == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
-	}
+
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
-	if mt.ContestSlug != nil {
-		if ok := goa.ValidatePattern(`[_a-zA-Z0-9\-]+`, *mt.ContestSlug); !ok {
-			err = goa.MergeErrors(err, goa.InvalidPatternError(`response.contestSlug`, *mt.ContestSlug, `[_a-zA-Z0-9\-]+`))
-		}
+	if ok := goa.ValidatePattern(`[_a-zA-Z0-9\-]+`, mt.ContestSlug); !ok {
+		err = goa.MergeErrors(err, goa.InvalidPatternError(`response.contestSlug`, mt.ContestSlug, `[_a-zA-Z0-9\-]+`))
 	}
 	if mt.Links != nil {
 		if err2 := mt.Links.Validate(); err2 != nil {
 			err = goa.MergeErrors(err, err2)
 		}
 	}
-	if mt.TaskSlug != nil {
-		if ok := goa.ValidatePattern(`[_a-zA-Z0-9\-]+`, *mt.TaskSlug); !ok {
-			err = goa.MergeErrors(err, goa.InvalidPatternError(`response.taskSlug`, *mt.TaskSlug, `[_a-zA-Z0-9\-]+`))
-		}
+	if ok := goa.ValidatePattern(`[_a-zA-Z0-9\-]+`, mt.TaskSlug); !ok {
+		err = goa.MergeErrors(err, goa.InvalidPatternError(`response.taskSlug`, mt.TaskSlug, `[_a-zA-Z0-9\-]+`))
 	}
 	return
 }
@@ -109,14 +98,12 @@ type ComJossemargtSaoEntryLink struct {
 	// API href for making requests on the entry
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Unique entry ID
-	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
+	ID int `form:"id" json:"id" yaml:"id" xml:"id"`
 }
 
 // Validate validates the ComJossemargtSaoEntryLink media type instance.
 func (mt *ComJossemargtSaoEntryLink) Validate() (err error) {
-	if mt.ID == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
-	}
+
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
@@ -252,7 +239,7 @@ func (c *Client) DecodeComJossemargtSaoEntryLinkCollection(resp *http.Response) 
 	return decoded, err
 }
 
-// The representation of the result of an entry compile, execute or evaluation process (default view)
+// The representation of the result of an entry compile, evaluation and grading process (default view)
 //
 // Identifier: application/vnd.com.jossemargt.sao.result+json; view=default
 type ComJossemargtSaoResult struct {
@@ -260,7 +247,7 @@ type ComJossemargtSaoResult struct {
 	Evaluation *EvaluationResult `form:"evaluation" json:"evaluation" yaml:"evaluation" xml:"evaluation"`
 	// API href for making requests on the result
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
-	// Unique result ID
+	// Compound Result ID
 	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
 }
 
@@ -283,7 +270,7 @@ func (mt *ComJossemargtSaoResult) Validate() (err error) {
 	return
 }
 
-// The representation of the result of an entry compile, execute or evaluation process (full view)
+// The representation of the result of an entry compile, evaluation and grading process (full view)
 //
 // Identifier: application/vnd.com.jossemargt.sao.result+json; view=full
 type ComJossemargtSaoResultFull struct {
@@ -295,7 +282,7 @@ type ComJossemargtSaoResultFull struct {
 	Execution []*ExecutionResult `form:"execution,omitempty" json:"execution,omitempty" yaml:"execution,omitempty" xml:"execution,omitempty"`
 	// API href for making requests on the result
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
-	// Unique result ID
+	// Compound Result ID
 	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
 	// Links to related resources
 	Links *ComJossemargtSaoResultLinks `form:"links,omitempty" json:"links,omitempty" yaml:"links,omitempty" xml:"links,omitempty"`
@@ -330,13 +317,13 @@ func (mt *ComJossemargtSaoResultFull) Validate() (err error) {
 	return
 }
 
-// The representation of the result of an entry compile, execute or evaluation process (link view)
+// The representation of the result of an entry compile, evaluation and grading process (link view)
 //
 // Identifier: application/vnd.com.jossemargt.sao.result+json; view=link
 type ComJossemargtSaoResultLink struct {
 	// API href for making requests on the result
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
-	// Unique result ID
+	// Compound Result ID
 	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
 }
 
@@ -480,7 +467,7 @@ func (c *Client) DecodeComJossemargtSaoResultLinkCollection(resp *http.Response)
 type ComJossemargtSaoScore struct {
 	// API href for making requests on the score
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
-	// Unique score ID
+	// Compound unique score ID
 	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
 	// An official graded score with a token
 	Value float64 `form:"value" json:"value" yaml:"value" xml:"value"`
@@ -504,10 +491,10 @@ func (mt *ComJossemargtSaoScore) Validate() (err error) {
 type ComJossemargtSaoScoreFull struct {
 	// API href for making requests on the score
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
-	// Unique score ID
+	// Compound unique score ID
 	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
 	// An un-official graded score
-	UntokenedValue *float64 `form:"untokenedValue,omitempty" json:"untokenedValue,omitempty" yaml:"untokenedValue,omitempty" xml:"untokenedValue,omitempty"`
+	UnofficialValue *float64 `form:"unofficialValue,omitempty" json:"unofficialValue,omitempty" yaml:"unofficialValue,omitempty" xml:"unofficialValue,omitempty"`
 	// An official graded score with a token
 	Value float64 `form:"value" json:"value" yaml:"value" xml:"value"`
 }
@@ -530,7 +517,7 @@ func (mt *ComJossemargtSaoScoreFull) Validate() (err error) {
 type ComJossemargtSaoScoreLink struct {
 	// API href for making requests on the score
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
-	// Unique score ID
+	// Compound unique score ID
 	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
 }
 
@@ -647,7 +634,7 @@ type ComJossemargtSaoScoresum struct {
 	// Contest Identifier associated with this score
 	TaskID *int `form:"taskID,omitempty" json:"taskID,omitempty" yaml:"taskID,omitempty" xml:"taskID,omitempty"`
 	// An un-official graded score
-	UntokenedValue float64 `form:"untokenedValue" json:"untokenedValue" yaml:"untokenedValue" xml:"untokenedValue"`
+	UnofficialValue float64 `form:"unofficialValue" json:"unofficialValue" yaml:"unofficialValue" xml:"unofficialValue"`
 	// Contest Identifier associated with this score
 	UserID *int `form:"userID,omitempty" json:"userID,omitempty" yaml:"userID,omitempty" xml:"userID,omitempty"`
 	// An official graded score with a token

@@ -23,7 +23,7 @@ func main() {
 			AddFile("./config.properties", true).
 			// Read environment variables with prefix SAO_
 			AddReader(go_up.NewEnvReader("SAO_", true, true)).
-			Build();
+			Build()
 	}
 
 	var httpClient *httpRetryableClient
@@ -59,15 +59,21 @@ func main() {
 	// Mount "actions" controller
 	c := NewActionsController(service)
 	app.MountActionsController(service, c)
+	// Mount "draft" controller
+	c2 := NewDraftController(service)
+	app.MountDraftController(service, c2)
+	// Mount "draftresult" controller
+	c3 := NewDraftresultController(service)
+	app.MountDraftresultController(service, c3)
 	// Mount "entry" controller
-	c2 := NewEntryController(service)
-	app.MountEntryController(service, c2)
+	c4 := NewEntryController(service)
+	app.MountEntryController(service, c4)
 	// Mount "result" controller
-	c3 := NewResultController(service)
-	app.MountResultController(service, c3)
+	c5 := NewResultController(service)
+	app.MountResultController(service, c5)
 	// Mount "scores" controller
-	c4 := NewScoresController(service)
-	app.MountScoresController(service, c4)
+	c6 := NewScoresController(service)
+	app.MountScoresController(service, c6)
 
 	// Start service
 	serverAddr := fmt.Sprintf("%s:%s", "", up.GetStringOrDefault("server.port", "8080"))

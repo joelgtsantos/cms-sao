@@ -8,14 +8,14 @@ import (
 var _ = API("SAO", func() {
 	Title("Sao v1")
 	Description("Exposes CMS platform entry and score resources")
-	Version("1.0")
+	Version("1.1")
 	Host("localhost:8080")
 	Scheme("http")
 	BasePath("/sao/v1")
 })
 
 var _ = Resource("entry", func() {
-	Description("A document to be evaluated and ranked")
+	Description("A contestant document that has been compiled, evaluated and graded")
 	BasePath("/entries")
 	Response(Unauthorized, ErrorMedia)
 	Response(BadRequest, ErrorMedia)
@@ -24,13 +24,32 @@ var _ = Resource("entry", func() {
 		Description("List the ranked entries without their sources.")
 		Routing(GET("/"))
 		Params(func() {
+			Param("contest", Integer, "Contest ID", func() {
+				Default(0)
+			})
+			Param("contest_slug", String, "Contest Slug", func() {
+				Default("")
+			})
+			Param("task", Integer, "Task ID", func() {
+				Default(0)
+			})
+			Param("task_slug", String, "Task Slug", func() {
+				Default("")
+			})
+			Param("user", Integer, "User ID", func() {
+				Default(0)
+			})
 			Param("page", Integer, "Page number", func() {
 				Default(1)
 				Minimum(1)
 			})
 			Param("page_size", Integer, "Item amount per page", func() {
-				Default(20)
+				Default(10)
 				Minimum(5)
+			})
+			Param("sort", String, "Sorting order", func() {
+				Enum("asc", "desc")
+				Default("desc")
 			})
 		})
 		Response(OK, CollectionOf(EntryMedia))
@@ -40,9 +59,8 @@ var _ = Resource("entry", func() {
 		Description("Get the complete entry metadata (excluding the associated sources) for the given ID")
 		Routing(GET("/:entryID"))
 		Params(func() {
-			Param("entryID", String, "Result ID", func() {
-				Example("ut-123588")
-				Example("re-124588")
+			Param("entryID", Integer, "Entry ID", func() {
+				Example(123588)
 			})
 		})
 		Response(OK, func() {
@@ -55,18 +73,25 @@ var _ = Resource("entry", func() {
 var _ = Resource("result", func() {
 	Description("Represents an entry evaluation and grading process status")
 	BasePath("/results")
-	DefaultMedia(ResultMedia)
 	Response(BadRequest, ErrorMedia)
 
 	Action("show", func() {
-		Description("List the results delimited and grouped by contest, task, entry or user identifier")
+		Description("List the Results delimited and grouped by contest, task, entry or user identifier")
 		Routing(GET("/"))
 		Params(func() {
-			Param("contest", Integer, "Contest ID")
-			Param("task", Integer, "Task ID")
-			Param("user", Integer, "User ID")
-			Param("entry", Integer, "Entry ID")
-			Param("ranked", Boolean, "List the ranked entries or the user tests", func() {
+			Param("contest", Integer, "Contest ID", func() {
+				Minimum(0)
+			})
+			Param("task", Integer, "Task ID", func() {
+				Minimum(0)
+			})
+			Param("user", Integer, "User ID", func() {
+				Minimum(0)
+			})
+			Param("entry", Integer, "Entry ID", func() {
+				Minimum(0)
+			})
+			Param("ranked", Boolean, "List the ranked entries (the ones that have summit a token with it)", func() {
 				Default(true)
 			})
 			Param("page", Integer, "Page number", func() {
@@ -74,7 +99,7 @@ var _ = Resource("result", func() {
 				Minimum(1)
 			})
 			Param("page_size", Integer, "Item amount per page", func() {
-				Default(20)
+				Default(10)
 				Minimum(5)
 			})
 			Param("sort", String, "Sorting order", func() {
@@ -86,13 +111,11 @@ var _ = Resource("result", func() {
 	})
 
 	Action("get", func() {
-		Description(`Get complete result data for the given entry and testcase ID.
-						The "re" and "ut" prefix delimits the entry type as "ranked entry" or "user test" respectively.`)
+		Description(`Get complete Entry Result data for the given entry and testcase ID.`)
 		Routing(GET("/:resultID"))
 		Params(func() {
 			Param("resultID", String, "Result ID", func() {
-				Example("re-1235-6988") // For ranked entries
-				Example("ut-4590-1325") // For user tests
+				Example("1235-6988")
 			})
 		})
 		Response(OK, func() {
@@ -103,25 +126,32 @@ var _ = Resource("result", func() {
 })
 
 var _ = Resource("scores", func() {
-	Description("Represents an entry grading")
+	Description("Represents an entry grading value")
 	BasePath("/scores")
-	DefaultMedia(ScoreMedia)
 	Response(BadRequest, ErrorMedia)
 
 	Action("show", func() {
 		Description("List all the scores delimited by the query params")
 		Routing(GET("/"))
 		Params(func() {
-			Param("contest", Integer, "Contest ID")
-			Param("task", Integer, "Task ID")
-			Param("user", Integer, "User ID")
-			Param("entry", Integer, "Entry ID")
+			Param("contest", Integer, "Contest ID", func() {
+				Minimum(0)
+			})
+			Param("task", Integer, "Task ID", func() {
+				Minimum(0)
+			})
+			Param("user", Integer, "User ID", func() {
+				Minimum(0)
+			})
+			Param("entry", Integer, "Entry ID", func() {
+				Minimum(0)
+			})
 			Param("page", Integer, "Page number", func() {
 				Default(1)
 				Minimum(1)
 			})
 			Param("page_size", Integer, "Item amount per page", func() {
-				Default(20)
+				Default(10)
 				Minimum(5)
 			})
 			Param("sort", String, "Sorting order", func() {
@@ -148,14 +178,116 @@ var _ = Resource("scores", func() {
 
 })
 
+var _ = Resource("draft", func() {
+	Description("A contestant document draft that has been compiled and evaluated")
+	BasePath("/drafts")
+	Response(Unauthorized, ErrorMedia)
+	Response(BadRequest, ErrorMedia)
+
+	Action("show", func() {
+		Description("List the entry drafts without their sources.")
+		Routing(GET("/"))
+		Params(func() {
+			Param("contest", Integer, "Contest ID", func() {
+				Minimum(0)
+			})
+			Param("task", Integer, "Task ID", func() {
+				Minimum(0)
+			})
+			Param("user", Integer, "User ID", func() {
+				Minimum(0)
+			})
+			Param("page", Integer, "Page number", func() {
+				Default(1)
+				Minimum(1)
+			})
+			Param("page_size", Integer, "Item amount per page", func() {
+				Default(10)
+				Minimum(5)
+			})
+			Param("sort", String, "Sorting order", func() {
+				Enum("asc", "desc")
+				Default("desc")
+			})
+		})
+		Response(OK, CollectionOf(EntryMedia))
+	})
+
+	Action("get", func() {
+		Description("Get the complete Entry Draft metadata (excluding the associated sources) for the given ID")
+		Routing(GET("/:draftID"))
+		Params(func() {
+			Param("draftID", Integer, "Entry draft ID", func() {
+				Example(123588)
+			})
+		})
+		Response(OK, func() {
+			Media(EntryMedia, "full")
+		})
+		Response(NotFound)
+	})
+})
+
+var _ = Resource("draftresult", func() {
+	Description("Represents an entry evaluation and grading process status")
+	BasePath("/draft-results")
+	Response(BadRequest, ErrorMedia)
+
+	Action("show", func() {
+		Description("List the Results delimited and grouped by contest, task, entry or user identifier")
+		Routing(GET("/"))
+		Params(func() {
+			Param("contest", Integer, "Contest ID", func() {
+				Minimum(0)
+			})
+			Param("task", Integer, "Task ID", func() {
+				Minimum(0)
+			})
+			Param("user", Integer, "User ID", func() {
+				Minimum(0)
+			})
+			Param("entry", Integer, "Entry ID", func() {
+				Minimum(0)
+			})
+			Param("page", Integer, "Page number", func() {
+				Default(1)
+				Minimum(1)
+			})
+			Param("page_size", Integer, "Item amount per page", func() {
+				Default(10)
+				Minimum(5)
+			})
+			Param("sort", String, "Sorting order", func() {
+				Enum("asc", "desc")
+				Default("desc")
+			})
+		})
+		Response(OK, CollectionOf(ResultMedia))
+	})
+
+	Action("get", func() {
+		Description(`Get complete Entry Draft Result data for the given entry and testcase ID.`)
+		Routing(GET("/:resultID"))
+		Params(func() {
+			Param("resultID", String, "Result ID", func() {
+				Example("4590-1325")
+			})
+		})
+		Response(OK, func() {
+			Media(ResultMedia, "full")
+		})
+		Response(NotFound)
+	})
+})
+
 var _ = Resource("actions", func() {
-	Description("All the non RESTful http actions supported by this API")
+	Description("All the non-REST actions supported by this API")
 	BasePath("")
 	Response(NotImplemented)
 	Response(BadRequest, ErrorMedia)
 
 	Action("submitEntry", func() {
-		Description("Orchestrates the resource creation related to a entry submition (Entry, Token, Result and Score).")
+		Description("Orchestrates the resource creation related to a entry submit process (Entry, Token, Result and Score).")
 		Routing(POST("/submit-entry"))
 		Payload(EntryPayload)
 
@@ -163,8 +295,24 @@ var _ = Resource("actions", func() {
 			Media(EntryMedia, "full")
 			Headers(func() {
 				Header("Location", String, "href to created entry", func() {
-					Pattern("/entries/\\w{2}-\\d+")
-					Example("/entries/re-124588")
+					Pattern("/entries/\\d+")
+					Example("/entries/124588")
+				})
+			})
+		})
+	})
+
+	Action("submitEntryDraft", func() {
+		Description("Orchestrates the resource creation related to a entry draft submit process (Draft and Result).")
+		Routing(POST("/submit-entry-draft"))
+		Payload(EntryPayload)
+
+		Response(Created, func() {
+			Media(EntryMedia, "full")
+			Headers(func() {
+				Header("Location", String, "href to created entry", func() {
+					Pattern("/drafts/\\d+")
+					Example("/drafts/124588")
 				})
 			})
 		})
@@ -175,9 +323,15 @@ var _ = Resource("actions", func() {
 		Description("List scores and its total grouped and filter by contest, task or user")
 		Routing(GET("/summarize-score"))
 		Params(func() {
-			Param("contest", Integer, "Contest ID")
-			Param("task", Integer, "Task ID")
-			Param("user", Integer, "User ID")
+			Param("contest", Integer, "Contest ID", func() {
+				Minimum(0)
+			})
+			Param("task", Integer, "Task ID", func() {
+				Minimum(0)
+			})
+			Param("user", Integer, "User ID", func() {
+				Minimum(0)
+			})
 			Param("groupBy", String, "", func() {
 				Enum("contest", "task", "user", "none")
 				Default("none")

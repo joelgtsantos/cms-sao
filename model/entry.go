@@ -6,18 +6,17 @@ const (
 )
 
 type Entry struct {
-	ID          int64
+	ID          int
 	Kind        int
-	ContestID   int64  `db:"contest_id"`
+	ContestID   int    `db:"contest_id"`
 	ContestSlug string `db:"contest_slug"`
-	TaskID      int64  `db:"task_id"`
+	TaskID      int    `db:"task_id"`
 	TaskSlug    string `db:"task_slug"`
-	ResultID    int64  `db:"result_prtl_id"`
-	ScoreID     int64
+	ResultID    int    `db:"result_prtl_id"`
+	ScoreID     int
 }
 
-
-func (e *Entry) isDryRun () bool {
+func (e *Entry) isDryRun() bool {
 	if e.Kind == KindUserTest {
 		return true
 	}

@@ -5,7 +5,6 @@
 // Command:
 // $ goagen
 // --design=github.com/jossemargt/cms-sao/design
-// --force=true
 // --notool=true
 // --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
 // --version=v1.4.1
@@ -27,7 +26,7 @@ func SubmitEntryActionsPath() string {
 	return fmt.Sprintf("/sao/v1/submit-entry")
 }
 
-// Orchestrates the resource creation related to a entry submition (Entry, Token, Result and Score).
+// Orchestrates the resource creation related to a entry submit process (Entry, Token, Result and Score).
 func (c *Client) SubmitEntryActions(ctx context.Context, path string, payload *EntryPayload, contentType string) (*http.Response, error) {
 	req, err := c.NewSubmitEntryActionsRequest(ctx, path, payload, contentType)
 	if err != nil {
@@ -38,6 +37,49 @@ func (c *Client) SubmitEntryActions(ctx context.Context, path string, payload *E
 
 // NewSubmitEntryActionsRequest create the request corresponding to the submitEntry action endpoint of the actions resource.
 func (c *Client) NewSubmitEntryActionsRequest(ctx context.Context, path string, payload *EntryPayload, contentType string) (*http.Request, error) {
+	var body bytes.Buffer
+	if contentType == "" {
+		contentType = "*/*" // Use default encoder
+	}
+	err := c.Encoder.Encode(payload, &body, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to encode body: %s", err)
+	}
+	scheme := c.Scheme
+	if scheme == "" {
+		scheme = "http"
+	}
+	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
+	req, err := http.NewRequest("POST", u.String(), &body)
+	if err != nil {
+		return nil, err
+	}
+	header := req.Header
+	if contentType == "*/*" {
+		header.Set("Content-Type", "application/json")
+	} else {
+		header.Set("Content-Type", contentType)
+	}
+	return req, nil
+}
+
+// SubmitEntryDraftActionsPath computes a request path to the submitEntryDraft action of actions.
+func SubmitEntryDraftActionsPath() string {
+
+	return fmt.Sprintf("/sao/v1/submit-entry-draft")
+}
+
+// Orchestrates the resource creation related to a entry draft submit process (Draft and Result).
+func (c *Client) SubmitEntryDraftActions(ctx context.Context, path string, payload *EntryPayload, contentType string) (*http.Response, error) {
+	req, err := c.NewSubmitEntryDraftActionsRequest(ctx, path, payload, contentType)
+	if err != nil {
+		return nil, err
+	}
+	return c.Client.Do(ctx, req)
+}
+
+// NewSubmitEntryDraftActionsRequest create the request corresponding to the submitEntryDraft action endpoint of the actions resource.
+func (c *Client) NewSubmitEntryDraftActionsRequest(ctx context.Context, path string, payload *EntryPayload, contentType string) (*http.Request, error) {
 	var body bytes.Buffer
 	if contentType == "" {
 		contentType = "*/*" // Use default encoder

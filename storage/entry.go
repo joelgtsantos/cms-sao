@@ -13,7 +13,7 @@ const contestTable = "contests"
 const resultTable = "submission_results"
 
 type EntryRepository interface {
-	FindByID(int64) (*model.Entry, error)
+	FindByID(int) (*model.Entry, error)
 	FindBy(EntryDTO) ([]model.Entry, error)
 }
 
@@ -22,10 +22,10 @@ func NewEntryRepository(dbx Queryer) EntryRepository {
 }
 
 type defaultEntryRepository struct {
-	queryer Queryer
+	source Queryer
 }
 
-func (entryRepo *defaultEntryRepository) FindByID(entryID int64) (*model.Entry, error) {
+func (entryRepo *defaultEntryRepository) FindByID(entryID int) (*model.Entry, error) {
 	entry := model.Entry{}
 
 	query, err := NewProjection(
@@ -48,7 +48,7 @@ func (entryRepo *defaultEntryRepository) FindByID(entryID int64) (*model.Entry, 
 		return nil, errors.Wrapf(err, "Failed building Entry SQL projection")
 	}
 
-	err = entryRepo.queryer.Get(&entry, query, entryID)
+	err = entryRepo.source.Get(&entry, query, entryID)
 
 	if err != nil {
 		return nil, errors.Wrapf(err, "Failed query with Entry ID %d", entryID)
@@ -64,7 +64,7 @@ func (entryRepo *defaultEntryRepository) FindBy(dto EntryDTO) ([]model.Entry, er
 	}
 
 	entries := make([]model.Entry, dto.limit)
-	err = entryRepo.queryer.Select(&entries, query)
+	err = entryRepo.source.Select(&entries, query)
 
 	if err != nil {
 		return nil, errors.Wrapf(err, "Failed query with Entries")

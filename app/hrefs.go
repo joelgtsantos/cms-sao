@@ -5,12 +5,21 @@
 // Command:
 // $ goagen
 // --design=github.com/jossemargt/cms-sao/design
-// --force=true
 // --notool=true
 // --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
 // --version=v1.4.1
 
 package app
+
+// DraftHref returns the resource href.
+func DraftHref() string {
+	return "/sao/v1/drafts/"
+}
+
+// DraftresultHref returns the resource href.
+func DraftresultHref() string {
+	return "/sao/v1/draft-results/"
+}
 
 // EntryHref returns the resource href.
 func EntryHref() string {
