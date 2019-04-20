@@ -46,10 +46,11 @@ func TestDefaultEntryRepository_FindByIntegration(t *testing.T) {
 	repo := NewEntryRepository(db)
 
 	entries, err := repo.FindBy(EntryDTO{
-		TaskSlug: "batch_file",
+		TaskSlug: "batch",
 		DTO: DTO{
 			Page: 1,
 		},
+		ContestID: 0,
 	})
 
 	if err != nil {

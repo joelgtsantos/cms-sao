@@ -24,7 +24,6 @@ func TestDefaultEntryRepository_FindByID(t *testing.T) {
 						ID:          123,
 						ContestSlug: "con_test",
 						TaskSlug:    "a_task",
-						ScoreID:     -1,
 					}
 
 					// Kids don't do this at home, unless you need to
@@ -88,7 +87,6 @@ func TestDefaultEntryRepository_FindBy(t *testing.T) {
 							ID:          123,
 							ContestSlug: "con_test",
 							TaskSlug:    "a_task",
-							ScoreID:     -1,
 						},
 					}
 					reflect.ValueOf(d).Elem().Set(reflect.ValueOf(es))
@@ -119,13 +117,11 @@ func TestDefaultEntryRepository_FindBy(t *testing.T) {
 							ID:          123,
 							ContestSlug: "con_test",
 							TaskSlug:    "a_task",
-							ScoreID:     -1,
 						},
 						model.Entry{
 							ID:          124,
 							ContestSlug: "con_test",
 							TaskSlug:    "b_task",
-							ScoreID:     -1,
 						},
 					}
 					reflect.ValueOf(d).Elem().Set(reflect.ValueOf(es))

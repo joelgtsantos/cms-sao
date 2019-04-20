@@ -67,7 +67,7 @@ func (entryRepo *defaultEntryRepository) FindBy(dto EntryDTO) ([]model.Entry, er
 	err = entryRepo.source.Select(&entries, query)
 
 	if err != nil {
-		return nil, errors.Wrapf(err, "Failed query with Entries")
+		return nil, errors.Wrapf(err, "Failed Entries query")
 	}
 
 	return entries, nil
@@ -89,10 +89,24 @@ func buildEntryQuery(dto EntryDTO) (string, error) {
 		Join("%s AS tsk ON tsk.id = sb.task_id", taskTable),
 		Join("%s AS cts ON cts.id = tsk.contest_id", contestTable),
 		Join("%s AS sbr ON sbr.submission_id = sb.id", resultTable),
-		Where(fmt.Sprintf("tsk.name LIKE '%s'", dto.TaskSlug)),
-		Where(fmt.Sprintf("cts.name LIKE '%s'", dto.ContestSlug)),
 		OrderBy(fmt.Sprintf("id %s", dto.Order)),
 		Limit(dto.limit),
+	}
+
+	if dto.TaskSlug != "" {
+		sqlParts = append(sqlParts, Where(fmt.Sprintf("tsk.name LIKE '%s'", dto.TaskSlug)))
+	}
+
+	if dto.ContestSlug != "" {
+		sqlParts = append(sqlParts, Where(fmt.Sprintf("cts.name LIKE '%s'", dto.ContestSlug)))
+	}
+
+	if dto.TaskID > 0 {
+		sqlParts = append(sqlParts, Where(fmt.Sprintf("tsk.id = %d", dto.TaskID)))
+	}
+
+	if dto.ContestID > 0 {
+		sqlParts = append(sqlParts, Where(fmt.Sprintf("cts.id = %d", dto.ContestID)))
 	}
 
 	if dto.Page > 1 {
@@ -104,17 +118,8 @@ func buildEntryQuery(dto EntryDTO) (string, error) {
 
 type EntryDTO struct {
 	DTO
+	ContestID   int
 	ContestSlug string
+	TaskID      int
 	TaskSlug    string
-}
-
-func (e *EntryDTO) prepare() {
-	e.DTO.prepare()
-	if len(e.ContestSlug) == 0 {
-		e.ContestSlug = "%"
-	}
-
-	if len(e.TaskSlug) == 0 {
-		e.TaskSlug = "%"
-	}
 }

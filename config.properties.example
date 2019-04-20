@@ -8,5 +8,7 @@ cms.url=http://localhost/
 
 # PostgreSQL data source configurations
 datasource.username=cmsuser
-datasource.password=notsecure
-datasource.url=postgresql://localhost:5432
+datasource.password=you-should-not-add-this-to-git
+datasource.host=127.0.0.1
+datasource.port=5432
+datasource.sslmod=disable

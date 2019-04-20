@@ -10,7 +10,10 @@ import (
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
 	"github.com/hashicorp/go-retryablehttp"
+	"github.com/jmoiron/sqlx"
 	"github.com/jossemargt/cms-sao/app"
+	"github.com/jossemargt/cms-sao/storage"
+	_ "github.com/lib/pq"
 	"github.com/ufoscout/go-up"
 )
 
@@ -45,7 +48,29 @@ func main() {
 		httpClient.retryable = retryable
 	}
 
-	// cmsURL := up.GetStringOrDefault("cms.http.url", "http://localhost:8080/")
+	var dbConn *sqlx.DB
+	{
+		dbhost := up.GetStringOrDefault("datasource.host", "localhost")
+		dbport := up.GetStringOrDefault("datasource.port", "5432")
+		dbname := up.GetStringOrDefault("datasource.name", "cmsdb")
+		dbuser := up.GetStringOrDefault("datasource.username", "cmsuser")
+		dbpassword := up.GetStringOrDefault("datasource.password", "")
+		dbsslmode := up.GetStringOrDefault("datasource.sslmode", "require")
+
+		dbConn = sqlx.MustConnect("postgres",
+			fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%s sslmode=%s",
+				dbuser,
+				dbpassword,
+				dbname,
+				dbhost,
+				dbport,
+				dbsslmode,
+			),
+		)
+	}
+
+	// Create resource repositories
+	entryRepository := storage.NewEntryRepository(dbConn)
 
 	// Create service
 	service := goa.New("SAO v1")
@@ -62,11 +87,11 @@ func main() {
 	// Mount "draft" controller
 	c2 := NewDraftController(service)
 	app.MountDraftController(service, c2)
-	// Mount "draftresult" controller
+	// Mount "draft-result" controller
 	c3 := NewDraftresultController(service)
 	app.MountDraftresultController(service, c3)
 	// Mount "entry" controller
-	c4 := NewEntryController(service)
+	c4 := NewEntryController(service, entryRepository)
 	app.MountEntryController(service, c4)
 	// Mount "result" controller
 	c5 := NewResultController(service)

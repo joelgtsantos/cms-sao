@@ -3,6 +3,7 @@ vendor
 
 # Env configurations
 config.properties
+.stash
 
 # Binaries
 /cms-sao
