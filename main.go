@@ -11,21 +11,22 @@ import (
 	"github.com/goadesign/goa/middleware"
 	"github.com/hashicorp/go-retryablehttp"
 	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
+	goup "github.com/ufoscout/go-up"
+
 	"github.com/jossemargt/cms-sao/app"
 	"github.com/jossemargt/cms-sao/storage"
-	_ "github.com/lib/pq"
-	"github.com/ufoscout/go-up"
 )
 
 func main() {
 	// Resolve configurations
-	var up go_up.GoUp
+	var up goup.GoUp
 	{
-		up, _ = go_up.NewGoUp().
+		up, _ = goup.NewGoUp().
 			// Read default config file if any
 			AddFile("./config.properties", true).
 			// Read environment variables with prefix SAO_
-			AddReader(go_up.NewEnvReader("SAO_", true, true)).
+			AddReader(goup.NewEnvReader("SAO_", true, true)).
 			Build()
 	}
 
@@ -50,12 +51,12 @@ func main() {
 
 	var dbConn *sqlx.DB
 	{
-		dbhost := up.GetStringOrDefault("datasource.host", "localhost")
-		dbport := up.GetStringOrDefault("datasource.port", "5432")
-		dbname := up.GetStringOrDefault("datasource.name", "cmsdb")
-		dbuser := up.GetStringOrDefault("datasource.username", "cmsuser")
-		dbpassword := up.GetStringOrDefault("datasource.password", "")
-		dbsslmode := up.GetStringOrDefault("datasource.sslmode", "require")
+		dbhost := up.GetStringOrDefault("cms.datasource.host", "localhost")
+		dbport := up.GetStringOrDefault("cms.datasource.port", "5432")
+		dbname := up.GetStringOrDefault("cms.datasource.name", "cmsdb")
+		dbuser := up.GetStringOrDefault("cms.datasource.username", "cmsuser")
+		dbpassword := up.GetStringOrDefault("cms.datasource.password", "")
+		dbsslmode := up.GetStringOrDefault("cms.datasource.sslmode", "require")
 
 		dbConn = sqlx.MustConnect("postgres",
 			fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%s sslmode=%s",
