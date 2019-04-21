@@ -7,6 +7,9 @@ server.response.tracedump=false
 cms.url=http://localhost/
 
 # PostgreSQL data source configurations
-datasource.username=cmsuser
-datasource.password=notsecure
-datasource.url=postgresql://localhost:5432
+cms.datasource.name=cmsdb
+cms.datasource.username=cmsuser
+cms.datasource.password=you-should-not-add-this-to-git
+cms.datasource.host=127.0.0.1
+cms.datasource.port=5432
+cms.datasource.sslmode=disable

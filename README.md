@@ -1,13 +1,13 @@
 # CMS Sao
 
 A microservice that orbits around [CMS](https://github.com/cms-dev/cms) exposing
-the Entries, Results and Scores entities as [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
+the Entry, Result, Score and Scoreboard entities as [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
 resources.
 
 ## Up and running
 
-CMS Sao can be deployed and run as a Docker container or a standalone binary; either way is recommend to run this
-application as the former one.
+CMS Sao can be deployed and run as a Docker container or a standalone binary;
+either way is recommend to run this application as the former one.
 
 ### Prerequisites
 
@@ -20,16 +20,18 @@ in order to have this application up and running you will need:
 
 ### Deployment
 
-**TODO**: Package as Docker image 
+**TODO**: Package as Docker image
 
 ### Configuration
 
-All the intrinsic configurations can be overriden via the `config.properties` file in Sao's working directory (you could 
-use `config.properties.example` as guide) or as environment variables with the `SAO_` prefix. As for example in order 
-to override the `datasource.url` value, you could start the Docker container with the following syntax:
+All the intrinsic configurations can be overriden via the `config.properties`
+file in Sao's working directory (you could use `config.properties.example` as
+guide) or as environment variables with the `SAO_` prefix. As for example in
+order to override the `datasource.host` value, you could start the Docker
+container with the following syntax:
 
 ```shell
-docker run -p 8080:8080 -e 'SAO_DATASOURCE_URL=postgresql://10.10.37.10:5432/cmsdb' jossemargt/cmssao
+docker run -p 8080:8080 -e 'SAO_CMS_DATASOURCE_HOST=10.10.37.10' jossemargt/cmssao
 ```
 
 Some of the properties of interest could be:
@@ -40,9 +42,12 @@ server.port | 8080 | The port where the application will listen for incoming req
 server.log.request | false | When set as true the application will log each incoming request to the STDOUT
 server.error.tracedump | false | When set as true the application will include the error trace in failure responses
 cms.url | http://localhost/ | The URL where Sao can stablish communication with CMS
-datasource.username | cmsuser | PostgreSQL datasource username
-datasource.password | notsecure | PostgreSQL datasource password
-datasource.url | postgresql://localhost:5432 | PostgreSQL datasource URL
+cms.datasource.name | cmsdb | CMS PostgreSQL schema name
+cms.datasource.username | cmsuser | CMS PostgreSQL datasource username
+cms.datasource.password | notsecure | CMS PostgreSQL datasource password
+cms.datasource.host | 127.0.0.1 | CMS PostgreSQL host network address
+cms.datasource.port | 5432 | CMS PostgreSQL instance port
+cms.datasource.sslmode | disable | CMS PostgreSQL [ssl mode](https://www.postgresql.org/docs/9.1/libpq-ssl.html) (valid values: require, disable, verify-ca, verify-full)
 
 ## License
 
