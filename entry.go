@@ -3,12 +3,14 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"strings"
 
 	"github.com/goadesign/goa"
+	"github.com/pkg/errors"
+
 	"github.com/jossemargt/cms-sao/app"
 	"github.com/jossemargt/cms-sao/model"
 	"github.com/jossemargt/cms-sao/storage"
-	"github.com/pkg/errors"
 )
 
 // EntryController implements the Entry resource.
@@ -17,7 +19,7 @@ type EntryController struct {
 	entryRepo storage.EntryRepository
 }
 
-// NewEntryController creates a Entry controller.
+// NewEntryController creates an Entry controller.
 func NewEntryController(service *goa.Service, repository storage.EntryRepository) *EntryController {
 	return &EntryController{
 		Controller: service.NewController("EntryController"),
@@ -50,6 +52,7 @@ func (c *EntryController) Show(ctx *app.ShowEntryContext) error {
 		DTO: storage.DTO{
 			Page:     ctx.Page,
 			PageSize: ctx.PageSize,
+			Order:    strings.ToUpper(ctx.Sort),
 		},
 	}
 

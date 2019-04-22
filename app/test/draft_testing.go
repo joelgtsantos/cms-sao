@@ -160,7 +160,7 @@ func GetDraftNotFound(t goatest.TInterface, ctx context.Context, service *goa.Se
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func GetDraftOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, draftID int) (http.ResponseWriter, *app.ComJossemargtSaoEntry) {
+func GetDraftOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, draftID int) (http.ResponseWriter, *app.ComJossemargtSaoDraft) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -213,12 +213,12 @@ func GetDraftOK(t goatest.TInterface, ctx context.Context, service *goa.Service,
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt *app.ComJossemargtSaoEntry
+	var mt *app.ComJossemargtSaoDraft
 	if resp != nil {
 		var _ok bool
-		mt, _ok = resp.(*app.ComJossemargtSaoEntry)
+		mt, _ok = resp.(*app.ComJossemargtSaoDraft)
 		if !_ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoEntry", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoDraft", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -234,7 +234,7 @@ func GetDraftOK(t goatest.TInterface, ctx context.Context, service *goa.Service,
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func GetDraftOKFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, draftID int) (http.ResponseWriter, *app.ComJossemargtSaoEntryFull) {
+func GetDraftOKFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, draftID int) (http.ResponseWriter, *app.ComJossemargtSaoDraftFull) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -287,12 +287,12 @@ func GetDraftOKFull(t goatest.TInterface, ctx context.Context, service *goa.Serv
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt *app.ComJossemargtSaoEntryFull
+	var mt *app.ComJossemargtSaoDraftFull
 	if resp != nil {
 		var _ok bool
-		mt, _ok = resp.(*app.ComJossemargtSaoEntryFull)
+		mt, _ok = resp.(*app.ComJossemargtSaoDraftFull)
 		if !_ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoEntryFull", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoDraftFull", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -308,7 +308,7 @@ func GetDraftOKFull(t goatest.TInterface, ctx context.Context, service *goa.Serv
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func GetDraftOKLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, draftID int) (http.ResponseWriter, *app.ComJossemargtSaoEntryLink) {
+func GetDraftOKLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, draftID int) (http.ResponseWriter, *app.ComJossemargtSaoDraftLink) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -361,12 +361,12 @@ func GetDraftOKLink(t goatest.TInterface, ctx context.Context, service *goa.Serv
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt *app.ComJossemargtSaoEntryLink
+	var mt *app.ComJossemargtSaoDraftLink
 	if resp != nil {
 		var _ok bool
-		mt, _ok = resp.(*app.ComJossemargtSaoEntryLink)
+		mt, _ok = resp.(*app.ComJossemargtSaoDraftLink)
 		if !_ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoEntryLink", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoDraftLink", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -451,7 +451,7 @@ func GetDraftUnauthorized(t goatest.TInterface, ctx context.Context, service *go
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowDraftBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, contest *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, error) {
+func ShowDraftBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, contest int, contestSlug string, page int, pageSize int, sort string, task int, taskSlug string, user int) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -472,9 +472,13 @@ func ShowDraftBadRequest(t goatest.TInterface, ctx context.Context, service *goa
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		query["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		query["contest_slug"] = sliceVal
 	}
 	{
 		sliceVal := []string{strconv.Itoa(page)}
@@ -488,12 +492,16 @@ func ShowDraftBadRequest(t goatest.TInterface, ctx context.Context, service *goa
 		sliceVal := []string{sort}
 		query["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		query["task"] = sliceVal
 	}
-	if user != nil {
-		sliceVal := []string{strconv.Itoa(*user)}
+	{
+		sliceVal := []string{taskSlug}
+		query["task_slug"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(user)}
 		query["user"] = sliceVal
 	}
 	u := &url.URL{
@@ -505,9 +513,13 @@ func ShowDraftBadRequest(t goatest.TInterface, ctx context.Context, service *goa
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		prms["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		prms["contest_slug"] = sliceVal
 	}
 	{
 		sliceVal := []string{strconv.Itoa(page)}
@@ -521,12 +533,16 @@ func ShowDraftBadRequest(t goatest.TInterface, ctx context.Context, service *goa
 		sliceVal := []string{sort}
 		prms["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		prms["task"] = sliceVal
 	}
-	if user != nil {
-		sliceVal := []string{strconv.Itoa(*user)}
+	{
+		sliceVal := []string{taskSlug}
+		prms["task_slug"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(user)}
 		prms["user"] = sliceVal
 	}
 	if ctx == nil {
@@ -569,7 +585,7 @@ func ShowDraftBadRequest(t goatest.TInterface, ctx context.Context, service *goa
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowDraftOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, contest *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoEntryCollection) {
+func ShowDraftOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, contest int, contestSlug string, page int, pageSize int, sort string, task int, taskSlug string, user int) (http.ResponseWriter, app.ComJossemargtSaoDraftCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -590,9 +606,13 @@ func ShowDraftOK(t goatest.TInterface, ctx context.Context, service *goa.Service
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		query["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		query["contest_slug"] = sliceVal
 	}
 	{
 		sliceVal := []string{strconv.Itoa(page)}
@@ -606,12 +626,16 @@ func ShowDraftOK(t goatest.TInterface, ctx context.Context, service *goa.Service
 		sliceVal := []string{sort}
 		query["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		query["task"] = sliceVal
 	}
-	if user != nil {
-		sliceVal := []string{strconv.Itoa(*user)}
+	{
+		sliceVal := []string{taskSlug}
+		query["task_slug"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(user)}
 		query["user"] = sliceVal
 	}
 	u := &url.URL{
@@ -623,9 +647,13 @@ func ShowDraftOK(t goatest.TInterface, ctx context.Context, service *goa.Service
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		prms["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		prms["contest_slug"] = sliceVal
 	}
 	{
 		sliceVal := []string{strconv.Itoa(page)}
@@ -639,12 +667,16 @@ func ShowDraftOK(t goatest.TInterface, ctx context.Context, service *goa.Service
 		sliceVal := []string{sort}
 		prms["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		prms["task"] = sliceVal
 	}
-	if user != nil {
-		sliceVal := []string{strconv.Itoa(*user)}
+	{
+		sliceVal := []string{taskSlug}
+		prms["task_slug"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(user)}
 		prms["user"] = sliceVal
 	}
 	if ctx == nil {
@@ -671,12 +703,12 @@ func ShowDraftOK(t goatest.TInterface, ctx context.Context, service *goa.Service
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt app.ComJossemargtSaoEntryCollection
+	var mt app.ComJossemargtSaoDraftCollection
 	if resp != nil {
 		var _ok bool
-		mt, _ok = resp.(app.ComJossemargtSaoEntryCollection)
+		mt, _ok = resp.(app.ComJossemargtSaoDraftCollection)
 		if !_ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoEntryCollection", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoDraftCollection", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -692,7 +724,7 @@ func ShowDraftOK(t goatest.TInterface, ctx context.Context, service *goa.Service
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowDraftOKFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, contest *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoEntryFullCollection) {
+func ShowDraftOKFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, contest int, contestSlug string, page int, pageSize int, sort string, task int, taskSlug string, user int) (http.ResponseWriter, app.ComJossemargtSaoDraftFullCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -713,9 +745,13 @@ func ShowDraftOKFull(t goatest.TInterface, ctx context.Context, service *goa.Ser
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		query["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		query["contest_slug"] = sliceVal
 	}
 	{
 		sliceVal := []string{strconv.Itoa(page)}
@@ -729,12 +765,16 @@ func ShowDraftOKFull(t goatest.TInterface, ctx context.Context, service *goa.Ser
 		sliceVal := []string{sort}
 		query["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		query["task"] = sliceVal
 	}
-	if user != nil {
-		sliceVal := []string{strconv.Itoa(*user)}
+	{
+		sliceVal := []string{taskSlug}
+		query["task_slug"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(user)}
 		query["user"] = sliceVal
 	}
 	u := &url.URL{
@@ -746,9 +786,13 @@ func ShowDraftOKFull(t goatest.TInterface, ctx context.Context, service *goa.Ser
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		prms["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		prms["contest_slug"] = sliceVal
 	}
 	{
 		sliceVal := []string{strconv.Itoa(page)}
@@ -762,12 +806,16 @@ func ShowDraftOKFull(t goatest.TInterface, ctx context.Context, service *goa.Ser
 		sliceVal := []string{sort}
 		prms["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		prms["task"] = sliceVal
 	}
-	if user != nil {
-		sliceVal := []string{strconv.Itoa(*user)}
+	{
+		sliceVal := []string{taskSlug}
+		prms["task_slug"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(user)}
 		prms["user"] = sliceVal
 	}
 	if ctx == nil {
@@ -794,12 +842,12 @@ func ShowDraftOKFull(t goatest.TInterface, ctx context.Context, service *goa.Ser
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt app.ComJossemargtSaoEntryFullCollection
+	var mt app.ComJossemargtSaoDraftFullCollection
 	if resp != nil {
 		var _ok bool
-		mt, _ok = resp.(app.ComJossemargtSaoEntryFullCollection)
+		mt, _ok = resp.(app.ComJossemargtSaoDraftFullCollection)
 		if !_ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoEntryFullCollection", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoDraftFullCollection", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -815,7 +863,7 @@ func ShowDraftOKFull(t goatest.TInterface, ctx context.Context, service *goa.Ser
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowDraftOKLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, contest *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoEntryLinkCollection) {
+func ShowDraftOKLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, contest int, contestSlug string, page int, pageSize int, sort string, task int, taskSlug string, user int) (http.ResponseWriter, app.ComJossemargtSaoDraftLinkCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -836,9 +884,13 @@ func ShowDraftOKLink(t goatest.TInterface, ctx context.Context, service *goa.Ser
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		query["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		query["contest_slug"] = sliceVal
 	}
 	{
 		sliceVal := []string{strconv.Itoa(page)}
@@ -852,12 +904,16 @@ func ShowDraftOKLink(t goatest.TInterface, ctx context.Context, service *goa.Ser
 		sliceVal := []string{sort}
 		query["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		query["task"] = sliceVal
 	}
-	if user != nil {
-		sliceVal := []string{strconv.Itoa(*user)}
+	{
+		sliceVal := []string{taskSlug}
+		query["task_slug"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(user)}
 		query["user"] = sliceVal
 	}
 	u := &url.URL{
@@ -869,9 +925,13 @@ func ShowDraftOKLink(t goatest.TInterface, ctx context.Context, service *goa.Ser
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		prms["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		prms["contest_slug"] = sliceVal
 	}
 	{
 		sliceVal := []string{strconv.Itoa(page)}
@@ -885,12 +945,16 @@ func ShowDraftOKLink(t goatest.TInterface, ctx context.Context, service *goa.Ser
 		sliceVal := []string{sort}
 		prms["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		prms["task"] = sliceVal
 	}
-	if user != nil {
-		sliceVal := []string{strconv.Itoa(*user)}
+	{
+		sliceVal := []string{taskSlug}
+		prms["task_slug"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(user)}
 		prms["user"] = sliceVal
 	}
 	if ctx == nil {
@@ -917,12 +981,12 @@ func ShowDraftOKLink(t goatest.TInterface, ctx context.Context, service *goa.Ser
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt app.ComJossemargtSaoEntryLinkCollection
+	var mt app.ComJossemargtSaoDraftLinkCollection
 	if resp != nil {
 		var _ok bool
-		mt, _ok = resp.(app.ComJossemargtSaoEntryLinkCollection)
+		mt, _ok = resp.(app.ComJossemargtSaoDraftLinkCollection)
 		if !_ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoEntryLinkCollection", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoDraftLinkCollection", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -938,7 +1002,7 @@ func ShowDraftOKLink(t goatest.TInterface, ctx context.Context, service *goa.Ser
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowDraftUnauthorized(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, contest *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, error) {
+func ShowDraftUnauthorized(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftController, contest int, contestSlug string, page int, pageSize int, sort string, task int, taskSlug string, user int) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -959,9 +1023,13 @@ func ShowDraftUnauthorized(t goatest.TInterface, ctx context.Context, service *g
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		query["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		query["contest_slug"] = sliceVal
 	}
 	{
 		sliceVal := []string{strconv.Itoa(page)}
@@ -975,12 +1043,16 @@ func ShowDraftUnauthorized(t goatest.TInterface, ctx context.Context, service *g
 		sliceVal := []string{sort}
 		query["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		query["task"] = sliceVal
 	}
-	if user != nil {
-		sliceVal := []string{strconv.Itoa(*user)}
+	{
+		sliceVal := []string{taskSlug}
+		query["task_slug"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(user)}
 		query["user"] = sliceVal
 	}
 	u := &url.URL{
@@ -992,9 +1064,13 @@ func ShowDraftUnauthorized(t goatest.TInterface, ctx context.Context, service *g
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		prms["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		prms["contest_slug"] = sliceVal
 	}
 	{
 		sliceVal := []string{strconv.Itoa(page)}
@@ -1008,12 +1084,16 @@ func ShowDraftUnauthorized(t goatest.TInterface, ctx context.Context, service *g
 		sliceVal := []string{sort}
 		prms["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		prms["task"] = sliceVal
 	}
-	if user != nil {
-		sliceVal := []string{strconv.Itoa(*user)}
+	{
+		sliceVal := []string{taskSlug}
+		prms["task_slug"] = sliceVal
+	}
+	{
+		sliceVal := []string{strconv.Itoa(user)}
 		prms["user"] = sliceVal
 	}
 	if ctx == nil {

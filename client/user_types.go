@@ -94,7 +94,7 @@ func (ut *AbstractEntry) Validate() (err error) {
 	return
 }
 
-// Embedded reprensentation of an entry compilation result
+// Embedded representation of an entry compilation result
 type compilationResult struct {
 	// Memory consumed
 	Memory *int `form:"memory,omitempty" json:"memory,omitempty" yaml:"memory,omitempty" xml:"memory,omitempty"`
@@ -162,7 +162,7 @@ func (ut *compilationResult) Publicize() *CompilationResult {
 	return &pub
 }
 
-// Embedded reprensentation of an entry compilation result
+// Embedded representation of an entry compilation result
 type CompilationResult struct {
 	// Memory consumed
 	Memory *int `form:"memory,omitempty" json:"memory,omitempty" yaml:"memory,omitempty" xml:"memory,omitempty"`
@@ -189,124 +189,6 @@ func (ut *CompilationResult) Validate() (err error) {
 		if *ut.Tries < 0 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError(`type.tries`, *ut.Tries, 0, true))
 		}
-	}
-	return
-}
-
-// Any source code or input that should be compiled, executed or evaluated
-type entryFormPayload struct {
-	// Contest unique and human readable string identifier
-	ContestSlug *string `form:"contestSlug,omitempty" json:"contestSlug,omitempty" yaml:"contestSlug,omitempty" xml:"contestSlug,omitempty"`
-	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
-	// 		any submitted Entry will use a CMS Token
-	Ranked *bool `form:"ranked,omitempty" json:"ranked,omitempty" yaml:"ranked,omitempty" xml:"ranked,omitempty"`
-	// Source files representation. Within this list the source code files and input files can be
-	// 						  sent alike.
-	Sources []multipart.FileHeader `form:"sources,omitempty" json:"sources,omitempty" yaml:"sources,omitempty" xml:"sources,omitempty"`
-	// Task unique and human readable string identifier
-	TaskSlug *string `form:"taskSlug,omitempty" json:"taskSlug,omitempty" yaml:"taskSlug,omitempty" xml:"taskSlug,omitempty"`
-}
-
-// Finalize sets the default values for entryFormPayload type instance.
-func (ut *entryFormPayload) Finalize() {
-	var defaultContestSlug = ""
-	if ut.ContestSlug == nil {
-		ut.ContestSlug = &defaultContestSlug
-	}
-	var defaultRanked = true
-	if ut.Ranked == nil {
-		ut.Ranked = &defaultRanked
-	}
-	var defaultTaskSlug = ""
-	if ut.TaskSlug == nil {
-		ut.TaskSlug = &defaultTaskSlug
-	}
-}
-
-// Validate validates the entryFormPayload type instance.
-func (ut *entryFormPayload) Validate() (err error) {
-	if ut.ContestSlug == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "contestSlug"))
-	}
-	if ut.TaskSlug == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "taskSlug"))
-	}
-	if ut.Ranked == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "ranked"))
-	}
-	if ut.Sources == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "sources"))
-	}
-	if ut.ContestSlug != nil {
-		if ok := goa.ValidatePattern(`[_a-zA-Z0-9\-]+`, *ut.ContestSlug); !ok {
-			err = goa.MergeErrors(err, goa.InvalidPatternError(`request.contestSlug`, *ut.ContestSlug, `[_a-zA-Z0-9\-]+`))
-		}
-	}
-	if ut.Sources != nil {
-		if len(ut.Sources) < 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.sources`, ut.Sources, len(ut.Sources), 1, true))
-		}
-	}
-	if ut.TaskSlug != nil {
-		if ok := goa.ValidatePattern(`[_a-zA-Z0-9\-]+`, *ut.TaskSlug); !ok {
-			err = goa.MergeErrors(err, goa.InvalidPatternError(`request.taskSlug`, *ut.TaskSlug, `[_a-zA-Z0-9\-]+`))
-		}
-	}
-	return
-}
-
-// Publicize creates EntryFormPayload from entryFormPayload
-func (ut *entryFormPayload) Publicize() *EntryFormPayload {
-	var pub EntryFormPayload
-	if ut.ContestSlug != nil {
-		pub.ContestSlug = *ut.ContestSlug
-	}
-	if ut.Ranked != nil {
-		pub.Ranked = *ut.Ranked
-	}
-	if ut.Sources != nil {
-		pub.Sources = ut.Sources
-	}
-	if ut.TaskSlug != nil {
-		pub.TaskSlug = *ut.TaskSlug
-	}
-	return &pub
-}
-
-// Any source code or input that should be compiled, executed or evaluated
-type EntryFormPayload struct {
-	// Contest unique and human readable string identifier
-	ContestSlug string `form:"contestSlug" json:"contestSlug" yaml:"contestSlug" xml:"contestSlug"`
-	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
-	// 		any submitted Entry will use a CMS Token
-	Ranked bool `form:"ranked" json:"ranked" yaml:"ranked" xml:"ranked"`
-	// Source files representation. Within this list the source code files and input files can be
-	// 						  sent alike.
-	Sources []multipart.FileHeader `form:"sources" json:"sources" yaml:"sources" xml:"sources"`
-	// Task unique and human readable string identifier
-	TaskSlug string `form:"taskSlug" json:"taskSlug" yaml:"taskSlug" xml:"taskSlug"`
-}
-
-// Validate validates the EntryFormPayload type instance.
-func (ut *EntryFormPayload) Validate() (err error) {
-	if ut.ContestSlug == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "contestSlug"))
-	}
-	if ut.TaskSlug == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "taskSlug"))
-	}
-
-	if ut.Sources == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "sources"))
-	}
-	if ok := goa.ValidatePattern(`[_a-zA-Z0-9\-]+`, ut.ContestSlug); !ok {
-		err = goa.MergeErrors(err, goa.InvalidPatternError(`type.contestSlug`, ut.ContestSlug, `[_a-zA-Z0-9\-]+`))
-	}
-	if len(ut.Sources) < 1 {
-		err = goa.MergeErrors(err, goa.InvalidLengthError(`type.sources`, ut.Sources, len(ut.Sources), 1, true))
-	}
-	if ok := goa.ValidatePattern(`[_a-zA-Z0-9\-]+`, ut.TaskSlug); !ok {
-		err = goa.MergeErrors(err, goa.InvalidPatternError(`type.taskSlug`, ut.TaskSlug, `[_a-zA-Z0-9\-]+`))
 	}
 	return
 }
@@ -560,6 +442,8 @@ func (ut *EvaluationResult) Validate() (err error) {
 type executionResult struct {
 	// Memory consumed
 	Memory *int `form:"memory,omitempty" json:"memory,omitempty" yaml:"memory,omitempty" xml:"memory,omitempty"`
+	// Execution output
+	Output *string `form:"output,omitempty" json:"output,omitempty" yaml:"output,omitempty" xml:"output,omitempty"`
 	// Execution result status
 	Status *string `form:"status,omitempty" json:"status,omitempty" yaml:"status,omitempty" xml:"status,omitempty"`
 	// The spent execution CPU time
@@ -568,20 +452,43 @@ type executionResult struct {
 	WallClockTime *float64 `form:"wallClockTime,omitempty" json:"wallClockTime,omitempty" yaml:"wallClockTime,omitempty" xml:"wallClockTime,omitempty"`
 }
 
+// Finalize sets the default values for executionResult type instance.
+func (ut *executionResult) Finalize() {
+	var defaultMemory = 0
+	if ut.Memory == nil {
+		ut.Memory = &defaultMemory
+	}
+	var defaultOutput = ""
+	if ut.Output == nil {
+		ut.Output = &defaultOutput
+	}
+	var defaultTime = 0.000000
+	if ut.Time == nil {
+		ut.Time = &defaultTime
+	}
+	var defaultWallClockTime = 0.000000
+	if ut.WallClockTime == nil {
+		ut.WallClockTime = &defaultWallClockTime
+	}
+}
+
 // Publicize creates ExecutionResult from executionResult
 func (ut *executionResult) Publicize() *ExecutionResult {
 	var pub ExecutionResult
 	if ut.Memory != nil {
-		pub.Memory = ut.Memory
+		pub.Memory = *ut.Memory
+	}
+	if ut.Output != nil {
+		pub.Output = *ut.Output
 	}
 	if ut.Status != nil {
 		pub.Status = ut.Status
 	}
 	if ut.Time != nil {
-		pub.Time = ut.Time
+		pub.Time = *ut.Time
 	}
 	if ut.WallClockTime != nil {
-		pub.WallClockTime = ut.WallClockTime
+		pub.WallClockTime = *ut.WallClockTime
 	}
 	return &pub
 }
@@ -589,11 +496,13 @@ func (ut *executionResult) Publicize() *ExecutionResult {
 // Embedded representation of an entry execution result
 type ExecutionResult struct {
 	// Memory consumed
-	Memory *int `form:"memory,omitempty" json:"memory,omitempty" yaml:"memory,omitempty" xml:"memory,omitempty"`
+	Memory int `form:"memory" json:"memory" yaml:"memory" xml:"memory"`
+	// Execution output
+	Output string `form:"output" json:"output" yaml:"output" xml:"output"`
 	// Execution result status
 	Status *string `form:"status,omitempty" json:"status,omitempty" yaml:"status,omitempty" xml:"status,omitempty"`
 	// The spent execution CPU time
-	Time *float64 `form:"time,omitempty" json:"time,omitempty" yaml:"time,omitempty" xml:"time,omitempty"`
+	Time float64 `form:"time" json:"time" yaml:"time" xml:"time"`
 	// The spent execution human perceived time
-	WallClockTime *float64 `form:"wallClockTime,omitempty" json:"wallClockTime,omitempty" yaml:"wallClockTime,omitempty" xml:"wallClockTime,omitempty"`
+	WallClockTime float64 `form:"wallClockTime" json:"wallClockTime" yaml:"wallClockTime" xml:"wallClockTime"`
 }

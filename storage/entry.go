@@ -7,42 +7,30 @@ import (
 	"github.com/pkg/errors"
 )
 
-const entryTable = "submissions"
-const taskTable = "tasks"
-const contestTable = "contests"
-const resultTable = "submission_results"
-
 type EntryRepository interface {
 	FindByID(int) (*model.Entry, error)
 	FindBy(EntryDTO) ([]model.Entry, error)
 }
 
+// NewEntryDraftRepository returns a EntryRepository for Entry (CMS submittion) entity
 func NewEntryRepository(dbx Queryer) EntryRepository {
-	return &defaultEntryRepository{dbx}
+	return &defaultEntryRepository{
+		source:        dbx,
+		findByIDQuery: buildEntryFindByIDQuery,
+		findByQuery:   buildEntryFindByQuery,
+	}
 }
 
 type defaultEntryRepository struct {
-	source Queryer
+	source        Queryer
+	findByIDQuery func() (string, error)
+	findByQuery   func(dto EntryDTO) (string, error)
 }
 
 func (entryRepo *defaultEntryRepository) FindByID(entryID int) (*model.Entry, error) {
 	entry := model.Entry{}
 
-	query, err := NewProjection(
-		Select(
-			"sb.id",
-			"sb.task_id",
-			"tsk.name AS task_slug",
-			"sbr.dataset_id AS result_prtl_id",
-			"tsk.contest_id",
-			"cts.name AS contest_slug",
-		),
-		From(fmt.Sprintf("%s AS sb", entryTable)),
-		Join("%s AS tsk ON tsk.id = sb.task_id", taskTable),
-		Join("%s AS cts ON cts.id = tsk.contest_id", contestTable),
-		Join("%s AS sbr ON sbr.submission_id = sb.id", resultTable),
-		Where("sb.id = $1"),
-	)
+	query, err := entryRepo.findByIDQuery()
 
 	if err != nil {
 		return nil, errors.Wrapf(err, "Failed building Entry SQL projection")
@@ -58,7 +46,7 @@ func (entryRepo *defaultEntryRepository) FindByID(entryID int) (*model.Entry, er
 }
 
 func (entryRepo *defaultEntryRepository) FindBy(dto EntryDTO) ([]model.Entry, error) {
-	query, err := buildEntryQuery(dto)
+	query, err := entryRepo.findByQuery(dto)
 	if err != nil {
 		return nil, errors.Wrapf(err, "Failed building Entry SQL projection")
 	}
@@ -73,7 +61,25 @@ func (entryRepo *defaultEntryRepository) FindBy(dto EntryDTO) ([]model.Entry, er
 	return entries, nil
 }
 
-func buildEntryQuery(dto EntryDTO) (string, error) {
+func buildEntryFindByIDQuery() (string, error) {
+	return NewProjection(
+		Select(
+			"sb.id",
+			"sb.task_id",
+			"tsk.name AS task_slug",
+			"sbr.dataset_id AS result_prtl_id",
+			"tsk.contest_id",
+			"cts.name AS contest_slug",
+		),
+		From(fmt.Sprintf("%s AS sb", entryTable)),
+		Join("%s AS tsk ON tsk.id = sb.task_id", taskTable),
+		Join("%s AS cts ON cts.id = tsk.contest_id", contestTable),
+		Join("%s AS sbr ON sbr.submission_id = sb.id", resultTable),
+		Where("sb.id = $1"),
+	)
+}
+
+func buildEntryFindByQuery(dto EntryDTO) (string, error) {
 	dto.prepare()
 
 	sqlParts := []SQLBuilderOption{
@@ -114,12 +120,4 @@ func buildEntryQuery(dto EntryDTO) (string, error) {
 	}
 
 	return NewProjection(sqlParts...)
-}
-
-type EntryDTO struct {
-	DTO
-	ContestID   int
-	ContestSlug string
-	TaskID      int
-	TaskSlug    string
 }

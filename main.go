@@ -72,6 +72,7 @@ func main() {
 
 	// Create resource repositories
 	entryRepository := storage.NewEntryRepository(dbConn)
+	draftRepository := storage.NewEntryDraftRepository(dbConn)
 
 	// Create service
 	service := goa.New("SAO v1")
@@ -86,10 +87,10 @@ func main() {
 	c := NewActionsController(service)
 	app.MountActionsController(service, c)
 	// Mount "draft" controller
-	c2 := NewDraftController(service)
+	c2 := NewDraftController(service, draftRepository)
 	app.MountDraftController(service, c2)
 	// Mount "draft-result" controller
-	c3 := NewDraftresultController(service)
+	c3 := NewDraftResultController(service)
 	app.MountDraftresultController(service, c3)
 	// Mount "entry" controller
 	c4 := NewEntryController(service, entryRepository)

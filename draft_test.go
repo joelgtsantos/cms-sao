@@ -16,12 +16,12 @@ import (
 	"github.com/jossemargt/cms-sao/storage"
 )
 
-func TestEntryController_Get(t *testing.T) {
+func TestDraftController_Get(t *testing.T) {
 	scenarios := []struct {
 		name             string
 		mockRepo         storage.EntryRepository
-		expectedResource *app.ComJossemargtSaoEntryFull
-		goaFnWrapper     func(*testing.T, context.Context, *goa.Service, app.EntryController) *app.ComJossemargtSaoEntryFull
+		expectedResource *app.ComJossemargtSaoDraftFull
+		goaFnWrapper     func(*testing.T, context.Context, *goa.Service, app.DraftController) *app.ComJossemargtSaoDraftFull
 	}{
 		{
 			name: "Get existing unprocessed Entry (without linked Result nor Score)",
@@ -34,18 +34,17 @@ func TestEntryController_Get(t *testing.T) {
 					ContestSlug: "con_test",
 				},
 			},
-			expectedResource: &app.ComJossemargtSaoEntryFull{
+			expectedResource: &app.ComJossemargtSaoDraftFull{
 				ID:          5,
 				ContestID:   7,
 				TaskID:      7,
 				ContestSlug: "con_test",
 				TaskSlug:    "batch_test",
-				Ranked:      true,
-				Href:        fmt.Sprintf("%s%d", app.EntryHref(), 5),
+				Href:        fmt.Sprintf("%s%d", app.DraftHref(), 5),
 			},
-			goaFnWrapper: func(t *testing.T, c context.Context, s *goa.Service, ctrl app.EntryController) *app.ComJossemargtSaoEntryFull {
+			goaFnWrapper: func(t *testing.T, c context.Context, s *goa.Service, ctrl app.DraftController) *app.ComJossemargtSaoDraftFull {
 				// The controller should call to Ok fn
-				_, resource := goatesthelper.GetEntryOKFull(t, c, s, ctrl, 5)
+				_, resource := goatesthelper.GetDraftOKFull(t, c, s, ctrl, 5)
 				return resource
 			},
 		},
@@ -61,28 +60,23 @@ func TestEntryController_Get(t *testing.T) {
 					DatasetID:   7,
 				},
 			},
-			expectedResource: &app.ComJossemargtSaoEntryFull{
+			expectedResource: &app.ComJossemargtSaoDraftFull{
 				ID:          5,
 				ContestID:   7,
 				TaskID:      7,
 				ContestSlug: "con_test",
 				TaskSlug:    "batch_test",
-				Ranked:      true,
-				Href:        fmt.Sprintf("%s%d", app.EntryHref(), 5),
-				Links: &app.ComJossemargtSaoEntryLinks{
-					Result: &app.ComJossemargtSaoResultLink{
+				Href:        fmt.Sprintf("%s%d", app.DraftHref(), 5),
+				Links: &app.ComJossemargtSaoDraftLinks{
+					Result: &app.ComJossemargtSaoDraftResultLink{
 						ID:   "5-7",
-						Href: fmt.Sprintf("%s%s", app.ResultHref(), "5-7"),
-					},
-					Score: &app.ComJossemargtSaoScoreLink{
-						ID:   "5-7",
-						Href: fmt.Sprintf("%s%s", app.ScoresHref(), "5-7"),
+						Href: fmt.Sprintf("%s%s", app.DraftresultHref(), "5-7"),
 					},
 				},
 			},
-			goaFnWrapper: func(t *testing.T, c context.Context, s *goa.Service, ctrl app.EntryController) *app.ComJossemargtSaoEntryFull {
+			goaFnWrapper: func(t *testing.T, c context.Context, s *goa.Service, ctrl app.DraftController) *app.ComJossemargtSaoDraftFull {
 				// The controller should call to Ok fn
-				_, resource := goatesthelper.GetEntryOKFull(t, c, s, ctrl, 5)
+				_, resource := goatesthelper.GetDraftOKFull(t, c, s, ctrl, 5)
 				return resource
 			},
 		},
@@ -91,9 +85,9 @@ func TestEntryController_Get(t *testing.T) {
 			mockRepo: &mockEntryRepository{
 				err: errors.Wrap(sql.ErrNoRows, "Test, no rows found"),
 			},
-			goaFnWrapper: func(t *testing.T, c context.Context, s *goa.Service, ctrl app.EntryController) *app.ComJossemargtSaoEntryFull {
+			goaFnWrapper: func(t *testing.T, c context.Context, s *goa.Service, ctrl app.DraftController) *app.ComJossemargtSaoDraftFull {
 				// The controller should call to NotFound fn
-				goatesthelper.GetEntryNotFound(t, c, s, ctrl, -1)
+				goatesthelper.GetDraftNotFound(t, c, s, ctrl, -1)
 				return nil
 			},
 		},
@@ -106,7 +100,7 @@ func TestEntryController_Get(t *testing.T) {
 
 	for _, tt := range scenarios {
 		t.Run(tt.name, func(t *testing.T) {
-			ctrl := NewEntryController(service, tt.mockRepo)
+			ctrl := NewDraftController(service, tt.mockRepo)
 			resource := tt.goaFnWrapper(t, ctx, service, ctrl)
 
 			if !reflect.DeepEqual(tt.expectedResource, resource) {
@@ -116,12 +110,12 @@ func TestEntryController_Get(t *testing.T) {
 	}
 }
 
-func TestEntryController_Show(t *testing.T) {
+func TestDraftController_Show(t *testing.T) {
 	scenarios := []struct {
 		name             string
 		mockRepo         storage.EntryRepository
-		expectedResource app.ComJossemargtSaoEntryCollection
-		goaFnWrapper     func(*testing.T, context.Context, *goa.Service, app.EntryController) app.ComJossemargtSaoEntryCollection
+		expectedResource app.ComJossemargtSaoDraftCollection
+		goaFnWrapper     func(*testing.T, context.Context, *goa.Service, app.DraftController) app.ComJossemargtSaoDraftCollection
 	}{
 		{
 			name: "Get a single Entry that match search criteria",
@@ -136,18 +130,17 @@ func TestEntryController_Show(t *testing.T) {
 					},
 				},
 			},
-			expectedResource: []*app.ComJossemargtSaoEntry{
-				&app.ComJossemargtSaoEntry{
+			expectedResource: []*app.ComJossemargtSaoDraft{
+				&app.ComJossemargtSaoDraft{
 					ID:          5,
 					ContestSlug: "con_test",
 					TaskSlug:    "batch_test",
-					Ranked:      true,
-					Href:        fmt.Sprintf("%s%d", app.EntryHref(), 5),
+					Href:        fmt.Sprintf("%s%d", app.DraftHref(), 5),
 				},
 			},
-			goaFnWrapper: func(t *testing.T, c context.Context, s *goa.Service, ctrl app.EntryController) app.ComJossemargtSaoEntryCollection {
+			goaFnWrapper: func(t *testing.T, c context.Context, s *goa.Service, ctrl app.DraftController) app.ComJossemargtSaoDraftCollection {
 				// The controller should call to Ok fn
-				_, resource := goatesthelper.ShowEntryOK(t, c, s, ctrl, 1, "", 1, 5, "desc", 1, "", 1)
+				_, resource := goatesthelper.ShowDraftOK(t, c, s, ctrl, 1, "", 1, 5, "desc", 1, "", 1)
 				return resource
 			},
 		},
@@ -168,22 +161,21 @@ func TestEntryController_Show(t *testing.T) {
 					return list
 				}(),
 			},
-			expectedResource: func() []*app.ComJossemargtSaoEntry {
-				list := make([]*app.ComJossemargtSaoEntry, 0, 3)
+			expectedResource: func() []*app.ComJossemargtSaoDraft {
+				list := make([]*app.ComJossemargtSaoDraft, 0, 3)
 				for i := 1; i < 4; i++ {
-					list = append(list, &app.ComJossemargtSaoEntry{
+					list = append(list, &app.ComJossemargtSaoDraft{
 						ID:          i,
 						ContestSlug: "con_test",
 						TaskSlug:    "batch_test",
-						Ranked:      true,
-						Href:        fmt.Sprintf("%s%d", app.EntryHref(), i),
+						Href:        fmt.Sprintf("%s%d", app.DraftHref(), i),
 					})
 				}
 				return list
 			}(),
-			goaFnWrapper: func(t *testing.T, c context.Context, s *goa.Service, ctrl app.EntryController) app.ComJossemargtSaoEntryCollection {
+			goaFnWrapper: func(t *testing.T, c context.Context, s *goa.Service, ctrl app.DraftController) app.ComJossemargtSaoDraftCollection {
 				// The controller should call to Ok fn
-				_, resource := goatesthelper.ShowEntryOK(t, c, s, ctrl, 1, "", 1, 5, "desc", 1, "", 1)
+				_, resource := goatesthelper.ShowDraftOK(t, c, s, ctrl, 1, "", 1, 5, "desc", 1, "", 1)
 				return resource
 			},
 		},
@@ -192,10 +184,10 @@ func TestEntryController_Show(t *testing.T) {
 			mockRepo: &mockEntryRepository{
 				err: errors.Wrap(sql.ErrNoRows, "Test, no rows found"),
 			},
-			expectedResource: []*app.ComJossemargtSaoEntry{},
-			goaFnWrapper: func(t *testing.T, c context.Context, s *goa.Service, ctrl app.EntryController) app.ComJossemargtSaoEntryCollection {
+			expectedResource: []*app.ComJossemargtSaoDraft{},
+			goaFnWrapper: func(t *testing.T, c context.Context, s *goa.Service, ctrl app.DraftController) app.ComJossemargtSaoDraftCollection {
 				// The controller should call to Ok fn
-				_, resource := goatesthelper.ShowEntryOK(t, c, s, ctrl, 1, "", 1, 5, "desc", 1, "", 1)
+				_, resource := goatesthelper.ShowDraftOK(t, c, s, ctrl, 1, "", 1, 5, "desc", 1, "", 1)
 				return resource
 			},
 		},
@@ -208,7 +200,7 @@ func TestEntryController_Show(t *testing.T) {
 
 	for _, tt := range scenarios {
 		t.Run(tt.name, func(t *testing.T) {
-			ctrl := NewEntryController(service, tt.mockRepo)
+			ctrl := NewDraftController(service, tt.mockRepo)
 			resource := tt.goaFnWrapper(t, ctx, service, ctrl)
 
 			if !reflect.DeepEqual(tt.expectedResource, resource) {
@@ -216,26 +208,4 @@ func TestEntryController_Show(t *testing.T) {
 			}
 		})
 	}
-}
-
-type mockEntryRepository struct {
-	entry   *model.Entry
-	entries []model.Entry
-	err     error
-}
-
-func (m *mockEntryRepository) FindByID(_ int) (*model.Entry, error) {
-	if m.err != nil {
-		return nil, m.err
-	}
-
-	return m.entry, nil
-}
-
-func (m *mockEntryRepository) FindBy(_ storage.EntryDTO) ([]model.Entry, error) {
-	if m.err != nil {
-		return nil, m.err
-	}
-
-	return m.entries, nil
 }

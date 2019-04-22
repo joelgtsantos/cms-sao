@@ -11,10 +11,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func init() {
-	fmt.Println("WARNING: The following tests are tied to a database connection and real data")
-}
-
+// WARNING: The following tests are tied to a database connection and real data
 func TestDefaultEntryRepository_FindByIDIntegration(t *testing.T) {
 	var dbCred dbCredentials
 	getCredentialsFromEnv(&dbCred)
@@ -34,6 +31,7 @@ func TestDefaultEntryRepository_FindByIDIntegration(t *testing.T) {
 	t.Logf("%#v", entry)
 }
 
+// WARNING: The following tests are tied to a database connection and real data
 func TestDefaultEntryRepository_FindByIntegration(t *testing.T) {
 	var dbCred dbCredentials
 	getCredentialsFromEnv(&dbCred)

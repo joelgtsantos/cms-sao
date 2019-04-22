@@ -9,7 +9,7 @@ import (
 	"github.com/jossemargt/cms-sao/model"
 )
 
-func TestDefaultEntryRepository_FindByID(t *testing.T) {
+func TestDefaultEntryDraftRepository_FindByID(t *testing.T) {
 	scenarios := []struct {
 		name       string
 		queryer    *mockDB
@@ -49,7 +49,7 @@ func TestDefaultEntryRepository_FindByID(t *testing.T) {
 
 	for _, tt := range scenarios {
 		t.Run(tt.name, func(t *testing.T) {
-			repo := NewEntryRepository(tt.queryer)
+			repo := NewEntryDraftRepository(tt.queryer)
 
 			entry, err := repo.FindByID(123)
 
@@ -70,7 +70,7 @@ func TestDefaultEntryRepository_FindByID(t *testing.T) {
 	}
 }
 
-func TestDefaultEntryRepository_FindBy(t *testing.T) {
+func TestDefaultEntryDraftRepository_FindBy(t *testing.T) {
 	scenarios := []struct {
 		name           string
 		queryerFactory func(t *testing.T) *mockDB
@@ -163,7 +163,7 @@ func TestDefaultEntryRepository_FindBy(t *testing.T) {
 	for _, tt := range scenarios {
 		t.Run(tt.name, func(t *testing.T) {
 			db := tt.queryerFactory(t)
-			repo := NewEntryRepository(db)
+			repo := NewEntryDraftRepository(db)
 
 			entries, err := repo.FindBy(tt.dto)
 
@@ -184,16 +184,16 @@ func TestDefaultEntryRepository_FindBy(t *testing.T) {
 	}
 }
 
-func Test_buildEntryFindByIDQuery(t *testing.T) {
-	query, err := buildEntryFindByIDQuery()
+func Test_buildEntryDraftFindByIDQuery(t *testing.T) {
+	query, err := buildEntryDraftFindByIDQuery()
 	if err != nil {
 		t.Fatalf("Un-expeted error, %v", err)
 	}
 
 	keywords := []string{
-		entryTable,
-		resultTable,
-		"submission_id = sb.id",
+		entryDraftTable,
+		entryDraftResultTable,
+		"utr.user_test_id = ut.id",
 	}
 
 	for _, word := range keywords {
@@ -203,7 +203,7 @@ func Test_buildEntryFindByIDQuery(t *testing.T) {
 	}
 }
 
-func Test_buildEntryFindByQuery(t *testing.T) {
+func Test_buildEntryDraftFindQuery(t *testing.T) {
 	scenarios := []struct {
 		name          string
 		dto           EntryDTO
@@ -214,12 +214,13 @@ func Test_buildEntryFindByQuery(t *testing.T) {
 			name: "Base query",
 			dto:  EntryDTO{},
 			expectedStmts: []string{
-				entryTable,
-				resultTable,
-				"submission_id = sb.id",
-				"LIMIT",
+				entryDraftTable,
+				entryDraftResultTable,
+				"user_test_id = ut.id",
 			},
 			excludedStmts: []string{
+				entryTable,
+				resultTable,
 				"OFFSET",
 				"tsk.name LIKE",
 				"cts.name LIKE",
@@ -234,9 +235,9 @@ func Test_buildEntryFindByQuery(t *testing.T) {
 				},
 			},
 			expectedStmts: []string{
-				entryTable,
-				resultTable,
-				"submission_id = sb.id",
+				entryDraftTable,
+				entryDraftResultTable,
+				"user_test_id = ut.id",
 				"LIMIT 5",
 				"OFFSET 10",
 			},
@@ -258,9 +259,9 @@ func Test_buildEntryFindByQuery(t *testing.T) {
 				ContestSlug: "bar",
 			},
 			expectedStmts: []string{
-				entryTable,
-				resultTable,
-				"submission_id = sb.id",
+				entryDraftTable,
+				entryDraftResultTable,
+				"user_test_id = ut.id",
 				"LIMIT 5",
 				"tsk.id = 7",
 				"tsk.name LIKE 'foo'",
@@ -275,7 +276,7 @@ func Test_buildEntryFindByQuery(t *testing.T) {
 
 	for _, tt := range scenarios {
 		t.Run(tt.name, func(t *testing.T) {
-			query, err := buildEntryFindByQuery(tt.dto)
+			query, err := buildEntryDraftFindQuery(tt.dto)
 			if err != nil {
 				t.Errorf("Un-expeted error, %v", err)
 				return
@@ -294,17 +295,4 @@ func Test_buildEntryFindByQuery(t *testing.T) {
 			}
 		})
 	}
-}
-
-type mockDB struct {
-	fnGet   func(interface{}, string, ...interface{}) error
-	fnQuery func(interface{}, string, ...interface{}) error
-}
-
-func (m *mockDB) Select(destination interface{}, query string, args ...interface{}) error {
-	return m.fnQuery(destination, query, args...)
-}
-
-func (m *mockDB) Get(destination interface{}, query string, args ...interface{}) error {
-	return m.fnGet(destination, query, args...)
 }

@@ -56,8 +56,8 @@ func ShowDraftPath() string {
 }
 
 // List the entry drafts without their sources.
-func (c *Client) ShowDraft(ctx context.Context, path string, contest *int, page *int, pageSize *int, sort *string, task *int, user *int) (*http.Response, error) {
-	req, err := c.NewShowDraftRequest(ctx, path, contest, page, pageSize, sort, task, user)
+func (c *Client) ShowDraft(ctx context.Context, path string, contest *int, contestSlug *string, page *int, pageSize *int, sort *string, task *int, taskSlug *string, user *int) (*http.Response, error) {
+	req, err := c.NewShowDraftRequest(ctx, path, contest, contestSlug, page, pageSize, sort, task, taskSlug, user)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (c *Client) ShowDraft(ctx context.Context, path string, contest *int, page 
 }
 
 // NewShowDraftRequest create the request corresponding to the show action endpoint of the draft resource.
-func (c *Client) NewShowDraftRequest(ctx context.Context, path string, contest *int, page *int, pageSize *int, sort *string, task *int, user *int) (*http.Request, error) {
+func (c *Client) NewShowDraftRequest(ctx context.Context, path string, contest *int, contestSlug *string, page *int, pageSize *int, sort *string, task *int, taskSlug *string, user *int) (*http.Request, error) {
 	scheme := c.Scheme
 	if scheme == "" {
 		scheme = "http"
@@ -75,6 +75,9 @@ func (c *Client) NewShowDraftRequest(ctx context.Context, path string, contest *
 	if contest != nil {
 		tmp6 := strconv.Itoa(*contest)
 		values.Set("contest", tmp6)
+	}
+	if contestSlug != nil {
+		values.Set("contest_slug", *contestSlug)
 	}
 	if page != nil {
 		tmp7 := strconv.Itoa(*page)
@@ -90,6 +93,9 @@ func (c *Client) NewShowDraftRequest(ctx context.Context, path string, contest *
 	if task != nil {
 		tmp9 := strconv.Itoa(*task)
 		values.Set("task", tmp9)
+	}
+	if taskSlug != nil {
+		values.Set("task_slug", *taskSlug)
 	}
 	if user != nil {
 		tmp10 := strconv.Itoa(*user)

@@ -59,19 +59,3 @@ var EntryPayload = Type("EntryPayload", func() {
 
 	Required("contestSlug", "taskSlug", "ranked", "sources")
 })
-
-var EntryFormPayload = Type("EntryFormPayload", func() {
-	Description("Any source code or input that should be compiled, executed or evaluated")
-	Reference(AbstractEntry)
-	Attribute("contestSlug")
-	Attribute("taskSlug")
-	Attribute("ranked")
-
-	Attribute("sources", ArrayOf(File), func() {
-		Description(`Source files representation. Within this list the source code files and input files can be 
-						  sent alike.`)
-		MinLength(1)
-	})
-
-	Required("contestSlug", "taskSlug", "ranked", "sources")
-})

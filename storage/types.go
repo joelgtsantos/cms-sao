@@ -1,11 +1,20 @@
 package storage
 
+const (
+	entryTable            = "submissions"
+	taskTable             = "tasks"
+	contestTable          = "contests"
+	resultTable           = "submission_results"
+	entryDraftTable       = "user_tests"
+	entryDraftResultTable = "user_test_results"
+)
+
 type DTO struct {
-	limit int
-	offset int
-	Page int
+	limit    int
+	offset   int
+	Page     int
 	PageSize int
-	Order string
+	Order    string
 }
 
 func (d *DTO) prepare() {
@@ -18,7 +27,7 @@ func (d *DTO) prepare() {
 	}
 
 	d.limit = d.PageSize
-	d.offset = d.Page * d.PageSize - d.PageSize
+	d.offset = d.Page*d.PageSize - d.PageSize
 
 	if len(d.Order) == 0 || !validOrder(d.Order) {
 		d.Order = "DESC"
@@ -28,4 +37,12 @@ func (d *DTO) prepare() {
 
 func validOrder(order string) bool {
 	return order == "ASC" || order == "DESC"
+}
+
+type EntryDTO struct {
+	DTO
+	ContestID   int
+	ContestSlug string
+	TaskID      int
+	TaskSlug    string
 }
