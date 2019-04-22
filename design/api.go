@@ -189,13 +189,19 @@ var _ = Resource("draft", func() {
 		Routing(GET("/"))
 		Params(func() {
 			Param("contest", Integer, "Contest ID", func() {
-				Minimum(0)
+				Default(0)
+			})
+			Param("contest_slug", String, "Contest Slug", func() {
+				Default("")
 			})
 			Param("task", Integer, "Task ID", func() {
-				Minimum(0)
+				Default(0)
+			})
+			Param("task_slug", String, "Task Slug", func() {
+				Default("")
 			})
 			Param("user", Integer, "User ID", func() {
-				Minimum(0)
+				Default(0)
 			})
 			Param("page", Integer, "Page number", func() {
 				Default(1)
@@ -210,7 +216,7 @@ var _ = Resource("draft", func() {
 				Default("desc")
 			})
 		})
-		Response(OK, CollectionOf(EntryMedia))
+		Response(OK, CollectionOf(DraftMedia))
 	})
 
 	Action("get", func() {
@@ -222,7 +228,7 @@ var _ = Resource("draft", func() {
 			})
 		})
 		Response(OK, func() {
-			Media(EntryMedia, "full")
+			Media(DraftMedia, "full")
 		})
 		Response(NotFound)
 	})
@@ -262,7 +268,7 @@ var _ = Resource("draftresult", func() {
 				Default("desc")
 			})
 		})
-		Response(OK, CollectionOf(ResultMedia))
+		Response(OK, CollectionOf(DraftResultMedia))
 	})
 
 	Action("get", func() {
@@ -274,7 +280,7 @@ var _ = Resource("draftresult", func() {
 			})
 		})
 		Response(OK, func() {
-			Media(ResultMedia, "full")
+			Media(DraftResultMedia, "full")
 		})
 		Response(NotFound)
 	})

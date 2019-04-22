@@ -160,7 +160,7 @@ func GetDraftresultNotFound(t goatest.TInterface, ctx context.Context, service *
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func GetDraftresultOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, resultID string) (http.ResponseWriter, *app.ComJossemargtSaoResult) {
+func GetDraftresultOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, resultID string) (http.ResponseWriter, *app.ComJossemargtSaoDraftResult) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -213,12 +213,12 @@ func GetDraftresultOK(t goatest.TInterface, ctx context.Context, service *goa.Se
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt *app.ComJossemargtSaoResult
+	var mt *app.ComJossemargtSaoDraftResult
 	if resp != nil {
 		var _ok bool
-		mt, _ok = resp.(*app.ComJossemargtSaoResult)
+		mt, _ok = resp.(*app.ComJossemargtSaoDraftResult)
 		if !_ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoResult", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoDraftResult", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -234,7 +234,7 @@ func GetDraftresultOK(t goatest.TInterface, ctx context.Context, service *goa.Se
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func GetDraftresultOKFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, resultID string) (http.ResponseWriter, *app.ComJossemargtSaoResultFull) {
+func GetDraftresultOKFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, resultID string) (http.ResponseWriter, *app.ComJossemargtSaoDraftResultFull) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -287,12 +287,12 @@ func GetDraftresultOKFull(t goatest.TInterface, ctx context.Context, service *go
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt *app.ComJossemargtSaoResultFull
+	var mt *app.ComJossemargtSaoDraftResultFull
 	if resp != nil {
 		var _ok bool
-		mt, _ok = resp.(*app.ComJossemargtSaoResultFull)
+		mt, _ok = resp.(*app.ComJossemargtSaoDraftResultFull)
 		if !_ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoResultFull", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoDraftResultFull", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -308,7 +308,7 @@ func GetDraftresultOKFull(t goatest.TInterface, ctx context.Context, service *go
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func GetDraftresultOKLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, resultID string) (http.ResponseWriter, *app.ComJossemargtSaoResultLink) {
+func GetDraftresultOKLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, resultID string) (http.ResponseWriter, *app.ComJossemargtSaoDraftResultLink) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -361,12 +361,12 @@ func GetDraftresultOKLink(t goatest.TInterface, ctx context.Context, service *go
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt *app.ComJossemargtSaoResultLink
+	var mt *app.ComJossemargtSaoDraftResultLink
 	if resp != nil {
 		var _ok bool
-		mt, _ok = resp.(*app.ComJossemargtSaoResultLink)
+		mt, _ok = resp.(*app.ComJossemargtSaoDraftResultLink)
 		if !_ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoResultLink", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoDraftResultLink", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -508,7 +508,7 @@ func ShowDraftresultBadRequest(t goatest.TInterface, ctx context.Context, servic
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowDraftresultOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, contest *int, entry *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoResultCollection) {
+func ShowDraftresultOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, contest *int, entry *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoDraftResultCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -618,12 +618,12 @@ func ShowDraftresultOK(t goatest.TInterface, ctx context.Context, service *goa.S
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt app.ComJossemargtSaoResultCollection
+	var mt app.ComJossemargtSaoDraftResultCollection
 	if resp != nil {
 		var _ok bool
-		mt, _ok = resp.(app.ComJossemargtSaoResultCollection)
+		mt, _ok = resp.(app.ComJossemargtSaoDraftResultCollection)
 		if !_ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoResultCollection", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoDraftResultCollection", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -639,7 +639,7 @@ func ShowDraftresultOK(t goatest.TInterface, ctx context.Context, service *goa.S
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowDraftresultOKFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, contest *int, entry *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoResultFullCollection) {
+func ShowDraftresultOKFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, contest *int, entry *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoDraftResultFullCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -749,12 +749,12 @@ func ShowDraftresultOKFull(t goatest.TInterface, ctx context.Context, service *g
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt app.ComJossemargtSaoResultFullCollection
+	var mt app.ComJossemargtSaoDraftResultFullCollection
 	if resp != nil {
 		var _ok bool
-		mt, _ok = resp.(app.ComJossemargtSaoResultFullCollection)
+		mt, _ok = resp.(app.ComJossemargtSaoDraftResultFullCollection)
 		if !_ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoResultFullCollection", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoDraftResultFullCollection", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -770,7 +770,7 @@ func ShowDraftresultOKFull(t goatest.TInterface, ctx context.Context, service *g
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowDraftresultOKLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, contest *int, entry *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoResultLinkCollection) {
+func ShowDraftresultOKLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, contest *int, entry *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoDraftResultLinkCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -880,12 +880,12 @@ func ShowDraftresultOKLink(t goatest.TInterface, ctx context.Context, service *g
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt app.ComJossemargtSaoResultLinkCollection
+	var mt app.ComJossemargtSaoDraftResultLinkCollection
 	if resp != nil {
 		var _ok bool
-		mt, _ok = resp.(app.ComJossemargtSaoResultLinkCollection)
+		mt, _ok = resp.(app.ComJossemargtSaoDraftResultLinkCollection)
 		if !_ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoResultLinkCollection", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoDraftResultLinkCollection", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {

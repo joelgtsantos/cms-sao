@@ -285,9 +285,9 @@ func NewGetDraftContext(ctx context.Context, r *http.Request, service *goa.Servi
 }
 
 // OKFull sends a HTTP response with status code 200.
-func (ctx *GetDraftContext) OKFull(r *ComJossemargtSaoEntryFull) error {
+func (ctx *GetDraftContext) OKFull(r *ComJossemargtSaoDraftFull) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
-		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.entry+json")
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.draft+json")
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
@@ -319,12 +319,14 @@ type ShowDraftContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
-	Contest  *int
-	Page     int
-	PageSize int
-	Sort     string
-	Task     *int
-	User     *int
+	Contest     int
+	ContestSlug string
+	Page        int
+	PageSize    int
+	Sort        string
+	Task        int
+	TaskSlug    string
+	User        int
 }
 
 // NewShowDraftContext parses the incoming request URL and body, performs validations and creates the
@@ -337,20 +339,22 @@ func NewShowDraftContext(ctx context.Context, r *http.Request, service *goa.Serv
 	req.Request = r
 	rctx := ShowDraftContext{Context: ctx, ResponseData: resp, RequestData: req}
 	paramContest := req.Params["contest"]
-	if len(paramContest) > 0 {
+	if len(paramContest) == 0 {
+		rctx.Contest = 0
+	} else {
 		rawContest := paramContest[0]
 		if contest, err2 := strconv.Atoi(rawContest); err2 == nil {
-			tmp11 := contest
-			tmp10 := &tmp11
-			rctx.Contest = tmp10
+			rctx.Contest = contest
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("contest", rawContest, "integer"))
 		}
-		if rctx.Contest != nil {
-			if *rctx.Contest < 0 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`contest`, *rctx.Contest, 0, true))
-			}
-		}
+	}
+	paramContestSlug := req.Params["contest_slug"]
+	if len(paramContestSlug) == 0 {
+		rctx.ContestSlug = ""
+	} else {
+		rawContestSlug := paramContestSlug[0]
+		rctx.ContestSlug = rawContestSlug
 	}
 	paramPage := req.Params["page"]
 	if len(paramPage) == 0 {
@@ -391,69 +395,66 @@ func NewShowDraftContext(ctx context.Context, r *http.Request, service *goa.Serv
 		}
 	}
 	paramTask := req.Params["task"]
-	if len(paramTask) > 0 {
+	if len(paramTask) == 0 {
+		rctx.Task = 0
+	} else {
 		rawTask := paramTask[0]
 		if task, err2 := strconv.Atoi(rawTask); err2 == nil {
-			tmp15 := task
-			tmp14 := &tmp15
-			rctx.Task = tmp14
+			rctx.Task = task
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("task", rawTask, "integer"))
 		}
-		if rctx.Task != nil {
-			if *rctx.Task < 0 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`task`, *rctx.Task, 0, true))
-			}
-		}
+	}
+	paramTaskSlug := req.Params["task_slug"]
+	if len(paramTaskSlug) == 0 {
+		rctx.TaskSlug = ""
+	} else {
+		rawTaskSlug := paramTaskSlug[0]
+		rctx.TaskSlug = rawTaskSlug
 	}
 	paramUser := req.Params["user"]
-	if len(paramUser) > 0 {
+	if len(paramUser) == 0 {
+		rctx.User = 0
+	} else {
 		rawUser := paramUser[0]
 		if user, err2 := strconv.Atoi(rawUser); err2 == nil {
-			tmp17 := user
-			tmp16 := &tmp17
-			rctx.User = tmp16
+			rctx.User = user
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("user", rawUser, "integer"))
-		}
-		if rctx.User != nil {
-			if *rctx.User < 0 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`user`, *rctx.User, 0, true))
-			}
 		}
 	}
 	return &rctx, err
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *ShowDraftContext) OK(r ComJossemargtSaoEntryCollection) error {
+func (ctx *ShowDraftContext) OK(r ComJossemargtSaoDraftCollection) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
-		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.entry+json; type=collection")
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.draft+json; type=collection")
 	}
 	if r == nil {
-		r = ComJossemargtSaoEntryCollection{}
+		r = ComJossemargtSaoDraftCollection{}
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
 // OKFull sends a HTTP response with status code 200.
-func (ctx *ShowDraftContext) OKFull(r ComJossemargtSaoEntryFullCollection) error {
+func (ctx *ShowDraftContext) OKFull(r ComJossemargtSaoDraftFullCollection) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
-		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.entry+json; type=collection")
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.draft+json; type=collection")
 	}
 	if r == nil {
-		r = ComJossemargtSaoEntryFullCollection{}
+		r = ComJossemargtSaoDraftFullCollection{}
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
 // OKLink sends a HTTP response with status code 200.
-func (ctx *ShowDraftContext) OKLink(r ComJossemargtSaoEntryLinkCollection) error {
+func (ctx *ShowDraftContext) OKLink(r ComJossemargtSaoDraftLinkCollection) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
-		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.entry+json; type=collection")
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.draft+json; type=collection")
 	}
 	if r == nil {
-		r = ComJossemargtSaoEntryLinkCollection{}
+		r = ComJossemargtSaoDraftLinkCollection{}
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
@@ -500,9 +501,9 @@ func NewGetDraftresultContext(ctx context.Context, r *http.Request, service *goa
 }
 
 // OKFull sends a HTTP response with status code 200.
-func (ctx *GetDraftresultContext) OKFull(r *ComJossemargtSaoResultFull) error {
+func (ctx *GetDraftresultContext) OKFull(r *ComJossemargtSaoDraftResultFull) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
-		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.result+json")
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.draft-result+json")
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
@@ -548,9 +549,9 @@ func NewShowDraftresultContext(ctx context.Context, r *http.Request, service *go
 	if len(paramContest) > 0 {
 		rawContest := paramContest[0]
 		if contest, err2 := strconv.Atoi(rawContest); err2 == nil {
-			tmp19 := contest
-			tmp18 := &tmp19
-			rctx.Contest = tmp18
+			tmp16 := contest
+			tmp15 := &tmp16
+			rctx.Contest = tmp15
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("contest", rawContest, "integer"))
 		}
@@ -564,9 +565,9 @@ func NewShowDraftresultContext(ctx context.Context, r *http.Request, service *go
 	if len(paramEntry) > 0 {
 		rawEntry := paramEntry[0]
 		if entry, err2 := strconv.Atoi(rawEntry); err2 == nil {
-			tmp21 := entry
-			tmp20 := &tmp21
-			rctx.Entry = tmp20
+			tmp18 := entry
+			tmp17 := &tmp18
+			rctx.Entry = tmp17
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("entry", rawEntry, "integer"))
 		}
@@ -618,9 +619,9 @@ func NewShowDraftresultContext(ctx context.Context, r *http.Request, service *go
 	if len(paramTask) > 0 {
 		rawTask := paramTask[0]
 		if task, err2 := strconv.Atoi(rawTask); err2 == nil {
-			tmp25 := task
-			tmp24 := &tmp25
-			rctx.Task = tmp24
+			tmp22 := task
+			tmp21 := &tmp22
+			rctx.Task = tmp21
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("task", rawTask, "integer"))
 		}
@@ -634,9 +635,9 @@ func NewShowDraftresultContext(ctx context.Context, r *http.Request, service *go
 	if len(paramUser) > 0 {
 		rawUser := paramUser[0]
 		if user, err2 := strconv.Atoi(rawUser); err2 == nil {
-			tmp27 := user
-			tmp26 := &tmp27
-			rctx.User = tmp26
+			tmp24 := user
+			tmp23 := &tmp24
+			rctx.User = tmp23
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("user", rawUser, "integer"))
 		}
@@ -650,34 +651,34 @@ func NewShowDraftresultContext(ctx context.Context, r *http.Request, service *go
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *ShowDraftresultContext) OK(r ComJossemargtSaoResultCollection) error {
+func (ctx *ShowDraftresultContext) OK(r ComJossemargtSaoDraftResultCollection) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
-		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.result+json; type=collection")
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.draft-result+json; type=collection")
 	}
 	if r == nil {
-		r = ComJossemargtSaoResultCollection{}
+		r = ComJossemargtSaoDraftResultCollection{}
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
 // OKFull sends a HTTP response with status code 200.
-func (ctx *ShowDraftresultContext) OKFull(r ComJossemargtSaoResultFullCollection) error {
+func (ctx *ShowDraftresultContext) OKFull(r ComJossemargtSaoDraftResultFullCollection) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
-		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.result+json; type=collection")
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.draft-result+json; type=collection")
 	}
 	if r == nil {
-		r = ComJossemargtSaoResultFullCollection{}
+		r = ComJossemargtSaoDraftResultFullCollection{}
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
 // OKLink sends a HTTP response with status code 200.
-func (ctx *ShowDraftresultContext) OKLink(r ComJossemargtSaoResultLinkCollection) error {
+func (ctx *ShowDraftresultContext) OKLink(r ComJossemargtSaoDraftResultLinkCollection) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
-		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.result+json; type=collection")
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.draft-result+json; type=collection")
 	}
 	if r == nil {
-		r = ComJossemargtSaoResultLinkCollection{}
+		r = ComJossemargtSaoDraftResultLinkCollection{}
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
@@ -985,9 +986,9 @@ func NewShowResultContext(ctx context.Context, r *http.Request, service *goa.Ser
 	if len(paramContest) > 0 {
 		rawContest := paramContest[0]
 		if contest, err2 := strconv.Atoi(rawContest); err2 == nil {
-			tmp35 := contest
-			tmp34 := &tmp35
-			rctx.Contest = tmp34
+			tmp32 := contest
+			tmp31 := &tmp32
+			rctx.Contest = tmp31
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("contest", rawContest, "integer"))
 		}
@@ -1001,9 +1002,9 @@ func NewShowResultContext(ctx context.Context, r *http.Request, service *goa.Ser
 	if len(paramEntry) > 0 {
 		rawEntry := paramEntry[0]
 		if entry, err2 := strconv.Atoi(rawEntry); err2 == nil {
-			tmp37 := entry
-			tmp36 := &tmp37
-			rctx.Entry = tmp36
+			tmp34 := entry
+			tmp33 := &tmp34
+			rctx.Entry = tmp33
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("entry", rawEntry, "integer"))
 		}
@@ -1066,9 +1067,9 @@ func NewShowResultContext(ctx context.Context, r *http.Request, service *goa.Ser
 	if len(paramTask) > 0 {
 		rawTask := paramTask[0]
 		if task, err2 := strconv.Atoi(rawTask); err2 == nil {
-			tmp42 := task
-			tmp41 := &tmp42
-			rctx.Task = tmp41
+			tmp39 := task
+			tmp38 := &tmp39
+			rctx.Task = tmp38
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("task", rawTask, "integer"))
 		}
@@ -1082,9 +1083,9 @@ func NewShowResultContext(ctx context.Context, r *http.Request, service *goa.Ser
 	if len(paramUser) > 0 {
 		rawUser := paramUser[0]
 		if user, err2 := strconv.Atoi(rawUser); err2 == nil {
-			tmp44 := user
-			tmp43 := &tmp44
-			rctx.User = tmp43
+			tmp41 := user
+			tmp40 := &tmp41
+			rctx.User = tmp40
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("user", rawUser, "integer"))
 		}
@@ -1212,9 +1213,9 @@ func NewShowScoresContext(ctx context.Context, r *http.Request, service *goa.Ser
 	if len(paramContest) > 0 {
 		rawContest := paramContest[0]
 		if contest, err2 := strconv.Atoi(rawContest); err2 == nil {
-			tmp46 := contest
-			tmp45 := &tmp46
-			rctx.Contest = tmp45
+			tmp43 := contest
+			tmp42 := &tmp43
+			rctx.Contest = tmp42
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("contest", rawContest, "integer"))
 		}
@@ -1228,9 +1229,9 @@ func NewShowScoresContext(ctx context.Context, r *http.Request, service *goa.Ser
 	if len(paramEntry) > 0 {
 		rawEntry := paramEntry[0]
 		if entry, err2 := strconv.Atoi(rawEntry); err2 == nil {
-			tmp48 := entry
-			tmp47 := &tmp48
-			rctx.Entry = tmp47
+			tmp45 := entry
+			tmp44 := &tmp45
+			rctx.Entry = tmp44
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("entry", rawEntry, "integer"))
 		}
@@ -1282,9 +1283,9 @@ func NewShowScoresContext(ctx context.Context, r *http.Request, service *goa.Ser
 	if len(paramTask) > 0 {
 		rawTask := paramTask[0]
 		if task, err2 := strconv.Atoi(rawTask); err2 == nil {
-			tmp52 := task
-			tmp51 := &tmp52
-			rctx.Task = tmp51
+			tmp49 := task
+			tmp48 := &tmp49
+			rctx.Task = tmp48
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("task", rawTask, "integer"))
 		}
@@ -1298,9 +1299,9 @@ func NewShowScoresContext(ctx context.Context, r *http.Request, service *goa.Ser
 	if len(paramUser) > 0 {
 		rawUser := paramUser[0]
 		if user, err2 := strconv.Atoi(rawUser); err2 == nil {
-			tmp54 := user
-			tmp53 := &tmp54
-			rctx.User = tmp53
+			tmp51 := user
+			tmp50 := &tmp51
+			rctx.User = tmp50
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("user", rawUser, "integer"))
 		}

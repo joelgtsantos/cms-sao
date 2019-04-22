@@ -5,10 +5,11 @@ import (
 	"fmt"
 
 	"github.com/goadesign/goa"
+	"github.com/pkg/errors"
+
 	"github.com/jossemargt/cms-sao/app"
 	"github.com/jossemargt/cms-sao/model"
 	"github.com/jossemargt/cms-sao/storage"
-	"github.com/pkg/errors"
 )
 
 // EntryController implements the Entry resource.

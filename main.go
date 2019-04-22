@@ -89,7 +89,7 @@ func main() {
 	c2 := NewDraftController(service)
 	app.MountDraftController(service, c2)
 	// Mount "draft-result" controller
-	c3 := NewDraftresultController(service)
+	c3 := NewDraftResultController(service)
 	app.MountDraftresultController(service, c3)
 	// Mount "entry" controller
 	c4 := NewEntryController(service, entryRepository)

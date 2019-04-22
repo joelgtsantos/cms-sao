@@ -21,7 +21,7 @@ func (c *DraftController) Get(ctx *app.GetDraftContext) error {
 
 	// Put your logic here
 
-	res := &app.ComJossemargtSaoEntryFull{}
+	res := &app.ComJossemargtSaoDraftFull{}
 	return ctx.OKFull(res)
 	// DraftController_Get: end_implement
 }
@@ -32,7 +32,7 @@ func (c *DraftController) Show(ctx *app.ShowDraftContext) error {
 
 	// Put your logic here
 
-	res := app.ComJossemargtSaoEntryCollection{}
+	res := app.ComJossemargtSaoDraftCollection{}
 	return ctx.OK(res)
 	// DraftController_Show: end_implement
 }
