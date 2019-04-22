@@ -920,7 +920,7 @@ definitions:
         type: string
     title: 'Mediatype identifier: application/vnd.goa.error; view=default'
     type: object
-host: localhost:8080
+host: localhost:8000
 info:
   description: Exposes CMS platform entry and score resources
   title: Sao v1

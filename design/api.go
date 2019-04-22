@@ -9,7 +9,7 @@ var _ = API("SAO", func() {
 	Title("Sao v1")
 	Description("Exposes CMS platform entry and score resources")
 	Version("1.1")
-	Host("localhost:8080")
+	Host("localhost:8000")
 	Scheme("http")
 	BasePath("/sao/v1")
 })
