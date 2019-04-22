@@ -1,5 +1,5 @@
 # General configurations
-server.port=8080
+server.port=8000
 server.log.request=false
 server.response.tracedump=false
 

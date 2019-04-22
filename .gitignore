@@ -1,9 +1,9 @@
-# Vendored Dependencies
+# Vendor Dependencies
 vendor
 
 # Env configurations
 config.properties
-.stash
+docker-compose.override.yml
 
 # Binaries
 /cms-sao
@@ -14,6 +14,9 @@ config.properties
 # Tests
 *.test
 reports
+
+# Temporary files
+.stash
 
 # IDE's
 .vscode

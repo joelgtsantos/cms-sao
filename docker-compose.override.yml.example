@@ -1,0 +1,6 @@
+version: '3'
+services:
+  cmssao:
+    environment:
+      SAO_CMS_DATASOURCE_HOST: posgresql.mylocalenv.dev
+      SAO_CMS_DATASOURCE_PASSWORD: you-should-not-add-this-to-git

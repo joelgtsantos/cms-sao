@@ -103,7 +103,7 @@ func main() {
 	app.MountScoresController(service, c6)
 
 	// Start service
-	serverAddr := fmt.Sprintf("%s:%s", "", up.GetStringOrDefault("server.port", "8080"))
+	serverAddr := fmt.Sprintf("%s:%s", "", up.GetStringOrDefault("server.port", "8000"))
 	if err := service.ListenAndServe(serverAddr); err != nil {
 		service.LogError("startup", "err", err)
 	}
