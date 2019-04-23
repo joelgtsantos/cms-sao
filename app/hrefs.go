@@ -30,8 +30,3 @@ func EntryHref() string {
 func ResultHref() string {
 	return "/sao/v1/results/"
 }
-
-// ScoresHref returns the resource href.
-func ScoresHref() string {
-	return "/sao/v1/scores/"
-}

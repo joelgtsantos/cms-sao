@@ -1,12 +1,14 @@
 package storage
 
 const (
-	entryTable            = "submissions"
-	taskTable             = "tasks"
-	contestTable          = "contests"
-	resultTable           = "submission_results"
-	entryDraftTable       = "user_tests"
-	entryDraftResultTable = "user_test_results"
+	entryTable                 = "submissions"
+	taskTable                  = "tasks"
+	contestTable               = "contests"
+	resultTable                = "submission_results"
+	entryDraftTable            = "user_tests"
+	entryDraftResultTable      = "user_test_results"
+	tokenTable                 = "tokens"
+	contestUserAsignationTable = "participations"
 )
 
 type DTO struct {
@@ -45,4 +47,15 @@ type EntryDTO struct {
 	ContestSlug string
 	TaskID      int
 	TaskSlug    string
+}
+
+type ResultDTO struct {
+	DTO
+	ContestID   int
+	ContestSlug string
+	TaskID      int
+	TaskSlug    string
+	EntryID     int
+	UserID      int
+	MaxScore    bool
 }

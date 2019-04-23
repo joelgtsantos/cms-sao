@@ -467,7 +467,7 @@ func SubmitEntryDraftActionsBadRequest(t goatest.TInterface, ctx context.Context
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/sao/v1/submit-entry-draft"),
+		Path: fmt.Sprintf("/sao/v1/submit-draft"),
 	}
 	req, _err := http.NewRequest("POST", u.String(), nil)
 	if _err != nil {
@@ -547,7 +547,7 @@ func SubmitEntryDraftActionsCreated(t goatest.TInterface, ctx context.Context, s
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/sao/v1/submit-entry-draft"),
+		Path: fmt.Sprintf("/sao/v1/submit-draft"),
 	}
 	req, _err := http.NewRequest("POST", u.String(), nil)
 	if _err != nil {
@@ -632,7 +632,7 @@ func SubmitEntryDraftActionsCreatedFull(t goatest.TInterface, ctx context.Contex
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/sao/v1/submit-entry-draft"),
+		Path: fmt.Sprintf("/sao/v1/submit-draft"),
 	}
 	req, _err := http.NewRequest("POST", u.String(), nil)
 	if _err != nil {
@@ -717,7 +717,7 @@ func SubmitEntryDraftActionsCreatedLink(t goatest.TInterface, ctx context.Contex
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/sao/v1/submit-entry-draft"),
+		Path: fmt.Sprintf("/sao/v1/submit-draft"),
 	}
 	req, _err := http.NewRequest("POST", u.String(), nil)
 	if _err != nil {
@@ -801,7 +801,7 @@ func SubmitEntryDraftActionsNotImplemented(t goatest.TInterface, ctx context.Con
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/sao/v1/submit-entry-draft"),
+		Path: fmt.Sprintf("/sao/v1/submit-draft"),
 	}
 	req, _err := http.NewRequest("POST", u.String(), nil)
 	if _err != nil {
@@ -1204,7 +1204,7 @@ func SummarizeScoreActionsNotImplemented(t goatest.TInterface, ctx context.Conte
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func SummarizeScoreActionsOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ActionsController, contest *int, groupBy string, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoScoresumCollection) {
+func SummarizeScoreActionsOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ActionsController, contest *int, groupBy string, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoScoreSumCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1314,12 +1314,12 @@ func SummarizeScoreActionsOK(t goatest.TInterface, ctx context.Context, service 
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt app.ComJossemargtSaoScoresumCollection
+	var mt app.ComJossemargtSaoScoreSumCollection
 	if resp != nil {
 		var _ok bool
-		mt, _ok = resp.(app.ComJossemargtSaoScoresumCollection)
+		mt, _ok = resp.(app.ComJossemargtSaoScoreSumCollection)
 		if !_ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoScoresumCollection", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoScoreSumCollection", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {

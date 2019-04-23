@@ -83,16 +83,17 @@ func entryToDraftFullMedia(entry *model.Entry) *app.ComJossemargtSaoDraftFull {
 		Href:        fmt.Sprintf("%s%d", app.DraftHref(), entry.ID),
 	}
 
-	links := new(app.ComJossemargtSaoDraftLinks)
+	if entry.Language != nil {
+		media.Language = *entry.Language
+	}
 
+	links := new(app.ComJossemargtSaoDraftLinks)
 	if entry.DatasetID != 0 {
 		links.Result = &app.ComJossemargtSaoDraftResultLink{
 			ID:   entry.ResultID(),
 			Href: fmt.Sprintf("%s%s", app.DraftresultHref(), entry.ResultID()),
 		}
-	}
 
-	if links.Result != nil {
 		media.Links = links
 	}
 

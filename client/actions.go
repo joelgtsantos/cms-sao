@@ -66,7 +66,7 @@ func (c *Client) NewSubmitEntryActionsRequest(ctx context.Context, path string, 
 // SubmitEntryDraftActionsPath computes a request path to the submitEntryDraft action of actions.
 func SubmitEntryDraftActionsPath() string {
 
-	return fmt.Sprintf("/sao/v1/submit-entry-draft")
+	return fmt.Sprintf("/sao/v1/submit-draft")
 }
 
 // Orchestrates the resource creation related to a entry draft submit process (Draft and Result).

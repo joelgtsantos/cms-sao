@@ -84,8 +84,8 @@ func MountActionsController(service *goa.Service, ctrl ActionsController) {
 		}
 		return ctrl.SubmitEntryDraft(rctx)
 	}
-	service.Mux.Handle("POST", "/sao/v1/submit-entry-draft", ctrl.MuxHandler("submitEntryDraft", h, unmarshalSubmitEntryDraftActionsPayload))
-	service.LogInfo("mount", "ctrl", "Actions", "action", "SubmitEntryDraft", "route", "POST /sao/v1/submit-entry-draft")
+	service.Mux.Handle("POST", "/sao/v1/submit-draft", ctrl.MuxHandler("submitEntryDraft", h, unmarshalSubmitEntryDraftActionsPayload))
+	service.LogInfo("mount", "ctrl", "Actions", "action", "SubmitEntryDraft", "route", "POST /sao/v1/submit-draft")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -305,47 +305,4 @@ func MountResultController(service *goa.Service, ctrl ResultController) {
 	}
 	service.Mux.Handle("GET", "/sao/v1/results/", ctrl.MuxHandler("show", h, nil))
 	service.LogInfo("mount", "ctrl", "Result", "action", "Show", "route", "GET /sao/v1/results/")
-}
-
-// ScoresController is the controller interface for the Scores actions.
-type ScoresController interface {
-	goa.Muxer
-	Get(*GetScoresContext) error
-	Show(*ShowScoresContext) error
-}
-
-// MountScoresController "mounts" a Scores resource controller on the given service.
-func MountScoresController(service *goa.Service, ctrl ScoresController) {
-	initService(service)
-	var h goa.Handler
-
-	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
-		// Check if there was an error loading the request
-		if err := goa.ContextError(ctx); err != nil {
-			return err
-		}
-		// Build the context
-		rctx, err := NewGetScoresContext(ctx, req, service)
-		if err != nil {
-			return err
-		}
-		return ctrl.Get(rctx)
-	}
-	service.Mux.Handle("GET", "/sao/v1/scores/:scoreID", ctrl.MuxHandler("get", h, nil))
-	service.LogInfo("mount", "ctrl", "Scores", "action", "Get", "route", "GET /sao/v1/scores/:scoreID")
-
-	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
-		// Check if there was an error loading the request
-		if err := goa.ContextError(ctx); err != nil {
-			return err
-		}
-		// Build the context
-		rctx, err := NewShowScoresContext(ctx, req, service)
-		if err != nil {
-			return err
-		}
-		return ctrl.Show(rctx)
-	}
-	service.Mux.Handle("GET", "/sao/v1/scores/", ctrl.MuxHandler("show", h, nil))
-	service.LogInfo("mount", "ctrl", "Scores", "action", "Show", "route", "GET /sao/v1/scores/")
 }

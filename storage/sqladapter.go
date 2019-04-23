@@ -59,6 +59,12 @@ func Join(fmtExpresion string, tables ...interface{}) SQLBuilderOption {
 	}
 }
 
+func LeftJoin(fmtExpresion string, tables ...interface{}) SQLBuilderOption {
+	return func(b *projectionBuilder) {
+		b.builder.LeftJoin(fmt.Sprintf(fmtExpresion, tables...))
+	}
+}
+
 func OrderBy(columns ...string) SQLBuilderOption {
 	return func(b *projectionBuilder) {
 		b.builder.OrderBy(columns...)

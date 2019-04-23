@@ -382,7 +382,7 @@ func GetDraftresultOKLink(t goatest.TInterface, ctx context.Context, service *go
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowDraftresultBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, contest *int, entry *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, error) {
+func ShowDraftresultBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, contest int, contestSlug string, entry *int, page int, pageSize int, sort string, task int, taskSlug string, user *int) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -403,9 +403,13 @@ func ShowDraftresultBadRequest(t goatest.TInterface, ctx context.Context, servic
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		query["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		query["contest_slug"] = sliceVal
 	}
 	if entry != nil {
 		sliceVal := []string{strconv.Itoa(*entry)}
@@ -423,9 +427,13 @@ func ShowDraftresultBadRequest(t goatest.TInterface, ctx context.Context, servic
 		sliceVal := []string{sort}
 		query["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		query["task"] = sliceVal
+	}
+	{
+		sliceVal := []string{taskSlug}
+		query["task_slug"] = sliceVal
 	}
 	if user != nil {
 		sliceVal := []string{strconv.Itoa(*user)}
@@ -440,9 +448,13 @@ func ShowDraftresultBadRequest(t goatest.TInterface, ctx context.Context, servic
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		prms["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		prms["contest_slug"] = sliceVal
 	}
 	if entry != nil {
 		sliceVal := []string{strconv.Itoa(*entry)}
@@ -460,9 +472,13 @@ func ShowDraftresultBadRequest(t goatest.TInterface, ctx context.Context, servic
 		sliceVal := []string{sort}
 		prms["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		prms["task"] = sliceVal
+	}
+	{
+		sliceVal := []string{taskSlug}
+		prms["task_slug"] = sliceVal
 	}
 	if user != nil {
 		sliceVal := []string{strconv.Itoa(*user)}
@@ -508,7 +524,7 @@ func ShowDraftresultBadRequest(t goatest.TInterface, ctx context.Context, servic
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowDraftresultOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, contest *int, entry *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoDraftResultCollection) {
+func ShowDraftresultOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, contest int, contestSlug string, entry *int, page int, pageSize int, sort string, task int, taskSlug string, user *int) (http.ResponseWriter, app.ComJossemargtSaoDraftResultCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -529,9 +545,13 @@ func ShowDraftresultOK(t goatest.TInterface, ctx context.Context, service *goa.S
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		query["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		query["contest_slug"] = sliceVal
 	}
 	if entry != nil {
 		sliceVal := []string{strconv.Itoa(*entry)}
@@ -549,9 +569,13 @@ func ShowDraftresultOK(t goatest.TInterface, ctx context.Context, service *goa.S
 		sliceVal := []string{sort}
 		query["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		query["task"] = sliceVal
+	}
+	{
+		sliceVal := []string{taskSlug}
+		query["task_slug"] = sliceVal
 	}
 	if user != nil {
 		sliceVal := []string{strconv.Itoa(*user)}
@@ -566,9 +590,13 @@ func ShowDraftresultOK(t goatest.TInterface, ctx context.Context, service *goa.S
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		prms["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		prms["contest_slug"] = sliceVal
 	}
 	if entry != nil {
 		sliceVal := []string{strconv.Itoa(*entry)}
@@ -586,9 +614,13 @@ func ShowDraftresultOK(t goatest.TInterface, ctx context.Context, service *goa.S
 		sliceVal := []string{sort}
 		prms["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		prms["task"] = sliceVal
+	}
+	{
+		sliceVal := []string{taskSlug}
+		prms["task_slug"] = sliceVal
 	}
 	if user != nil {
 		sliceVal := []string{strconv.Itoa(*user)}
@@ -639,7 +671,7 @@ func ShowDraftresultOK(t goatest.TInterface, ctx context.Context, service *goa.S
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowDraftresultOKFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, contest *int, entry *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoDraftResultFullCollection) {
+func ShowDraftresultOKFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, contest int, contestSlug string, entry *int, page int, pageSize int, sort string, task int, taskSlug string, user *int) (http.ResponseWriter, app.ComJossemargtSaoDraftResultFullCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -660,9 +692,13 @@ func ShowDraftresultOKFull(t goatest.TInterface, ctx context.Context, service *g
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		query["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		query["contest_slug"] = sliceVal
 	}
 	if entry != nil {
 		sliceVal := []string{strconv.Itoa(*entry)}
@@ -680,9 +716,13 @@ func ShowDraftresultOKFull(t goatest.TInterface, ctx context.Context, service *g
 		sliceVal := []string{sort}
 		query["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		query["task"] = sliceVal
+	}
+	{
+		sliceVal := []string{taskSlug}
+		query["task_slug"] = sliceVal
 	}
 	if user != nil {
 		sliceVal := []string{strconv.Itoa(*user)}
@@ -697,9 +737,13 @@ func ShowDraftresultOKFull(t goatest.TInterface, ctx context.Context, service *g
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		prms["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		prms["contest_slug"] = sliceVal
 	}
 	if entry != nil {
 		sliceVal := []string{strconv.Itoa(*entry)}
@@ -717,9 +761,13 @@ func ShowDraftresultOKFull(t goatest.TInterface, ctx context.Context, service *g
 		sliceVal := []string{sort}
 		prms["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		prms["task"] = sliceVal
+	}
+	{
+		sliceVal := []string{taskSlug}
+		prms["task_slug"] = sliceVal
 	}
 	if user != nil {
 		sliceVal := []string{strconv.Itoa(*user)}
@@ -770,7 +818,7 @@ func ShowDraftresultOKFull(t goatest.TInterface, ctx context.Context, service *g
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowDraftresultOKLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, contest *int, entry *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoDraftResultLinkCollection) {
+func ShowDraftresultOKLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.DraftresultController, contest int, contestSlug string, entry *int, page int, pageSize int, sort string, task int, taskSlug string, user *int) (http.ResponseWriter, app.ComJossemargtSaoDraftResultLinkCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -791,9 +839,13 @@ func ShowDraftresultOKLink(t goatest.TInterface, ctx context.Context, service *g
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		query["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		query["contest_slug"] = sliceVal
 	}
 	if entry != nil {
 		sliceVal := []string{strconv.Itoa(*entry)}
@@ -811,9 +863,13 @@ func ShowDraftresultOKLink(t goatest.TInterface, ctx context.Context, service *g
 		sliceVal := []string{sort}
 		query["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		query["task"] = sliceVal
+	}
+	{
+		sliceVal := []string{taskSlug}
+		query["task_slug"] = sliceVal
 	}
 	if user != nil {
 		sliceVal := []string{strconv.Itoa(*user)}
@@ -828,9 +884,13 @@ func ShowDraftresultOKLink(t goatest.TInterface, ctx context.Context, service *g
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if contest != nil {
-		sliceVal := []string{strconv.Itoa(*contest)}
+	{
+		sliceVal := []string{strconv.Itoa(contest)}
 		prms["contest"] = sliceVal
+	}
+	{
+		sliceVal := []string{contestSlug}
+		prms["contest_slug"] = sliceVal
 	}
 	if entry != nil {
 		sliceVal := []string{strconv.Itoa(*entry)}
@@ -848,9 +908,13 @@ func ShowDraftresultOKLink(t goatest.TInterface, ctx context.Context, service *g
 		sliceVal := []string{sort}
 		prms["sort"] = sliceVal
 	}
-	if task != nil {
-		sliceVal := []string{strconv.Itoa(*task)}
+	{
+		sliceVal := []string{strconv.Itoa(task)}
 		prms["task"] = sliceVal
+	}
+	{
+		sliceVal := []string{taskSlug}
+		prms["task_slug"] = sliceVal
 	}
 	if user != nil {
 		sliceVal := []string{strconv.Itoa(*user)}

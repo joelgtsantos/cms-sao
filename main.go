@@ -72,6 +72,7 @@ func main() {
 
 	// Create resource repositories
 	entryRepository := storage.NewEntryRepository(dbConn)
+	resultRepository := storage.NewResultRepository(dbConn)
 	draftRepository := storage.NewEntryDraftRepository(dbConn)
 
 	// Create service
@@ -96,11 +97,8 @@ func main() {
 	c4 := NewEntryController(service, entryRepository)
 	app.MountEntryController(service, c4)
 	// Mount "result" controller
-	c5 := NewResultController(service)
+	c5 := NewResultController(service, resultRepository)
 	app.MountResultController(service, c5)
-	// Mount "scores" controller
-	c6 := NewScoresController(service)
-	app.MountScoresController(service, c6)
 
 	// Start service
 	serverAddr := fmt.Sprintf("%s:%s", "", up.GetStringOrDefault("server.port", "8000"))
