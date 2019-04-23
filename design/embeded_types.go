@@ -42,18 +42,25 @@ var CompilationResult = Type("CompilationResult", func() {
 		Default(cmsAsyncUnprocessed)
 	})
 	Attribute("tries", Integer, "Compilation retries", func() {
-		Minimum(0)
+		Default(0)
 	})
-	Attribute("stdout", String, "Compilation process' standard output")
-	Attribute("stderr", String, "Compilation process' standard error")
+	Attribute("stdout", String, "Compilation process' standard output", func() {
+		Default("")
+	})
+	Attribute("stderr", String, "Compilation process' standard error", func() {
+		Default("")
+	})
 	Attribute("time", Number, "The spent execution CPU time", func() {
 		Example(0.035)
+		Default(0)
 	})
 	Attribute("wallClockTime", Number, "The spent execution human perceived time", func() {
 		Example(0.568)
+		Default(0)
 	})
 	Attribute("memory", Integer, "Memory consumed", func() {
 		Example(64)
+		Default(0)
 	})
 })
 
@@ -66,6 +73,7 @@ var EvaluationResult = Type("EvaluationResult", func() {
 	})
 	Attribute("tries", Integer, "Evaluation retries", func() {
 		Minimum(0)
+		Default(0)
 	})
 
 })
@@ -74,8 +82,10 @@ var ScoreResult = Type("ScoreResult", func() {
 	Description("Embedded representation of the entry's scoring after being evaluated")
 	Attribute("taskValue", Number, "The graded value relative to the Task score", func() {
 		Example(20.00)
+		Default(0)
 	})
 	Attribute("contestValue", Number, "The graded value relative to the Contest score", func() {
 		Example(10.50)
+		Default(0)
 	})
 })

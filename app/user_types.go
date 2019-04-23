@@ -127,9 +127,33 @@ type compilationResult struct {
 
 // Finalize sets the default values for compilationResult type instance.
 func (ut *compilationResult) Finalize() {
+	var defaultMemory = 0
+	if ut.Memory == nil {
+		ut.Memory = &defaultMemory
+	}
 	var defaultStatus = "unprocessed"
 	if ut.Status == nil {
 		ut.Status = &defaultStatus
+	}
+	var defaultStderr = ""
+	if ut.Stderr == nil {
+		ut.Stderr = &defaultStderr
+	}
+	var defaultStdout = ""
+	if ut.Stdout == nil {
+		ut.Stdout = &defaultStdout
+	}
+	var defaultTime = 0.000000
+	if ut.Time == nil {
+		ut.Time = &defaultTime
+	}
+	var defaultTries = 0
+	if ut.Tries == nil {
+		ut.Tries = &defaultTries
+	}
+	var defaultWallClockTime = 0.000000
+	if ut.WallClockTime == nil {
+		ut.WallClockTime = &defaultWallClockTime
 	}
 }
 
@@ -140,11 +164,6 @@ func (ut *compilationResult) Validate() (err error) {
 			err = goa.MergeErrors(err, goa.InvalidEnumValueError(`request.status`, *ut.Status, []interface{}{"ok", "fail", "unprocessed"}))
 		}
 	}
-	if ut.Tries != nil {
-		if *ut.Tries < 0 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`request.tries`, *ut.Tries, 0, true))
-		}
-	}
 	return
 }
 
@@ -152,25 +171,25 @@ func (ut *compilationResult) Validate() (err error) {
 func (ut *compilationResult) Publicize() *CompilationResult {
 	var pub CompilationResult
 	if ut.Memory != nil {
-		pub.Memory = ut.Memory
+		pub.Memory = *ut.Memory
 	}
 	if ut.Status != nil {
 		pub.Status = *ut.Status
 	}
 	if ut.Stderr != nil {
-		pub.Stderr = ut.Stderr
+		pub.Stderr = *ut.Stderr
 	}
 	if ut.Stdout != nil {
-		pub.Stdout = ut.Stdout
+		pub.Stdout = *ut.Stdout
 	}
 	if ut.Time != nil {
-		pub.Time = ut.Time
+		pub.Time = *ut.Time
 	}
 	if ut.Tries != nil {
-		pub.Tries = ut.Tries
+		pub.Tries = *ut.Tries
 	}
 	if ut.WallClockTime != nil {
-		pub.WallClockTime = ut.WallClockTime
+		pub.WallClockTime = *ut.WallClockTime
 	}
 	return &pub
 }
@@ -178,30 +197,25 @@ func (ut *compilationResult) Publicize() *CompilationResult {
 // Embedded representation of an entry compilation result
 type CompilationResult struct {
 	// Memory consumed
-	Memory *int `form:"memory,omitempty" json:"memory,omitempty" yaml:"memory,omitempty" xml:"memory,omitempty"`
+	Memory int `form:"memory" json:"memory" yaml:"memory" xml:"memory"`
 	// Execution result status
 	Status string `form:"status" json:"status" yaml:"status" xml:"status"`
 	// Compilation process' standard error
-	Stderr *string `form:"stderr,omitempty" json:"stderr,omitempty" yaml:"stderr,omitempty" xml:"stderr,omitempty"`
+	Stderr string `form:"stderr" json:"stderr" yaml:"stderr" xml:"stderr"`
 	// Compilation process' standard output
-	Stdout *string `form:"stdout,omitempty" json:"stdout,omitempty" yaml:"stdout,omitempty" xml:"stdout,omitempty"`
+	Stdout string `form:"stdout" json:"stdout" yaml:"stdout" xml:"stdout"`
 	// The spent execution CPU time
-	Time *float64 `form:"time,omitempty" json:"time,omitempty" yaml:"time,omitempty" xml:"time,omitempty"`
+	Time float64 `form:"time" json:"time" yaml:"time" xml:"time"`
 	// Compilation retries
-	Tries *int `form:"tries,omitempty" json:"tries,omitempty" yaml:"tries,omitempty" xml:"tries,omitempty"`
+	Tries int `form:"tries" json:"tries" yaml:"tries" xml:"tries"`
 	// The spent execution human perceived time
-	WallClockTime *float64 `form:"wallClockTime,omitempty" json:"wallClockTime,omitempty" yaml:"wallClockTime,omitempty" xml:"wallClockTime,omitempty"`
+	WallClockTime float64 `form:"wallClockTime" json:"wallClockTime" yaml:"wallClockTime" xml:"wallClockTime"`
 }
 
 // Validate validates the CompilationResult type instance.
 func (ut *CompilationResult) Validate() (err error) {
 	if !(ut.Status == "ok" || ut.Status == "fail" || ut.Status == "unprocessed") {
 		err = goa.MergeErrors(err, goa.InvalidEnumValueError(`type.status`, ut.Status, []interface{}{"ok", "fail", "unprocessed"}))
-	}
-	if ut.Tries != nil {
-		if *ut.Tries < 0 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`type.tries`, *ut.Tries, 0, true))
-		}
 	}
 	return
 }
@@ -401,6 +415,10 @@ func (ut *evaluationResult) Finalize() {
 	if ut.Status == nil {
 		ut.Status = &defaultStatus
 	}
+	var defaultTries = 0
+	if ut.Tries == nil {
+		ut.Tries = &defaultTries
+	}
 }
 
 // Validate validates the evaluationResult type instance.
@@ -425,7 +443,7 @@ func (ut *evaluationResult) Publicize() *EvaluationResult {
 		pub.Status = *ut.Status
 	}
 	if ut.Tries != nil {
-		pub.Tries = ut.Tries
+		pub.Tries = *ut.Tries
 	}
 	return &pub
 }
@@ -435,7 +453,7 @@ type EvaluationResult struct {
 	// Execution result status
 	Status string `form:"status" json:"status" yaml:"status" xml:"status"`
 	// Evaluation retries
-	Tries *int `form:"tries,omitempty" json:"tries,omitempty" yaml:"tries,omitempty" xml:"tries,omitempty"`
+	Tries int `form:"tries" json:"tries" yaml:"tries" xml:"tries"`
 }
 
 // Validate validates the EvaluationResult type instance.
@@ -443,10 +461,8 @@ func (ut *EvaluationResult) Validate() (err error) {
 	if !(ut.Status == "ok" || ut.Status == "unprocessed") {
 		err = goa.MergeErrors(err, goa.InvalidEnumValueError(`type.status`, ut.Status, []interface{}{"ok", "unprocessed"}))
 	}
-	if ut.Tries != nil {
-		if *ut.Tries < 0 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`type.tries`, *ut.Tries, 0, true))
-		}
+	if ut.Tries < 0 {
+		err = goa.MergeErrors(err, goa.InvalidRangeError(`type.tries`, ut.Tries, 0, true))
 	}
 	return
 }
@@ -528,14 +544,26 @@ type scoreResult struct {
 	TaskValue *float64 `form:"taskValue,omitempty" json:"taskValue,omitempty" yaml:"taskValue,omitempty" xml:"taskValue,omitempty"`
 }
 
+// Finalize sets the default values for scoreResult type instance.
+func (ut *scoreResult) Finalize() {
+	var defaultContestValue = 0.000000
+	if ut.ContestValue == nil {
+		ut.ContestValue = &defaultContestValue
+	}
+	var defaultTaskValue = 0.000000
+	if ut.TaskValue == nil {
+		ut.TaskValue = &defaultTaskValue
+	}
+}
+
 // Publicize creates ScoreResult from scoreResult
 func (ut *scoreResult) Publicize() *ScoreResult {
 	var pub ScoreResult
 	if ut.ContestValue != nil {
-		pub.ContestValue = ut.ContestValue
+		pub.ContestValue = *ut.ContestValue
 	}
 	if ut.TaskValue != nil {
-		pub.TaskValue = ut.TaskValue
+		pub.TaskValue = *ut.TaskValue
 	}
 	return &pub
 }
@@ -543,7 +571,7 @@ func (ut *scoreResult) Publicize() *ScoreResult {
 // Embedded representation of the entry's scoring after being evaluated
 type ScoreResult struct {
 	// The graded value relative to the Contest score
-	ContestValue *float64 `form:"contestValue,omitempty" json:"contestValue,omitempty" yaml:"contestValue,omitempty" xml:"contestValue,omitempty"`
+	ContestValue float64 `form:"contestValue" json:"contestValue" yaml:"contestValue" xml:"contestValue"`
 	// The graded value relative to the Task score
-	TaskValue *float64 `form:"taskValue,omitempty" json:"taskValue,omitempty" yaml:"taskValue,omitempty" xml:"taskValue,omitempty"`
+	TaskValue float64 `form:"taskValue" json:"taskValue" yaml:"taskValue" xml:"taskValue"`
 }

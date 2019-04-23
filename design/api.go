@@ -80,16 +80,29 @@ var _ = Resource("result", func() {
 		Routing(GET("/"))
 		Params(func() {
 			Param("contest", Integer, "Contest ID", func() {
-				Minimum(0)
+				Default(0)
+			})
+			Param("contest_slug", String, "Contest Slug", func() {
+				Default("")
 			})
 			Param("task", Integer, "Task ID", func() {
-				Minimum(0)
+				Default(0)
+			})
+			Param("task_slug", String, "Task Slug", func() {
+				Default("")
 			})
 			Param("user", Integer, "User ID", func() {
-				Minimum(0)
+				Default(0)
 			})
 			Param("entry", Integer, "Entry ID", func() {
-				Minimum(0)
+				Default(0)
+			})
+			Param("max", Boolean, "Filter the results with only their maximum score", func() {
+				Default(false)
+			})
+			Param("view", String, "Filter result sub-schemas", func() {
+				Enum("default", "score")
+				Default("default")
 			})
 			Param("page", Integer, "Page number", func() {
 				Default(1)
@@ -112,6 +125,7 @@ var _ = Resource("result", func() {
 		Routing(GET("/:resultID"))
 		Params(func() {
 			Param("resultID", String, "Result ID", func() {
+				Pattern("\\d+-\\d+")
 				Example("1235-6988")
 			})
 		})
@@ -188,10 +202,16 @@ var _ = Resource("draftresult", func() {
 		Routing(GET("/"))
 		Params(func() {
 			Param("contest", Integer, "Contest ID", func() {
-				Minimum(0)
+				Default(0)
+			})
+			Param("contest_slug", String, "Contest Slug", func() {
+				Default("")
 			})
 			Param("task", Integer, "Task ID", func() {
-				Minimum(0)
+				Default(0)
+			})
+			Param("task_slug", String, "Task Slug", func() {
+				Default("")
 			})
 			Param("user", Integer, "User ID", func() {
 				Minimum(0)

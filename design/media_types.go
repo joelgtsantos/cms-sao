@@ -147,6 +147,7 @@ var ResultMedia = MediaType("application/vnd.com.jossemargt.sao.result+json", fu
 		Attribute("id")
 		Attribute("href")
 		Attribute("evaluation")
+		Attribute("score")
 	})
 
 	View("full", func() {
@@ -155,7 +156,6 @@ var ResultMedia = MediaType("application/vnd.com.jossemargt.sao.result+json", fu
 		Attribute("compilation")
 		Attribute("evaluation")
 		Attribute("score")
-		Attribute("links")
 	})
 })
 

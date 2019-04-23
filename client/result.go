@@ -56,8 +56,8 @@ func ShowResultPath() string {
 }
 
 // List the Results delimited and grouped by contest, task, entry or user identifier
-func (c *Client) ShowResult(ctx context.Context, path string, contest *int, entry *int, page *int, pageSize *int, sort *string, task *int, user *int) (*http.Response, error) {
-	req, err := c.NewShowResultRequest(ctx, path, contest, entry, page, pageSize, sort, task, user)
+func (c *Client) ShowResult(ctx context.Context, path string, contest *int, contestSlug *string, entry *int, max *bool, page *int, pageSize *int, sort *string, task *int, taskSlug *string, user *int, view *string) (*http.Response, error) {
+	req, err := c.NewShowResultRequest(ctx, path, contest, contestSlug, entry, max, page, pageSize, sort, task, taskSlug, user, view)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (c *Client) ShowResult(ctx context.Context, path string, contest *int, entr
 }
 
 // NewShowResultRequest create the request corresponding to the show action endpoint of the result resource.
-func (c *Client) NewShowResultRequest(ctx context.Context, path string, contest *int, entry *int, page *int, pageSize *int, sort *string, task *int, user *int) (*http.Request, error) {
+func (c *Client) NewShowResultRequest(ctx context.Context, path string, contest *int, contestSlug *string, entry *int, max *bool, page *int, pageSize *int, sort *string, task *int, taskSlug *string, user *int, view *string) (*http.Request, error) {
 	scheme := c.Scheme
 	if scheme == "" {
 		scheme = "http"
@@ -76,28 +76,41 @@ func (c *Client) NewShowResultRequest(ctx context.Context, path string, contest 
 		tmp22 := strconv.Itoa(*contest)
 		values.Set("contest", tmp22)
 	}
+	if contestSlug != nil {
+		values.Set("contest_slug", *contestSlug)
+	}
 	if entry != nil {
 		tmp23 := strconv.Itoa(*entry)
 		values.Set("entry", tmp23)
 	}
+	if max != nil {
+		tmp24 := strconv.FormatBool(*max)
+		values.Set("max", tmp24)
+	}
 	if page != nil {
-		tmp24 := strconv.Itoa(*page)
-		values.Set("page", tmp24)
+		tmp25 := strconv.Itoa(*page)
+		values.Set("page", tmp25)
 	}
 	if pageSize != nil {
-		tmp25 := strconv.Itoa(*pageSize)
-		values.Set("page_size", tmp25)
+		tmp26 := strconv.Itoa(*pageSize)
+		values.Set("page_size", tmp26)
 	}
 	if sort != nil {
 		values.Set("sort", *sort)
 	}
 	if task != nil {
-		tmp26 := strconv.Itoa(*task)
-		values.Set("task", tmp26)
+		tmp27 := strconv.Itoa(*task)
+		values.Set("task", tmp27)
+	}
+	if taskSlug != nil {
+		values.Set("task_slug", *taskSlug)
 	}
 	if user != nil {
-		tmp27 := strconv.Itoa(*user)
-		values.Set("user", tmp27)
+		tmp28 := strconv.Itoa(*user)
+		values.Set("user", tmp28)
+	}
+	if view != nil {
+		values.Set("view", *view)
 	}
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("GET", u.String(), nil)

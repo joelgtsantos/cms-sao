@@ -527,13 +527,15 @@ type ShowDraftresultContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
-	Contest  *int
-	Entry    *int
-	Page     int
-	PageSize int
-	Sort     string
-	Task     *int
-	User     *int
+	Contest     int
+	ContestSlug string
+	Entry       *int
+	Page        int
+	PageSize    int
+	Sort        string
+	Task        int
+	TaskSlug    string
+	User        *int
 }
 
 // NewShowDraftresultContext parses the incoming request URL and body, performs validations and creates the
@@ -546,28 +548,30 @@ func NewShowDraftresultContext(ctx context.Context, r *http.Request, service *go
 	req.Request = r
 	rctx := ShowDraftresultContext{Context: ctx, ResponseData: resp, RequestData: req}
 	paramContest := req.Params["contest"]
-	if len(paramContest) > 0 {
+	if len(paramContest) == 0 {
+		rctx.Contest = 0
+	} else {
 		rawContest := paramContest[0]
 		if contest, err2 := strconv.Atoi(rawContest); err2 == nil {
-			tmp16 := contest
-			tmp15 := &tmp16
-			rctx.Contest = tmp15
+			rctx.Contest = contest
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("contest", rawContest, "integer"))
 		}
-		if rctx.Contest != nil {
-			if *rctx.Contest < 0 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`contest`, *rctx.Contest, 0, true))
-			}
-		}
+	}
+	paramContestSlug := req.Params["contest_slug"]
+	if len(paramContestSlug) == 0 {
+		rctx.ContestSlug = ""
+	} else {
+		rawContestSlug := paramContestSlug[0]
+		rctx.ContestSlug = rawContestSlug
 	}
 	paramEntry := req.Params["entry"]
 	if len(paramEntry) > 0 {
 		rawEntry := paramEntry[0]
 		if entry, err2 := strconv.Atoi(rawEntry); err2 == nil {
-			tmp18 := entry
-			tmp17 := &tmp18
-			rctx.Entry = tmp17
+			tmp17 := entry
+			tmp16 := &tmp17
+			rctx.Entry = tmp16
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("entry", rawEntry, "integer"))
 		}
@@ -616,28 +620,30 @@ func NewShowDraftresultContext(ctx context.Context, r *http.Request, service *go
 		}
 	}
 	paramTask := req.Params["task"]
-	if len(paramTask) > 0 {
+	if len(paramTask) == 0 {
+		rctx.Task = 0
+	} else {
 		rawTask := paramTask[0]
 		if task, err2 := strconv.Atoi(rawTask); err2 == nil {
-			tmp22 := task
-			tmp21 := &tmp22
-			rctx.Task = tmp21
+			rctx.Task = task
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("task", rawTask, "integer"))
 		}
-		if rctx.Task != nil {
-			if *rctx.Task < 0 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`task`, *rctx.Task, 0, true))
-			}
-		}
+	}
+	paramTaskSlug := req.Params["task_slug"]
+	if len(paramTaskSlug) == 0 {
+		rctx.TaskSlug = ""
+	} else {
+		rawTaskSlug := paramTaskSlug[0]
+		rctx.TaskSlug = rawTaskSlug
 	}
 	paramUser := req.Params["user"]
 	if len(paramUser) > 0 {
 		rawUser := paramUser[0]
 		if user, err2 := strconv.Atoi(rawUser); err2 == nil {
-			tmp24 := user
-			tmp23 := &tmp24
-			rctx.User = tmp23
+			tmp22 := user
+			tmp21 := &tmp22
+			rctx.User = tmp21
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("user", rawUser, "integer"))
 		}
@@ -932,6 +938,9 @@ func NewGetResultContext(ctx context.Context, r *http.Request, service *goa.Serv
 	if len(paramResultID) > 0 {
 		rawResultID := paramResultID[0]
 		rctx.ResultID = rawResultID
+		if ok := goa.ValidatePattern(`\d+-\d+`, rctx.ResultID); !ok {
+			err = goa.MergeErrors(err, goa.InvalidPatternError(`resultID`, rctx.ResultID, `\d+-\d+`))
+		}
 	}
 	return &rctx, err
 }
@@ -963,13 +972,17 @@ type ShowResultContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
-	Contest  *int
-	Entry    *int
-	Page     int
-	PageSize int
-	Sort     string
-	Task     *int
-	User     *int
+	Contest     int
+	ContestSlug string
+	Entry       int
+	Max         bool
+	Page        int
+	PageSize    int
+	Sort        string
+	Task        int
+	TaskSlug    string
+	User        int
+	View        string
 }
 
 // NewShowResultContext parses the incoming request URL and body, performs validations and creates the
@@ -982,35 +995,43 @@ func NewShowResultContext(ctx context.Context, r *http.Request, service *goa.Ser
 	req.Request = r
 	rctx := ShowResultContext{Context: ctx, ResponseData: resp, RequestData: req}
 	paramContest := req.Params["contest"]
-	if len(paramContest) > 0 {
+	if len(paramContest) == 0 {
+		rctx.Contest = 0
+	} else {
 		rawContest := paramContest[0]
 		if contest, err2 := strconv.Atoi(rawContest); err2 == nil {
-			tmp32 := contest
-			tmp31 := &tmp32
-			rctx.Contest = tmp31
+			rctx.Contest = contest
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("contest", rawContest, "integer"))
 		}
-		if rctx.Contest != nil {
-			if *rctx.Contest < 0 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`contest`, *rctx.Contest, 0, true))
-			}
-		}
+	}
+	paramContestSlug := req.Params["contest_slug"]
+	if len(paramContestSlug) == 0 {
+		rctx.ContestSlug = ""
+	} else {
+		rawContestSlug := paramContestSlug[0]
+		rctx.ContestSlug = rawContestSlug
 	}
 	paramEntry := req.Params["entry"]
-	if len(paramEntry) > 0 {
+	if len(paramEntry) == 0 {
+		rctx.Entry = 0
+	} else {
 		rawEntry := paramEntry[0]
 		if entry, err2 := strconv.Atoi(rawEntry); err2 == nil {
-			tmp34 := entry
-			tmp33 := &tmp34
-			rctx.Entry = tmp33
+			rctx.Entry = entry
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("entry", rawEntry, "integer"))
 		}
-		if rctx.Entry != nil {
-			if *rctx.Entry < 0 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`entry`, *rctx.Entry, 0, true))
-			}
+	}
+	paramMax := req.Params["max"]
+	if len(paramMax) == 0 {
+		rctx.Max = false
+	} else {
+		rawMax := paramMax[0]
+		if max, err2 := strconv.ParseBool(rawMax); err2 == nil {
+			rctx.Max = max
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("max", rawMax, "boolean"))
 		}
 	}
 	paramPage := req.Params["page"]
@@ -1052,35 +1073,42 @@ func NewShowResultContext(ctx context.Context, r *http.Request, service *goa.Ser
 		}
 	}
 	paramTask := req.Params["task"]
-	if len(paramTask) > 0 {
+	if len(paramTask) == 0 {
+		rctx.Task = 0
+	} else {
 		rawTask := paramTask[0]
 		if task, err2 := strconv.Atoi(rawTask); err2 == nil {
-			tmp38 := task
-			tmp37 := &tmp38
-			rctx.Task = tmp37
+			rctx.Task = task
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("task", rawTask, "integer"))
 		}
-		if rctx.Task != nil {
-			if *rctx.Task < 0 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`task`, *rctx.Task, 0, true))
-			}
-		}
+	}
+	paramTaskSlug := req.Params["task_slug"]
+	if len(paramTaskSlug) == 0 {
+		rctx.TaskSlug = ""
+	} else {
+		rawTaskSlug := paramTaskSlug[0]
+		rctx.TaskSlug = rawTaskSlug
 	}
 	paramUser := req.Params["user"]
-	if len(paramUser) > 0 {
+	if len(paramUser) == 0 {
+		rctx.User = 0
+	} else {
 		rawUser := paramUser[0]
 		if user, err2 := strconv.Atoi(rawUser); err2 == nil {
-			tmp40 := user
-			tmp39 := &tmp40
-			rctx.User = tmp39
+			rctx.User = user
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("user", rawUser, "integer"))
 		}
-		if rctx.User != nil {
-			if *rctx.User < 0 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`user`, *rctx.User, 0, true))
-			}
+	}
+	paramView := req.Params["view"]
+	if len(paramView) == 0 {
+		rctx.View = "default"
+	} else {
+		rawView := paramView[0]
+		rctx.View = rawView
+		if !(rctx.View == "default" || rctx.View == "score") {
+			err = goa.MergeErrors(err, goa.InvalidEnumValueError(`view`, rctx.View, []interface{}{"default", "score"}))
 		}
 	}
 	return &rctx, err

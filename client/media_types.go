@@ -655,6 +655,8 @@ type ComJossemargtSaoResult struct {
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Compound Result ID
 	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
+	// Entry graded score
+	Score *ScoreResult `form:"score,omitempty" json:"score,omitempty" yaml:"score,omitempty" xml:"score,omitempty"`
 }
 
 // Validate validates the ComJossemargtSaoResult media type instance.
@@ -688,8 +690,6 @@ type ComJossemargtSaoResultFull struct {
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Compound Result ID
 	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
-	// Links to related resources
-	Links *ComJossemargtSaoResultLinks `form:"links,omitempty" json:"links,omitempty" yaml:"links,omitempty" xml:"links,omitempty"`
 	// Entry graded score
 	Score *ScoreResult `form:"score,omitempty" json:"score,omitempty" yaml:"score,omitempty" xml:"score,omitempty"`
 }
@@ -737,10 +737,6 @@ func (mt *ComJossemargtSaoResultLink) Validate() (err error) {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
 	return
-}
-
-// ComJossemargtSaoResultLinks contains links to related resources of ComJossemargtSaoResult.
-type ComJossemargtSaoResultLinks struct {
 }
 
 // DecodeComJossemargtSaoResult decodes the ComJossemargtSaoResult instance encoded in resp body.
@@ -814,9 +810,6 @@ func (mt ComJossemargtSaoResultLinkCollection) Validate() (err error) {
 	}
 	return
 }
-
-// ComJossemargtSaoResultLinksArray contains links to related resources of ComJossemargtSaoResultCollection.
-type ComJossemargtSaoResultLinksArray []*ComJossemargtSaoResultLinks
 
 // DecodeComJossemargtSaoResultCollection decodes the ComJossemargtSaoResultCollection instance encoded in resp body.
 func (c *Client) DecodeComJossemargtSaoResultCollection(resp *http.Response) (ComJossemargtSaoResultCollection, error) {

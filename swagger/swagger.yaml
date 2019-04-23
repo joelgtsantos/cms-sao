@@ -90,7 +90,7 @@ definitions:
         stderr: Culpa qui rem.
         stdout: Nihil adipisci exercitationem veniam labore et minima.
         time: 0.035
-        tries: 1
+        tries: 3597058032032908363
         wallClockTime: 0.568
       evaluation:
         status: ok
@@ -404,6 +404,9 @@ definitions:
         tries: 2
       href: /results/1236-5689
       id: 1236-5689
+      score:
+        contestValue: 10.5
+        taskValue: 20
     properties:
       evaluation:
         $ref: '#/definitions/EvaluationResult'
@@ -415,6 +418,8 @@ definitions:
         description: Compound Result ID
         example: 1236-5689
         type: string
+      score:
+        $ref: '#/definitions/ScoreResult'
     required:
     - id
     - href
@@ -431,16 +436,25 @@ definitions:
         tries: 2
       href: /results/1236-5689
       id: 1236-5689
+      score:
+        contestValue: 10.5
+        taskValue: 20
     - evaluation:
         status: ok
         tries: 2
       href: /results/1236-5689
       id: 1236-5689
+      score:
+        contestValue: 10.5
+        taskValue: 20
     - evaluation:
         status: ok
         tries: 2
       href: /results/1236-5689
       id: 1236-5689
+      score:
+        contestValue: 10.5
+        taskValue: 20
     items:
       $ref: '#/definitions/ComJossemargtSaoResult'
     title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.result+json;
@@ -456,7 +470,7 @@ definitions:
         stderr: Culpa qui rem.
         stdout: Nihil adipisci exercitationem veniam labore et minima.
         time: 0.035
-        tries: 1
+        tries: 3597058032032908363
         wallClockTime: 0.568
       evaluation:
         status: ok
@@ -479,8 +493,6 @@ definitions:
         description: Compound Result ID
         example: 1236-5689
         type: string
-      links:
-        $ref: '#/definitions/ComJossemargtSaoResultLinks'
       score:
         $ref: '#/definitions/ScoreResult'
     required:
@@ -510,11 +522,6 @@ definitions:
     - href
     title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.result+json;
       view=link'
-    type: object
-  ComJossemargtSaoResultLinks:
-    description: ComJossemargtSaoResultLinks contains links to related resources of
-      ComJossemargtSaoResult.
-    title: ComJossemargtSaoResultLinks
     type: object
   ComJossemargtSaoScore-Sum:
     description: The representation of a summarized entry's score (default view)
@@ -583,10 +590,11 @@ definitions:
       stderr: Culpa qui rem.
       stdout: Nihil adipisci exercitationem veniam labore et minima.
       time: 0.035
-      tries: 1
+      tries: 3597058032032908363
       wallClockTime: 0.568
     properties:
       memory:
+        default: 0
         description: Memory consumed
         example: 64
         format: int64
@@ -601,24 +609,29 @@ definitions:
         example: unprocessed
         type: string
       stderr:
+        default: ""
         description: Compilation process' standard error
         example: Culpa qui rem.
         type: string
       stdout:
+        default: ""
         description: Compilation process' standard output
         example: Nihil adipisci exercitationem veniam labore et minima.
         type: string
       time:
+        default: 0
         description: The spent execution CPU time
         example: 0.035
         format: double
         type: number
       tries:
+        default: 0
         description: Compilation retries
-        example: 1
-        minimum: 0
+        example: 3597058032032908363
+        format: int64
         type: integer
       wallClockTime:
+        default: 0
         description: The spent execution human perceived time
         example: 0.568
         format: double
@@ -730,6 +743,7 @@ definitions:
         example: ok
         type: string
       tries:
+        default: 0
         description: Evaluation retries
         example: 2
         minimum: 0
@@ -781,11 +795,13 @@ definitions:
       taskValue: 20
     properties:
       contestValue:
+        default: 0
         description: The graded value relative to the Contest score
         example: 10.5
         format: double
         type: number
       taskValue:
+        default: 0
         description: The graded value relative to the Task score
         example: 20
         format: double
@@ -841,12 +857,18 @@ paths:
         or user identifier
       operationId: draftresult#show
       parameters:
-      - description: Contest ID
+      - default: 0
+        description: Contest ID
         in: query
-        minimum: 0
         name: contest
         required: false
         type: integer
+      - default: ""
+        description: Contest Slug
+        in: query
+        name: contest_slug
+        required: false
+        type: string
       - description: Entry ID
         in: query
         minimum: 0
@@ -876,12 +898,18 @@ paths:
         name: sort
         required: false
         type: string
-      - description: Task ID
+      - default: 0
+        description: Task ID
         in: query
-        minimum: 0
         name: task
         required: false
         type: integer
+      - default: ""
+        description: Task Slug
+        in: query
+        name: task_slug
+        required: false
+        type: string
       - description: User ID
         in: query
         minimum: 0
@@ -1167,18 +1195,30 @@ paths:
         or user identifier
       operationId: result#show
       parameters:
-      - description: Contest ID
+      - default: 0
+        description: Contest ID
         in: query
-        minimum: 0
         name: contest
         required: false
         type: integer
-      - description: Entry ID
+      - default: ""
+        description: Contest Slug
         in: query
-        minimum: 0
+        name: contest_slug
+        required: false
+        type: string
+      - default: 0
+        description: Entry ID
+        in: query
         name: entry
         required: false
         type: integer
+      - default: false
+        description: Filter the results with only their maximum score
+        in: query
+        name: max
+        required: false
+        type: boolean
       - default: 1
         description: Page number
         in: query
@@ -1202,18 +1242,33 @@ paths:
         name: sort
         required: false
         type: string
-      - description: Task ID
+      - default: 0
+        description: Task ID
         in: query
-        minimum: 0
         name: task
         required: false
         type: integer
-      - description: User ID
+      - default: ""
+        description: Task Slug
         in: query
-        minimum: 0
+        name: task_slug
+        required: false
+        type: string
+      - default: 0
+        description: User ID
+        in: query
         name: user
         required: false
         type: integer
+      - default: default
+        description: Filter result sub-schemas
+        enum:
+        - default
+        - score
+        in: query
+        name: view
+        required: false
+        type: string
       produces:
       - application/vnd.com.jossemargt.sao.result+json; type=collection
       - application/vnd.goa.error
@@ -1240,6 +1295,7 @@ paths:
       - description: Result ID
         in: path
         name: resultID
+        pattern: \d+-\d+
         required: true
         type: string
       produces:

@@ -56,8 +56,8 @@ func ShowDraftresultPath() string {
 }
 
 // List the Results delimited and grouped by contest, task, entry or user identifier
-func (c *Client) ShowDraftresult(ctx context.Context, path string, contest *int, entry *int, page *int, pageSize *int, sort *string, task *int, user *int) (*http.Response, error) {
-	req, err := c.NewShowDraftresultRequest(ctx, path, contest, entry, page, pageSize, sort, task, user)
+func (c *Client) ShowDraftresult(ctx context.Context, path string, contest *int, contestSlug *string, entry *int, page *int, pageSize *int, sort *string, task *int, taskSlug *string, user *int) (*http.Response, error) {
+	req, err := c.NewShowDraftresultRequest(ctx, path, contest, contestSlug, entry, page, pageSize, sort, task, taskSlug, user)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (c *Client) ShowDraftresult(ctx context.Context, path string, contest *int,
 }
 
 // NewShowDraftresultRequest create the request corresponding to the show action endpoint of the draftresult resource.
-func (c *Client) NewShowDraftresultRequest(ctx context.Context, path string, contest *int, entry *int, page *int, pageSize *int, sort *string, task *int, user *int) (*http.Request, error) {
+func (c *Client) NewShowDraftresultRequest(ctx context.Context, path string, contest *int, contestSlug *string, entry *int, page *int, pageSize *int, sort *string, task *int, taskSlug *string, user *int) (*http.Request, error) {
 	scheme := c.Scheme
 	if scheme == "" {
 		scheme = "http"
@@ -75,6 +75,9 @@ func (c *Client) NewShowDraftresultRequest(ctx context.Context, path string, con
 	if contest != nil {
 		tmp11 := strconv.Itoa(*contest)
 		values.Set("contest", tmp11)
+	}
+	if contestSlug != nil {
+		values.Set("contest_slug", *contestSlug)
 	}
 	if entry != nil {
 		tmp12 := strconv.Itoa(*entry)
@@ -94,6 +97,9 @@ func (c *Client) NewShowDraftresultRequest(ctx context.Context, path string, con
 	if task != nil {
 		tmp15 := strconv.Itoa(*task)
 		values.Set("task", tmp15)
+	}
+	if taskSlug != nil {
+		values.Set("task_slug", *taskSlug)
 	}
 	if user != nil {
 		tmp16 := strconv.Itoa(*user)
