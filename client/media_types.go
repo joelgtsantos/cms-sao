@@ -57,6 +57,9 @@ type ComJossemargtSaoDraftFull struct {
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Unique entry ID
 	ID int `form:"id" json:"id" yaml:"id" xml:"id"`
+	// Identifies the programming language used in the entry's content. The special keyword "none" should be used
+	// 		instead when submitting plain text, which are used for user test inputs and  diff based grading
+	Language string `form:"language" json:"language" yaml:"language" xml:"language"`
 	// Links to related resources
 	Links *ComJossemargtSaoDraftLinks `form:"links,omitempty" json:"links,omitempty" yaml:"links,omitempty" xml:"links,omitempty"`
 	// Task ID where this Entry has been submitted
@@ -464,6 +467,9 @@ type ComJossemargtSaoEntryFull struct {
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Unique entry ID
 	ID int `form:"id" json:"id" yaml:"id" xml:"id"`
+	// Identifies the programming language used in the entry's content. The special keyword "none" should be used
+	// 		instead when submitting plain text, which are used for user test inputs and  diff based grading
+	Language string `form:"language" json:"language" yaml:"language" xml:"language"`
 	// Links to related resources
 	Links *ComJossemargtSaoEntryLinks `form:"links,omitempty" json:"links,omitempty" yaml:"links,omitempty" xml:"links,omitempty"`
 	// Task ID where this Entry has been submitted

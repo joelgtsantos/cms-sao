@@ -7,6 +7,7 @@ const (
 	resultTable           = "submission_results"
 	entryDraftTable       = "user_tests"
 	entryDraftResultTable = "user_test_results"
+	tokenTable            = "tokens"
 )
 
 type DTO struct {

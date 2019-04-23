@@ -35,6 +35,10 @@ func (ut *abstractEntry) Finalize() {
 	if ut.ContestSlug == nil {
 		ut.ContestSlug = &defaultContestSlug
 	}
+	var defaultLanguage = ""
+	if ut.Language == nil {
+		ut.Language = &defaultLanguage
+	}
 	var defaultTaskSlug = ""
 	if ut.TaskSlug == nil {
 		ut.TaskSlug = &defaultTaskSlug
@@ -67,7 +71,7 @@ func (ut *abstractEntry) Publicize() *AbstractEntry {
 		pub.ContestSlug = *ut.ContestSlug
 	}
 	if ut.Language != nil {
-		pub.Language = ut.Language
+		pub.Language = *ut.Language
 	}
 	if ut.TaskSlug != nil {
 		pub.TaskSlug = *ut.TaskSlug
@@ -84,7 +88,7 @@ type AbstractEntry struct {
 	ContestSlug string `form:"contestSlug" json:"contestSlug" yaml:"contestSlug" xml:"contestSlug"`
 	// Identifies the programming language used in the entry's content. The special keyword "none" should be used
 	// 		instead when submitting plain text, which are used for user test inputs and  diff based grading
-	Language *string `form:"language,omitempty" json:"language,omitempty" yaml:"language,omitempty" xml:"language,omitempty"`
+	Language string `form:"language" json:"language" yaml:"language" xml:"language"`
 	// Task unique and human readable string identifier
 	TaskSlug string `form:"taskSlug" json:"taskSlug" yaml:"taskSlug" xml:"taskSlug"`
 	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words

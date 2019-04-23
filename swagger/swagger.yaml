@@ -174,6 +174,7 @@ definitions:
       contestSlug: con_test
       href: /drafts/1236
       id: 1236
+      language: Python 3
       links:
         result:
           href: /draft-results/1236-5689
@@ -203,6 +204,13 @@ definitions:
         example: 1236
         format: int64
         type: integer
+      language:
+        default: ""
+        description: "Identifies the programming language used in the entry's content.
+          The special keyword \"none\" should be used \n\t\tinstead when submitting
+          plain text, which are used for user test inputs and  diff based grading"
+        example: Python 3
+        type: string
       links:
         $ref: '#/definitions/ComJossemargtSaoDraftLinks'
       taskID:
@@ -305,6 +313,7 @@ definitions:
       contestSlug: con_test
       href: /entries/1236
       id: 1236
+      language: Python 3
       links:
         result:
           href: /results/1236-5689
@@ -335,6 +344,13 @@ definitions:
         example: 1236
         format: int64
         type: integer
+      language:
+        default: ""
+        description: "Identifies the programming language used in the entry's content.
+          The special keyword \"none\" should be used \n\t\tinstead when submitting
+          plain text, which are used for user test inputs and  diff based grading"
+        example: Python 3
+        type: string
       links:
         $ref: '#/definitions/ComJossemargtSaoEntryLinks'
       taskID:

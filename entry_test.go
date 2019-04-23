@@ -17,6 +17,8 @@ import (
 )
 
 func TestEntryController_Get(t *testing.T) {
+	defLan := "Go"
+
 	scenarios := []struct {
 		name             string
 		mockRepo         storage.EntryRepository
@@ -32,6 +34,8 @@ func TestEntryController_Get(t *testing.T) {
 					TaskID:      7,
 					TaskSlug:    "batch_test",
 					ContestSlug: "con_test",
+					Token:       true,
+					Language:    &defLan,
 				},
 			},
 			expectedResource: &app.ComJossemargtSaoEntryFull{
@@ -41,6 +45,7 @@ func TestEntryController_Get(t *testing.T) {
 				ContestSlug: "con_test",
 				TaskSlug:    "batch_test",
 				Token:       true,
+				Language:    defLan,
 				Href:        fmt.Sprintf("%s%d", app.EntryHref(), 5),
 			},
 			goaFnWrapper: func(t *testing.T, c context.Context, s *goa.Service, ctrl app.EntryController) *app.ComJossemargtSaoEntryFull {
@@ -67,7 +72,7 @@ func TestEntryController_Get(t *testing.T) {
 				TaskID:      7,
 				ContestSlug: "con_test",
 				TaskSlug:    "batch_test",
-				Token:       true,
+				Token:       false,
 				Href:        fmt.Sprintf("%s%d", app.EntryHref(), 5),
 				Links: &app.ComJossemargtSaoEntryLinks{
 					Result: &app.ComJossemargtSaoResultLink{
@@ -137,7 +142,6 @@ func TestEntryController_Show(t *testing.T) {
 					ID:          5,
 					ContestSlug: "con_test",
 					TaskSlug:    "batch_test",
-					Token:       true,
 					Href:        fmt.Sprintf("%s%d", app.EntryHref(), 5),
 				},
 			},
@@ -159,6 +163,7 @@ func TestEntryController_Show(t *testing.T) {
 							TaskID:      7,
 							TaskSlug:    "batch_test",
 							ContestSlug: "con_test",
+							Token:       true,
 						})
 					}
 					return list
@@ -208,7 +213,7 @@ func TestEntryController_Show(t *testing.T) {
 			resource := tt.goaFnWrapper(t, ctx, service, ctrl)
 
 			if !reflect.DeepEqual(tt.expectedResource, resource) {
-				t.Errorf("Unexpected response body, expeted: %#v got: %#v", tt.expectedResource, resource)
+				t.Errorf("Unexpected response body, expected: %#v got: %#v", tt.expectedResource, resource)
 			}
 		})
 	}

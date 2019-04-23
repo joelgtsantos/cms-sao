@@ -20,7 +20,7 @@ var AbstractEntry = Type("AbstractEntry", func() {
 	Attribute("language", String,
 		`Identifies the programming language used in the entry's content. The special keyword "none" should be used 
 		instead when submitting plain text, which are used for user test inputs and  diff based grading`, func() {
-			Example("none")
+			Default("")
 			Example("Python 3")
 		})
 	Attribute("token", Boolean,

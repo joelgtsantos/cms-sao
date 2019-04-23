@@ -79,7 +79,7 @@ func entryModelToMedia(entry *model.Entry) *app.ComJossemargtSaoEntry {
 		ID:          entry.ID,
 		ContestSlug: entry.ContestSlug,
 		TaskSlug:    entry.TaskSlug,
-		Token:       true,
+		Token:       entry.Token,
 		Href:        fmt.Sprintf("%s%d", app.EntryHref(), entry.ID),
 	}
 
@@ -93,20 +93,21 @@ func entryModelToMediaFull(entry *model.Entry) *app.ComJossemargtSaoEntryFull {
 		ContestSlug: entry.ContestSlug,
 		TaskID:      entry.TaskID,
 		TaskSlug:    entry.TaskSlug,
-		Token:       true,
+		Token:       entry.Token,
 		Href:        fmt.Sprintf("%s%d", app.EntryHref(), entry.ID),
 	}
 
-	links := new(app.ComJossemargtSaoEntryLinks)
+	if entry.Language != nil {
+		media.Language = *entry.Language
+	}
 
+	links := new(app.ComJossemargtSaoEntryLinks)
 	if entry.DatasetID != 0 {
 		links.Result = &app.ComJossemargtSaoResultLink{
 			ID:   entry.ResultID(),
 			Href: fmt.Sprintf("%s%s", app.ResultHref(), entry.ResultID()),
 		}
-	}
 
-	if links.Result != nil {
 		media.Links = links
 	}
 
