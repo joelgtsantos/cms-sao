@@ -19,11 +19,14 @@ import (
 type abstractEntry struct {
 	// Contest unique and human readable string identifier
 	ContestSlug *string `form:"contestSlug,omitempty" json:"contestSlug,omitempty" yaml:"contestSlug,omitempty" xml:"contestSlug,omitempty"`
-	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
-	// 		any submitted Entry will use a CMS Token
-	Ranked *bool `form:"ranked,omitempty" json:"ranked,omitempty" yaml:"ranked,omitempty" xml:"ranked,omitempty"`
+	// Identifies the programming language used in the entry's content. The special keyword "none" should be used
+	// 		instead when submitting plain text, which are used for user test inputs and  diff based grading
+	Language *string `form:"language,omitempty" json:"language,omitempty" yaml:"language,omitempty" xml:"language,omitempty"`
 	// Task unique and human readable string identifier
 	TaskSlug *string `form:"taskSlug,omitempty" json:"taskSlug,omitempty" yaml:"taskSlug,omitempty" xml:"taskSlug,omitempty"`
+	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
+	// 		any submitted Entry will use a CMS Token
+	Token *bool `form:"token,omitempty" json:"token,omitempty" yaml:"token,omitempty" xml:"token,omitempty"`
 }
 
 // Finalize sets the default values for abstractEntry type instance.
@@ -32,13 +35,13 @@ func (ut *abstractEntry) Finalize() {
 	if ut.ContestSlug == nil {
 		ut.ContestSlug = &defaultContestSlug
 	}
-	var defaultRanked = true
-	if ut.Ranked == nil {
-		ut.Ranked = &defaultRanked
-	}
 	var defaultTaskSlug = ""
 	if ut.TaskSlug == nil {
 		ut.TaskSlug = &defaultTaskSlug
+	}
+	var defaultToken = true
+	if ut.Token == nil {
+		ut.Token = &defaultToken
 	}
 }
 
@@ -63,11 +66,14 @@ func (ut *abstractEntry) Publicize() *AbstractEntry {
 	if ut.ContestSlug != nil {
 		pub.ContestSlug = *ut.ContestSlug
 	}
-	if ut.Ranked != nil {
-		pub.Ranked = *ut.Ranked
+	if ut.Language != nil {
+		pub.Language = ut.Language
 	}
 	if ut.TaskSlug != nil {
 		pub.TaskSlug = *ut.TaskSlug
+	}
+	if ut.Token != nil {
+		pub.Token = *ut.Token
 	}
 	return &pub
 }
@@ -76,11 +82,14 @@ func (ut *abstractEntry) Publicize() *AbstractEntry {
 type AbstractEntry struct {
 	// Contest unique and human readable string identifier
 	ContestSlug string `form:"contestSlug" json:"contestSlug" yaml:"contestSlug" xml:"contestSlug"`
-	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
-	// 		any submitted Entry will use a CMS Token
-	Ranked bool `form:"ranked" json:"ranked" yaml:"ranked" xml:"ranked"`
+	// Identifies the programming language used in the entry's content. The special keyword "none" should be used
+	// 		instead when submitting plain text, which are used for user test inputs and  diff based grading
+	Language *string `form:"language,omitempty" json:"language,omitempty" yaml:"language,omitempty" xml:"language,omitempty"`
 	// Task unique and human readable string identifier
 	TaskSlug string `form:"taskSlug" json:"taskSlug" yaml:"taskSlug" xml:"taskSlug"`
+	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
+	// 		any submitted Entry will use a CMS Token
+	Token bool `form:"token" json:"token" yaml:"token" xml:"token"`
 }
 
 // Validate validates the AbstractEntry type instance.
@@ -197,13 +206,13 @@ func (ut *CompilationResult) Validate() (err error) {
 type entryPayload struct {
 	// Contest unique and human readable string identifier
 	ContestSlug *string `form:"contestSlug,omitempty" json:"contestSlug,omitempty" yaml:"contestSlug,omitempty" xml:"contestSlug,omitempty"`
-	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
-	// 		any submitted Entry will use a CMS Token
-	Ranked *bool `form:"ranked,omitempty" json:"ranked,omitempty" yaml:"ranked,omitempty" xml:"ranked,omitempty"`
 	// Source files representation. Within this list the source code files and input files can be sent alike.
 	Sources []*entrySource `form:"sources,omitempty" json:"sources,omitempty" yaml:"sources,omitempty" xml:"sources,omitempty"`
 	// Task unique and human readable string identifier
 	TaskSlug *string `form:"taskSlug,omitempty" json:"taskSlug,omitempty" yaml:"taskSlug,omitempty" xml:"taskSlug,omitempty"`
+	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
+	// 		any submitted Entry will use a CMS Token
+	Token *bool `form:"token,omitempty" json:"token,omitempty" yaml:"token,omitempty" xml:"token,omitempty"`
 }
 
 // Finalize sets the default values for entryPayload type instance.
@@ -211,10 +220,6 @@ func (ut *entryPayload) Finalize() {
 	var defaultContestSlug = ""
 	if ut.ContestSlug == nil {
 		ut.ContestSlug = &defaultContestSlug
-	}
-	var defaultRanked = true
-	if ut.Ranked == nil {
-		ut.Ranked = &defaultRanked
 	}
 	for _, e := range ut.Sources {
 		var defaultEncoding = "utf8"
@@ -226,6 +231,10 @@ func (ut *entryPayload) Finalize() {
 	if ut.TaskSlug == nil {
 		ut.TaskSlug = &defaultTaskSlug
 	}
+	var defaultToken = true
+	if ut.Token == nil {
+		ut.Token = &defaultToken
+	}
 }
 
 // Validate validates the entryPayload type instance.
@@ -236,8 +245,8 @@ func (ut *entryPayload) Validate() (err error) {
 	if ut.TaskSlug == nil {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "taskSlug"))
 	}
-	if ut.Ranked == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "ranked"))
+	if ut.Token == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "token"))
 	}
 	if ut.Sources == nil {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "sources"))
@@ -266,9 +275,6 @@ func (ut *entryPayload) Publicize() *EntryPayload {
 	if ut.ContestSlug != nil {
 		pub.ContestSlug = *ut.ContestSlug
 	}
-	if ut.Ranked != nil {
-		pub.Ranked = *ut.Ranked
-	}
 	if ut.Sources != nil {
 		pub.Sources = make([]*EntrySource, len(ut.Sources))
 		for i2, elem2 := range ut.Sources {
@@ -278,6 +284,9 @@ func (ut *entryPayload) Publicize() *EntryPayload {
 	if ut.TaskSlug != nil {
 		pub.TaskSlug = *ut.TaskSlug
 	}
+	if ut.Token != nil {
+		pub.Token = *ut.Token
+	}
 	return &pub
 }
 
@@ -285,13 +294,13 @@ func (ut *entryPayload) Publicize() *EntryPayload {
 type EntryPayload struct {
 	// Contest unique and human readable string identifier
 	ContestSlug string `form:"contestSlug" json:"contestSlug" yaml:"contestSlug" xml:"contestSlug"`
-	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
-	// 		any submitted Entry will use a CMS Token
-	Ranked bool `form:"ranked" json:"ranked" yaml:"ranked" xml:"ranked"`
 	// Source files representation. Within this list the source code files and input files can be sent alike.
 	Sources []*EntrySource `form:"sources" json:"sources" yaml:"sources" xml:"sources"`
 	// Task unique and human readable string identifier
 	TaskSlug string `form:"taskSlug" json:"taskSlug" yaml:"taskSlug" xml:"taskSlug"`
+	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
+	// 		any submitted Entry will use a CMS Token
+	Token bool `form:"token" json:"token" yaml:"token" xml:"token"`
 }
 
 // Validate validates the EntryPayload type instance.
@@ -374,7 +383,7 @@ type EntrySource struct {
 	Name *string `form:"name,omitempty" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 }
 
-// Embedded reprensentation of an entry evaluation result
+// Embedded representation of an entry evaluation result
 type evaluationResult struct {
 	// Execution result status
 	Status *string `form:"status,omitempty" json:"status,omitempty" yaml:"status,omitempty" xml:"status,omitempty"`
@@ -417,7 +426,7 @@ func (ut *evaluationResult) Publicize() *EvaluationResult {
 	return &pub
 }
 
-// Embedded reprensentation of an entry evaluation result
+// Embedded representation of an entry evaluation result
 type EvaluationResult struct {
 	// Execution result status
 	Status string `form:"status" json:"status" yaml:"status" xml:"status"`
@@ -505,4 +514,32 @@ type ExecutionResult struct {
 	Time float64 `form:"time" json:"time" yaml:"time" xml:"time"`
 	// The spent execution human perceived time
 	WallClockTime float64 `form:"wallClockTime" json:"wallClockTime" yaml:"wallClockTime" xml:"wallClockTime"`
+}
+
+// Embedded representation of the entry's scoring after being evaluated
+type scoreResult struct {
+	// The graded value relative to the Contest score
+	ContestValue *float64 `form:"contestValue,omitempty" json:"contestValue,omitempty" yaml:"contestValue,omitempty" xml:"contestValue,omitempty"`
+	// The graded value relative to the Task score
+	TaskValue *float64 `form:"taskValue,omitempty" json:"taskValue,omitempty" yaml:"taskValue,omitempty" xml:"taskValue,omitempty"`
+}
+
+// Publicize creates ScoreResult from scoreResult
+func (ut *scoreResult) Publicize() *ScoreResult {
+	var pub ScoreResult
+	if ut.ContestValue != nil {
+		pub.ContestValue = ut.ContestValue
+	}
+	if ut.TaskValue != nil {
+		pub.TaskValue = ut.TaskValue
+	}
+	return &pub
+}
+
+// Embedded representation of the entry's scoring after being evaluated
+type ScoreResult struct {
+	// The graded value relative to the Contest score
+	ContestValue *float64 `form:"contestValue,omitempty" json:"contestValue,omitempty" yaml:"contestValue,omitempty" xml:"contestValue,omitempty"`
+	// The graded value relative to the Task score
+	TaskValue *float64 `form:"taskValue,omitempty" json:"taskValue,omitempty" yaml:"taskValue,omitempty" xml:"taskValue,omitempty"`
 }

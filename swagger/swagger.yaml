@@ -75,16 +75,6 @@ definitions:
         tries: 2
       href: /draft-results/1236-5689
       id: 1236-5689
-    - evaluation:
-        status: ok
-        tries: 2
-      href: /draft-results/1236-5689
-      id: 1236-5689
-    - evaluation:
-        status: ok
-        tries: 2
-      href: /draft-results/1236-5689
-      id: 1236-5689
     items:
       $ref: '#/definitions/ComJossemargtSaoDraft-Result'
     title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.draft-result+json;
@@ -96,8 +86,8 @@ definitions:
     example:
       compilation:
         memory: 64
-        status: ok
-        stderr: Amet culpa qui rem.
+        status: unprocessed
+        stderr: Culpa qui rem.
         stdout: Nihil adipisci exercitationem veniam labore et minima.
         time: 0.035
         tries: 1
@@ -190,10 +180,11 @@ definitions:
           id: 1236-5689
       taskID: 4760242405733797322
       taskSlug: simpleBatch-95
+      userID: 7364821884840950094
     properties:
       contestID:
         default: 0
-        description: Contest ID
+        description: Contest ID where this Entry has been submitted
         example: 4530382689160806953
         format: int64
         type: integer
@@ -216,7 +207,7 @@ definitions:
         $ref: '#/definitions/ComJossemargtSaoDraftLinks'
       taskID:
         default: 0
-        description: Task ID
+        description: Task ID where this Entry has been submitted
         example: 4760242405733797322
         format: int64
         type: integer
@@ -226,6 +217,12 @@ definitions:
         example: simpleBatch-95
         pattern: '[_a-zA-Z0-9\-]+'
         type: string
+      userID:
+        default: 0
+        description: User ID of the Entry's owner
+        example: 7364821884840950094
+        format: int64
+        type: integer
     required:
     - id
     - href
@@ -250,8 +247,8 @@ definitions:
       contestSlug: con_test
       href: /entries/1236
       id: 1236
-      ranked: true
       taskSlug: simpleBatch-95
+      token: true
     properties:
       contestSlug:
         default: ""
@@ -268,19 +265,19 @@ definitions:
         example: 1236
         format: int64
         type: integer
-      ranked:
-        default: true
-        description: "Identifies when an Entry has been processed using a CMS Entry
-          Token. The default value is true, in other words \n\t\tany submitted Entry
-          will use a CMS Token"
-        example: true
-        type: boolean
       taskSlug:
         default: ""
         description: Task unique and human readable string identifier
         example: simpleBatch-95
         pattern: '[_a-zA-Z0-9\-]+'
         type: string
+      token:
+        default: true
+        description: "Identifies when an Entry has been processed using a CMS Entry
+          Token. The default value is true, in other words \n\t\tany submitted Entry
+          will use a CMS Token"
+        example: true
+        type: boolean
     required:
     - id
     - href
@@ -293,8 +290,8 @@ definitions:
     - contestSlug: con_test
       href: /entries/1236
       id: 1236
-      ranked: true
       taskSlug: simpleBatch-95
+      token: true
     items:
       $ref: '#/definitions/ComJossemargtSaoEntry'
     title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.entry+json; type=collection;
@@ -312,16 +309,14 @@ definitions:
         result:
           href: /results/1236-5689
           id: 1236-5689
-        score:
-          href: /scores/1236-5689
-          id: 1236-5689
-      ranked: true
-      taskID: 7319428538734610834
+      taskID: 3194439882473465766
       taskSlug: simpleBatch-95
+      token: true
+      userID: 7663820446561998429
     properties:
       contestID:
         default: 0
-        description: Contest ID
+        description: Contest ID where this Entry has been submitted
         example: 1219867880013576045
         format: int64
         type: integer
@@ -342,17 +337,10 @@ definitions:
         type: integer
       links:
         $ref: '#/definitions/ComJossemargtSaoEntryLinks'
-      ranked:
-        default: true
-        description: "Identifies when an Entry has been processed using a CMS Entry
-          Token. The default value is true, in other words \n\t\tany submitted Entry
-          will use a CMS Token"
-        example: true
-        type: boolean
       taskID:
         default: 0
-        description: Task ID
-        example: 7319428538734610834
+        description: Task ID where this Entry has been submitted
+        example: 3194439882473465766
         format: int64
         type: integer
       taskSlug:
@@ -361,6 +349,19 @@ definitions:
         example: simpleBatch-95
         pattern: '[_a-zA-Z0-9\-]+'
         type: string
+      token:
+        default: true
+        description: "Identifies when an Entry has been processed using a CMS Entry
+          Token. The default value is true, in other words \n\t\tany submitted Entry
+          will use a CMS Token"
+        example: true
+        type: boolean
+      userID:
+        default: 0
+        description: User ID of the Entry's owner
+        example: 7663820446561998429
+        format: int64
+        type: integer
     required:
     - id
     - href
@@ -373,14 +374,9 @@ definitions:
       result:
         href: /results/1236-5689
         id: 1236-5689
-      score:
-        href: /scores/1236-5689
-        id: 1236-5689
     properties:
       result:
         $ref: '#/definitions/ComJossemargtSaoResultLink'
-      score:
-        $ref: '#/definitions/ComJossemargtSaoScoreLink'
     title: ComJossemargtSaoEntryLinks
     type: object
   ComJossemargtSaoResult:
@@ -419,6 +415,16 @@ definitions:
         tries: 2
       href: /results/1236-5689
       id: 1236-5689
+    - evaluation:
+        status: ok
+        tries: 2
+      href: /results/1236-5689
+      id: 1236-5689
+    - evaluation:
+        status: ok
+        tries: 2
+      href: /results/1236-5689
+      id: 1236-5689
     items:
       $ref: '#/definitions/ComJossemargtSaoResult'
     title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.result+json;
@@ -430,8 +436,8 @@ definitions:
     example:
       compilation:
         memory: 64
-        status: ok
-        stderr: Amet culpa qui rem.
+        status: unprocessed
+        stderr: Culpa qui rem.
         stdout: Nihil adipisci exercitationem veniam labore et minima.
         time: 0.035
         tries: 1
@@ -439,44 +445,16 @@ definitions:
       evaluation:
         status: ok
         tries: 2
-      execution:
-      - memory: 64
-        output: Ipsam in et sunt eaque sint.
-        status: ok
-        time: 0.035
-        wallClockTime: 0.568
-      - memory: 64
-        output: Ipsam in et sunt eaque sint.
-        status: ok
-        time: 0.035
-        wallClockTime: 0.568
       href: /results/1236-5689
       id: 1236-5689
-      links:
-        score:
-          href: /scores/1236-5689
-          id: 1236-5689
+      score:
+        contestValue: 10.5
+        taskValue: 20
     properties:
       compilation:
         $ref: '#/definitions/CompilationResult'
       evaluation:
         $ref: '#/definitions/EvaluationResult'
-      execution:
-        description: Entry execution result
-        example:
-        - memory: 64
-          output: Ipsam in et sunt eaque sint.
-          status: ok
-          time: 0.035
-          wallClockTime: 0.568
-        - memory: 64
-          output: Ipsam in et sunt eaque sint.
-          status: ok
-          time: 0.035
-          wallClockTime: 0.568
-        items:
-          $ref: '#/definitions/ExecutionResult'
-        type: array
       href:
         description: API href for making requests on the result
         example: /results/1236-5689
@@ -487,6 +465,8 @@ definitions:
         type: string
       links:
         $ref: '#/definitions/ComJossemargtSaoResultLinks'
+      score:
+        $ref: '#/definitions/ScoreResult'
     required:
     - id
     - href
@@ -518,132 +498,35 @@ definitions:
   ComJossemargtSaoResultLinks:
     description: ComJossemargtSaoResultLinks contains links to related resources of
       ComJossemargtSaoResult.
-    example:
-      score:
-        href: /scores/1236-5689
-        id: 1236-5689
-    properties:
-      score:
-        $ref: '#/definitions/ComJossemargtSaoScoreLink'
     title: ComJossemargtSaoResultLinks
     type: object
-  ComJossemargtSaoScore:
-    description: The representation of the entry's scoring after being evaluated (default
-      view)
-    example:
-      href: /scores/1236-5689
-      id: 1236-5689
-      value: 10.5
-    properties:
-      href:
-        description: API href for making requests on the score
-        example: /scores/1236-5689
-        type: string
-      id:
-        description: Compound unique score ID
-        example: 1236-5689
-        type: string
-      value:
-        description: An official graded score with a token
-        example: 10.5
-        format: double
-        type: number
-    required:
-    - id
-    - href
-    - value
-    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.score+json; view=default'
-    type: object
-  ComJossemargtSaoScoreCollection:
-    description: ComJossemargtSaoScoreCollection is the media type for an array of
-      ComJossemargtSaoScore (default view)
-    example:
-    - href: /scores/1236-5689
-      id: 1236-5689
-      value: 10.5
-    - href: /scores/1236-5689
-      id: 1236-5689
-      value: 10.5
-    items:
-      $ref: '#/definitions/ComJossemargtSaoScore'
-    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.score+json; type=collection;
-      view=default'
-    type: array
-  ComJossemargtSaoScoreFull:
-    description: The representation of the entry's scoring after being evaluated (full
-      view)
-    example:
-      href: /scores/1236-5689
-      id: 1236-5689
-      unofficialValue: 20
-      value: 10.5
-    properties:
-      href:
-        description: API href for making requests on the score
-        example: /scores/1236-5689
-        type: string
-      id:
-        description: Compound unique score ID
-        example: 1236-5689
-        type: string
-      unofficialValue:
-        description: An un-official graded score
-        example: 20
-        format: double
-        type: number
-      value:
-        description: An official graded score with a token
-        example: 10.5
-        format: double
-        type: number
-    required:
-    - id
-    - href
-    - value
-    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.score+json; view=full'
-    type: object
-  ComJossemargtSaoScoreLink:
-    description: The representation of the entry's scoring after being evaluated (link
-      view)
-    example:
-      href: /scores/1236-5689
-      id: 1236-5689
-    properties:
-      href:
-        description: API href for making requests on the score
-        example: /scores/1236-5689
-        type: string
-      id:
-        description: Compound unique score ID
-        example: 1236-5689
-        type: string
-    required:
-    - id
-    - href
-    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.score+json; view=link'
-    type: object
-  ComJossemargtSaoScoresum:
+  ComJossemargtSaoScore-Sum:
     description: The representation of a summarized entry's score (default view)
     example:
       contestID: 1
+      contestValue: 25
       taskID: 1
-      unofficialValue: 20
+      taskValue: 100
       userID: 1
-      value: 10.5
     properties:
       contestID:
         description: Contest Identifier associated with this score
         example: 1
         minimum: 1
         type: integer
+      contestValue:
+        description: The graded value relative to the contest
+        example: 25
+        format: double
+        type: number
       taskID:
         description: Contest Identifier associated with this score
         example: 1
         minimum: 1
         type: integer
-      unofficialValue:
-        description: An un-official graded score
-        example: 20
+      taskValue:
+        description: The graded value relative to the Task total score
+        example: 100
         format: double
         type: number
       userID:
@@ -651,37 +534,37 @@ definitions:
         example: 1
         minimum: 1
         type: integer
-      value:
-        description: An official graded score with a token
-        example: 10.5
-        format: double
-        type: number
     required:
-    - unofficialValue
-    - value
-    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.scoresum+json;
+    - contestValue
+    - taskValue
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.score-sum+json;
       view=default'
     type: object
-  ComJossemargtSaoScoresumCollection:
-    description: ComJossemargtSaoScoresumCollection is the media type for an array
-      of ComJossemargtSaoScoresum (default view)
+  ComJossemargtSaoScore-SumCollection:
+    description: ComJossemargtSaoScore-SumCollection is the media type for an array
+      of ComJossemargtSaoScore-Sum (default view)
     example:
     - contestID: 1
+      contestValue: 25
       taskID: 1
-      unofficialValue: 20
+      taskValue: 100
       userID: 1
-      value: 10.5
+    - contestID: 1
+      contestValue: 25
+      taskID: 1
+      taskValue: 100
+      userID: 1
     items:
-      $ref: '#/definitions/ComJossemargtSaoScoresum'
-    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.scoresum+json;
+      $ref: '#/definitions/ComJossemargtSaoScore-Sum'
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.score-sum+json;
       type=collection; view=default'
     type: array
   CompilationResult:
     description: Embedded representation of an entry compilation result
     example:
       memory: 64
-      status: ok
-      stderr: Amet culpa qui rem.
+      status: unprocessed
+      stderr: Culpa qui rem.
       stdout: Nihil adipisci exercitationem veniam labore et minima.
       time: 0.035
       tries: 1
@@ -699,11 +582,11 @@ definitions:
         - ok
         - fail
         - unprocessed
-        example: ok
+        example: unprocessed
         type: string
       stderr:
         description: Compilation process' standard error
-        example: Amet culpa qui rem.
+        example: Culpa qui rem.
         type: string
       stdout:
         description: Compilation process' standard output
@@ -730,21 +613,17 @@ definitions:
     description: Any source code or input that should be compiled, executed or evaluated
     example:
       contestSlug: con_test
-      ranked: false
       sources:
-      - content: Velit dolores numquam in.
-        encoding: Maxime aut velit numquam beatae.
+      - content: Voluptatem dignissimos velit.
+        encoding: Numquam in et maxime aut.
         language: Python 3
         name: my_solution.py
-      - content: Velit dolores numquam in.
-        encoding: Maxime aut velit numquam beatae.
-        language: Python 3
-        name: my_solution.py
-      - content: Velit dolores numquam in.
-        encoding: Maxime aut velit numquam beatae.
+      - content: Voluptatem dignissimos velit.
+        encoding: Numquam in et maxime aut.
         language: Python 3
         name: my_solution.py
       taskSlug: simpleBatch-95
+      token: true
     properties:
       contestSlug:
         default: ""
@@ -752,27 +631,16 @@ definitions:
         example: con_test
         pattern: '[_a-zA-Z0-9\-]+'
         type: string
-      ranked:
-        default: true
-        description: "Identifies when an Entry has been processed using a CMS Entry
-          Token. The default value is true, in other words \n\t\tany submitted Entry
-          will use a CMS Token"
-        example: false
-        type: boolean
       sources:
         description: Source files representation. Within this list the source code
           files and input files can be sent alike.
         example:
-        - content: Velit dolores numquam in.
-          encoding: Maxime aut velit numquam beatae.
+        - content: Voluptatem dignissimos velit.
+          encoding: Numquam in et maxime aut.
           language: Python 3
           name: my_solution.py
-        - content: Velit dolores numquam in.
-          encoding: Maxime aut velit numquam beatae.
-          language: Python 3
-          name: my_solution.py
-        - content: Velit dolores numquam in.
-          encoding: Maxime aut velit numquam beatae.
+        - content: Voluptatem dignissimos velit.
+          encoding: Numquam in et maxime aut.
           language: Python 3
           name: my_solution.py
         items:
@@ -785,29 +653,36 @@ definitions:
         example: simpleBatch-95
         pattern: '[_a-zA-Z0-9\-]+'
         type: string
+      token:
+        default: true
+        description: "Identifies when an Entry has been processed using a CMS Entry
+          Token. The default value is true, in other words \n\t\tany submitted Entry
+          will use a CMS Token"
+        example: true
+        type: boolean
     required:
     - contestSlug
     - taskSlug
-    - ranked
+    - token
     - sources
     title: EntryPayload
     type: object
   EntrySource:
     description: Entry's embed type which represents a source file
     example:
-      content: Velit dolores numquam in.
-      encoding: Maxime aut velit numquam beatae.
+      content: Voluptatem dignissimos velit.
+      encoding: Numquam in et maxime aut.
       language: Python 3
       name: my_solution.py
     properties:
       content:
         description: Source content
-        example: Velit dolores numquam in.
+        example: Voluptatem dignissimos velit.
         type: string
       encoding:
         default: utf8
         description: Source content's encoding
-        example: Maxime aut velit numquam beatae.
+        example: Numquam in et maxime aut.
         type: string
       language:
         description: "Identifies the programming language used in the entry's content.
@@ -825,7 +700,7 @@ definitions:
     title: EntrySource
     type: object
   EvaluationResult:
-    description: Embedded reprensentation of an entry evaluation result
+    description: Embedded representation of an entry evaluation result
     example:
       status: ok
       tries: 2
@@ -882,6 +757,24 @@ definitions:
         format: double
         type: number
     title: ExecutionResult
+    type: object
+  ScoreResult:
+    description: Embedded representation of the entry's scoring after being evaluated
+    example:
+      contestValue: 10.5
+      taskValue: 20
+    properties:
+      contestValue:
+        description: The graded value relative to the Contest score
+        example: 10.5
+        format: double
+        type: number
+      taskValue:
+        description: The graded value relative to the Task score
+        example: 20
+        format: double
+        type: number
+    title: ScoreResult
     type: object
   error:
     description: Error response media type (default view)
@@ -1284,13 +1177,6 @@ paths:
         name: page_size
         required: false
         type: integer
-      - default: true
-        description: List the ranked entries (the ones that have summit a token with
-          it)
-        in: query
-        name: ranked
-        required: false
-        type: boolean
       - default: desc
         description: Sorting order
         enum:
@@ -1359,104 +1245,43 @@ paths:
       summary: get result
       tags:
       - result
-  /scores/:
-    get:
-      description: List all the scores delimited by the query params
-      operationId: scores#show
+  /submit-draft:
+    post:
+      description: Orchestrates the resource creation related to a entry draft submit
+        process (Draft and Result).
+      operationId: actions#submitEntryDraft
       parameters:
-      - description: Contest ID
-        in: query
-        minimum: 0
-        name: contest
-        required: false
-        type: integer
-      - description: Entry ID
-        in: query
-        minimum: 0
-        name: entry
-        required: false
-        type: integer
-      - default: 1
-        description: Page number
-        in: query
-        minimum: 1
-        name: page
-        required: false
-        type: integer
-      - default: 10
-        description: Item amount per page
-        in: query
-        minimum: 5
-        name: page_size
-        required: false
-        type: integer
-      - default: desc
-        description: Sorting order
-        enum:
-        - asc
-        - desc
-        in: query
-        name: sort
-        required: false
-        type: string
-      - description: Task ID
-        in: query
-        minimum: 0
-        name: task
-        required: false
-        type: integer
-      - description: User ID
-        in: query
-        minimum: 0
-        name: user
-        required: false
-        type: integer
-      produces:
-      - application/vnd.com.jossemargt.sao.score+json; type=collection
-      - application/vnd.goa.error
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/ComJossemargtSaoScoreCollection'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/error'
-      schemes:
-      - http
-      summary: show scores
-      tags:
-      - scores
-  /scores/{scoreID}:
-    get:
-      description: Returns an specific score with the given entry and testcase ID
-      operationId: scores#get
-      parameters:
-      - description: Score ID
-        in: path
-        name: scoreID
+      - description: Any source code or input that should be compiled, executed or
+          evaluated
+        in: body
+        name: payload
         required: true
-        type: string
+        schema:
+          $ref: '#/definitions/EntryPayload'
       produces:
-      - application/vnd.com.jossemargt.sao.score+json
+      - application/vnd.com.jossemargt.sao.entry+json
       - application/vnd.goa.error
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
+          headers:
+            Location:
+              description: href to created entry
+              pattern: /drafts/\d+
+              type: string
           schema:
-            $ref: '#/definitions/ComJossemargtSaoScoreFull'
+            $ref: '#/definitions/ComJossemargtSaoEntryFull'
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/error'
-        "404":
-          description: Not Found
+        "501":
+          description: Not Implemented
       schemes:
       - http
-      summary: get scores
+      summary: submitEntryDraft actions
       tags:
-      - scores
+      - actions
   /submit-entry:
     post:
       description: Orchestrates the resource creation related to a entry submit process
@@ -1492,43 +1317,6 @@ paths:
       schemes:
       - http
       summary: submitEntry actions
-      tags:
-      - actions
-  /submit-entry-draft:
-    post:
-      description: Orchestrates the resource creation related to a entry draft submit
-        process (Draft and Result).
-      operationId: actions#submitEntryDraft
-      parameters:
-      - description: Any source code or input that should be compiled, executed or
-          evaluated
-        in: body
-        name: payload
-        required: true
-        schema:
-          $ref: '#/definitions/EntryPayload'
-      produces:
-      - application/vnd.com.jossemargt.sao.entry+json
-      - application/vnd.goa.error
-      responses:
-        "201":
-          description: Created
-          headers:
-            Location:
-              description: href to created entry
-              pattern: /drafts/\d+
-              type: string
-          schema:
-            $ref: '#/definitions/ComJossemargtSaoEntryFull'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/error'
-        "501":
-          description: Not Implemented
-      schemes:
-      - http
-      summary: submitEntryDraft actions
       tags:
       - actions
   /summarize-score:
@@ -1589,13 +1377,13 @@ paths:
         required: false
         type: integer
       produces:
-      - application/vnd.com.jossemargt.sao.scoresum+json; type=collection
+      - application/vnd.com.jossemargt.sao.score-sum+json; type=collection
       - application/vnd.goa.error
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ComJossemargtSaoScoresumCollection'
+            $ref: '#/definitions/ComJossemargtSaoScore-SumCollection'
         "400":
           description: Bad Request
           schema:

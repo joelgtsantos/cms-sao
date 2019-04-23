@@ -382,7 +382,7 @@ func GetResultOKLink(t goatest.TInterface, ctx context.Context, service *goa.Ser
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowResultBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ResultController, contest *int, entry *int, page int, pageSize int, ranked bool, sort string, task *int, user *int) (http.ResponseWriter, error) {
+func ShowResultBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ResultController, contest *int, entry *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -420,10 +420,6 @@ func ShowResultBadRequest(t goatest.TInterface, ctx context.Context, service *go
 		query["page_size"] = sliceVal
 	}
 	{
-		sliceVal := []string{fmt.Sprintf("%v", ranked)}
-		query["ranked"] = sliceVal
-	}
-	{
 		sliceVal := []string{sort}
 		query["sort"] = sliceVal
 	}
@@ -459,10 +455,6 @@ func ShowResultBadRequest(t goatest.TInterface, ctx context.Context, service *go
 	{
 		sliceVal := []string{strconv.Itoa(pageSize)}
 		prms["page_size"] = sliceVal
-	}
-	{
-		sliceVal := []string{fmt.Sprintf("%v", ranked)}
-		prms["ranked"] = sliceVal
 	}
 	{
 		sliceVal := []string{sort}
@@ -516,7 +508,7 @@ func ShowResultBadRequest(t goatest.TInterface, ctx context.Context, service *go
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowResultOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ResultController, contest *int, entry *int, page int, pageSize int, ranked bool, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoResultCollection) {
+func ShowResultOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ResultController, contest *int, entry *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoResultCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -554,10 +546,6 @@ func ShowResultOK(t goatest.TInterface, ctx context.Context, service *goa.Servic
 		query["page_size"] = sliceVal
 	}
 	{
-		sliceVal := []string{fmt.Sprintf("%v", ranked)}
-		query["ranked"] = sliceVal
-	}
-	{
 		sliceVal := []string{sort}
 		query["sort"] = sliceVal
 	}
@@ -593,10 +581,6 @@ func ShowResultOK(t goatest.TInterface, ctx context.Context, service *goa.Servic
 	{
 		sliceVal := []string{strconv.Itoa(pageSize)}
 		prms["page_size"] = sliceVal
-	}
-	{
-		sliceVal := []string{fmt.Sprintf("%v", ranked)}
-		prms["ranked"] = sliceVal
 	}
 	{
 		sliceVal := []string{sort}
@@ -655,7 +639,7 @@ func ShowResultOK(t goatest.TInterface, ctx context.Context, service *goa.Servic
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowResultOKFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ResultController, contest *int, entry *int, page int, pageSize int, ranked bool, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoResultFullCollection) {
+func ShowResultOKFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ResultController, contest *int, entry *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoResultFullCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -693,10 +677,6 @@ func ShowResultOKFull(t goatest.TInterface, ctx context.Context, service *goa.Se
 		query["page_size"] = sliceVal
 	}
 	{
-		sliceVal := []string{fmt.Sprintf("%v", ranked)}
-		query["ranked"] = sliceVal
-	}
-	{
 		sliceVal := []string{sort}
 		query["sort"] = sliceVal
 	}
@@ -732,10 +712,6 @@ func ShowResultOKFull(t goatest.TInterface, ctx context.Context, service *goa.Se
 	{
 		sliceVal := []string{strconv.Itoa(pageSize)}
 		prms["page_size"] = sliceVal
-	}
-	{
-		sliceVal := []string{fmt.Sprintf("%v", ranked)}
-		prms["ranked"] = sliceVal
 	}
 	{
 		sliceVal := []string{sort}
@@ -794,7 +770,7 @@ func ShowResultOKFull(t goatest.TInterface, ctx context.Context, service *goa.Se
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowResultOKLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ResultController, contest *int, entry *int, page int, pageSize int, ranked bool, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoResultLinkCollection) {
+func ShowResultOKLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ResultController, contest *int, entry *int, page int, pageSize int, sort string, task *int, user *int) (http.ResponseWriter, app.ComJossemargtSaoResultLinkCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -832,10 +808,6 @@ func ShowResultOKLink(t goatest.TInterface, ctx context.Context, service *goa.Se
 		query["page_size"] = sliceVal
 	}
 	{
-		sliceVal := []string{fmt.Sprintf("%v", ranked)}
-		query["ranked"] = sliceVal
-	}
-	{
 		sliceVal := []string{sort}
 		query["sort"] = sliceVal
 	}
@@ -871,10 +843,6 @@ func ShowResultOKLink(t goatest.TInterface, ctx context.Context, service *goa.Se
 	{
 		sliceVal := []string{strconv.Itoa(pageSize)}
 		prms["page_size"] = sliceVal
-	}
-	{
-		sliceVal := []string{fmt.Sprintf("%v", ranked)}
-		prms["ranked"] = sliceVal
 	}
 	{
 		sliceVal := []string{sort}

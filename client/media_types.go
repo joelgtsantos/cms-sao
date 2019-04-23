@@ -49,7 +49,7 @@ func (mt *ComJossemargtSaoDraft) Validate() (err error) {
 //
 // Identifier: application/vnd.com.jossemargt.sao.draft+json; view=full
 type ComJossemargtSaoDraftFull struct {
-	// Contest ID
+	// Contest ID where this Entry has been submitted
 	ContestID int `form:"contestID" json:"contestID" yaml:"contestID" xml:"contestID"`
 	// Contest unique and human readable string identifier
 	ContestSlug string `form:"contestSlug" json:"contestSlug" yaml:"contestSlug" xml:"contestSlug"`
@@ -59,10 +59,12 @@ type ComJossemargtSaoDraftFull struct {
 	ID int `form:"id" json:"id" yaml:"id" xml:"id"`
 	// Links to related resources
 	Links *ComJossemargtSaoDraftLinks `form:"links,omitempty" json:"links,omitempty" yaml:"links,omitempty" xml:"links,omitempty"`
-	// Task ID
+	// Task ID where this Entry has been submitted
 	TaskID int `form:"taskID" json:"taskID" yaml:"taskID" xml:"taskID"`
 	// Task unique and human readable string identifier
 	TaskSlug string `form:"taskSlug" json:"taskSlug" yaml:"taskSlug" xml:"taskSlug"`
+	// User ID of the Entry's owner
+	UserID int `form:"userID" json:"userID" yaml:"userID" xml:"userID"`
 }
 
 // Validate validates the ComJossemargtSaoDraftFull media type instance.
@@ -428,11 +430,11 @@ type ComJossemargtSaoEntry struct {
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Unique entry ID
 	ID int `form:"id" json:"id" yaml:"id" xml:"id"`
-	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
-	// 		any submitted Entry will use a CMS Token
-	Ranked bool `form:"ranked" json:"ranked" yaml:"ranked" xml:"ranked"`
 	// Task unique and human readable string identifier
 	TaskSlug string `form:"taskSlug" json:"taskSlug" yaml:"taskSlug" xml:"taskSlug"`
+	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
+	// 		any submitted Entry will use a CMS Token
+	Token bool `form:"token" json:"token" yaml:"token" xml:"token"`
 }
 
 // Validate validates the ComJossemargtSaoEntry media type instance.
@@ -454,7 +456,7 @@ func (mt *ComJossemargtSaoEntry) Validate() (err error) {
 //
 // Identifier: application/vnd.com.jossemargt.sao.entry+json; view=full
 type ComJossemargtSaoEntryFull struct {
-	// Contest ID
+	// Contest ID where this Entry has been submitted
 	ContestID int `form:"contestID" json:"contestID" yaml:"contestID" xml:"contestID"`
 	// Contest unique and human readable string identifier
 	ContestSlug string `form:"contestSlug" json:"contestSlug" yaml:"contestSlug" xml:"contestSlug"`
@@ -464,13 +466,15 @@ type ComJossemargtSaoEntryFull struct {
 	ID int `form:"id" json:"id" yaml:"id" xml:"id"`
 	// Links to related resources
 	Links *ComJossemargtSaoEntryLinks `form:"links,omitempty" json:"links,omitempty" yaml:"links,omitempty" xml:"links,omitempty"`
-	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
-	// 		any submitted Entry will use a CMS Token
-	Ranked bool `form:"ranked" json:"ranked" yaml:"ranked" xml:"ranked"`
-	// Task ID
+	// Task ID where this Entry has been submitted
 	TaskID int `form:"taskID" json:"taskID" yaml:"taskID" xml:"taskID"`
 	// Task unique and human readable string identifier
 	TaskSlug string `form:"taskSlug" json:"taskSlug" yaml:"taskSlug" xml:"taskSlug"`
+	// Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words
+	// 		any submitted Entry will use a CMS Token
+	Token bool `form:"token" json:"token" yaml:"token" xml:"token"`
+	// User ID of the Entry's owner
+	UserID int `form:"userID" json:"userID" yaml:"userID" xml:"userID"`
 }
 
 // Validate validates the ComJossemargtSaoEntryFull media type instance.
@@ -515,18 +519,12 @@ func (mt *ComJossemargtSaoEntryLink) Validate() (err error) {
 // ComJossemargtSaoEntryLinks contains links to related resources of ComJossemargtSaoEntry.
 type ComJossemargtSaoEntryLinks struct {
 	Result *ComJossemargtSaoResultLink `form:"result,omitempty" json:"result,omitempty" yaml:"result,omitempty" xml:"result,omitempty"`
-	Score  *ComJossemargtSaoScoreLink  `form:"score,omitempty" json:"score,omitempty" yaml:"score,omitempty" xml:"score,omitempty"`
 }
 
 // Validate validates the ComJossemargtSaoEntryLinks type instance.
 func (ut *ComJossemargtSaoEntryLinks) Validate() (err error) {
 	if ut.Result != nil {
 		if err2 := ut.Result.Validate(); err2 != nil {
-			err = goa.MergeErrors(err, err2)
-		}
-	}
-	if ut.Score != nil {
-		if err2 := ut.Score.Validate(); err2 != nil {
 			err = goa.MergeErrors(err, err2)
 		}
 	}
@@ -680,14 +678,14 @@ type ComJossemargtSaoResultFull struct {
 	Compilation *CompilationResult `form:"compilation,omitempty" json:"compilation,omitempty" yaml:"compilation,omitempty" xml:"compilation,omitempty"`
 	// Entry evaluation result
 	Evaluation *EvaluationResult `form:"evaluation" json:"evaluation" yaml:"evaluation" xml:"evaluation"`
-	// Entry execution result
-	Execution []*ExecutionResult `form:"execution,omitempty" json:"execution,omitempty" yaml:"execution,omitempty" xml:"execution,omitempty"`
 	// API href for making requests on the result
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Compound Result ID
 	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
 	// Links to related resources
 	Links *ComJossemargtSaoResultLinks `form:"links,omitempty" json:"links,omitempty" yaml:"links,omitempty" xml:"links,omitempty"`
+	// Entry graded score
+	Score *ScoreResult `form:"score,omitempty" json:"score,omitempty" yaml:"score,omitempty" xml:"score,omitempty"`
 }
 
 // Validate validates the ComJossemargtSaoResultFull media type instance.
@@ -708,11 +706,6 @@ func (mt *ComJossemargtSaoResultFull) Validate() (err error) {
 	}
 	if mt.Evaluation != nil {
 		if err2 := mt.Evaluation.Validate(); err2 != nil {
-			err = goa.MergeErrors(err, err2)
-		}
-	}
-	if mt.Links != nil {
-		if err2 := mt.Links.Validate(); err2 != nil {
 			err = goa.MergeErrors(err, err2)
 		}
 	}
@@ -742,17 +735,6 @@ func (mt *ComJossemargtSaoResultLink) Validate() (err error) {
 
 // ComJossemargtSaoResultLinks contains links to related resources of ComJossemargtSaoResult.
 type ComJossemargtSaoResultLinks struct {
-	Score *ComJossemargtSaoScoreLink `form:"score,omitempty" json:"score,omitempty" yaml:"score,omitempty" xml:"score,omitempty"`
-}
-
-// Validate validates the ComJossemargtSaoResultLinks type instance.
-func (ut *ComJossemargtSaoResultLinks) Validate() (err error) {
-	if ut.Score != nil {
-		if err2 := ut.Score.Validate(); err2 != nil {
-			err = goa.MergeErrors(err, err2)
-		}
-	}
-	return
 }
 
 // DecodeComJossemargtSaoResult decodes the ComJossemargtSaoResult instance encoded in resp body.
@@ -830,18 +812,6 @@ func (mt ComJossemargtSaoResultLinkCollection) Validate() (err error) {
 // ComJossemargtSaoResultLinksArray contains links to related resources of ComJossemargtSaoResultCollection.
 type ComJossemargtSaoResultLinksArray []*ComJossemargtSaoResultLinks
 
-// Validate validates the ComJossemargtSaoResultLinksArray type instance.
-func (ut ComJossemargtSaoResultLinksArray) Validate() (err error) {
-	for _, e := range ut {
-		if e != nil {
-			if err2 := e.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-	}
-	return
-}
-
 // DecodeComJossemargtSaoResultCollection decodes the ComJossemargtSaoResultCollection instance encoded in resp body.
 func (c *Client) DecodeComJossemargtSaoResultCollection(resp *http.Response) (ComJossemargtSaoResultCollection, error) {
 	var decoded ComJossemargtSaoResultCollection
@@ -863,188 +833,24 @@ func (c *Client) DecodeComJossemargtSaoResultLinkCollection(resp *http.Response)
 	return decoded, err
 }
 
-// The representation of the entry's scoring after being evaluated (default view)
-//
-// Identifier: application/vnd.com.jossemargt.sao.score+json; view=default
-type ComJossemargtSaoScore struct {
-	// API href for making requests on the score
-	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
-	// Compound unique score ID
-	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
-	// An official graded score with a token
-	Value float64 `form:"value" json:"value" yaml:"value" xml:"value"`
-}
-
-// Validate validates the ComJossemargtSaoScore media type instance.
-func (mt *ComJossemargtSaoScore) Validate() (err error) {
-	if mt.ID == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
-	}
-	if mt.Href == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
-	}
-
-	return
-}
-
-// The representation of the entry's scoring after being evaluated (full view)
-//
-// Identifier: application/vnd.com.jossemargt.sao.score+json; view=full
-type ComJossemargtSaoScoreFull struct {
-	// API href for making requests on the score
-	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
-	// Compound unique score ID
-	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
-	// An un-official graded score
-	UnofficialValue *float64 `form:"unofficialValue,omitempty" json:"unofficialValue,omitempty" yaml:"unofficialValue,omitempty" xml:"unofficialValue,omitempty"`
-	// An official graded score with a token
-	Value float64 `form:"value" json:"value" yaml:"value" xml:"value"`
-}
-
-// Validate validates the ComJossemargtSaoScoreFull media type instance.
-func (mt *ComJossemargtSaoScoreFull) Validate() (err error) {
-	if mt.ID == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
-	}
-	if mt.Href == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
-	}
-
-	return
-}
-
-// The representation of the entry's scoring after being evaluated (link view)
-//
-// Identifier: application/vnd.com.jossemargt.sao.score+json; view=link
-type ComJossemargtSaoScoreLink struct {
-	// API href for making requests on the score
-	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
-	// Compound unique score ID
-	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
-}
-
-// Validate validates the ComJossemargtSaoScoreLink media type instance.
-func (mt *ComJossemargtSaoScoreLink) Validate() (err error) {
-	if mt.ID == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
-	}
-	if mt.Href == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
-	}
-	return
-}
-
-// DecodeComJossemargtSaoScore decodes the ComJossemargtSaoScore instance encoded in resp body.
-func (c *Client) DecodeComJossemargtSaoScore(resp *http.Response) (*ComJossemargtSaoScore, error) {
-	var decoded ComJossemargtSaoScore
-	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
-	return &decoded, err
-}
-
-// DecodeComJossemargtSaoScoreFull decodes the ComJossemargtSaoScoreFull instance encoded in resp body.
-func (c *Client) DecodeComJossemargtSaoScoreFull(resp *http.Response) (*ComJossemargtSaoScoreFull, error) {
-	var decoded ComJossemargtSaoScoreFull
-	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
-	return &decoded, err
-}
-
-// DecodeComJossemargtSaoScoreLink decodes the ComJossemargtSaoScoreLink instance encoded in resp body.
-func (c *Client) DecodeComJossemargtSaoScoreLink(resp *http.Response) (*ComJossemargtSaoScoreLink, error) {
-	var decoded ComJossemargtSaoScoreLink
-	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
-	return &decoded, err
-}
-
-// ComJossemargtSaoScoreCollection is the media type for an array of ComJossemargtSaoScore (default view)
-//
-// Identifier: application/vnd.com.jossemargt.sao.score+json; type=collection; view=default
-type ComJossemargtSaoScoreCollection []*ComJossemargtSaoScore
-
-// Validate validates the ComJossemargtSaoScoreCollection media type instance.
-func (mt ComJossemargtSaoScoreCollection) Validate() (err error) {
-	for _, e := range mt {
-		if e != nil {
-			if err2 := e.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-	}
-	return
-}
-
-// ComJossemargtSaoScoreCollection is the media type for an array of ComJossemargtSaoScore (full view)
-//
-// Identifier: application/vnd.com.jossemargt.sao.score+json; type=collection; view=full
-type ComJossemargtSaoScoreFullCollection []*ComJossemargtSaoScoreFull
-
-// Validate validates the ComJossemargtSaoScoreFullCollection media type instance.
-func (mt ComJossemargtSaoScoreFullCollection) Validate() (err error) {
-	for _, e := range mt {
-		if e != nil {
-			if err2 := e.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-	}
-	return
-}
-
-// ComJossemargtSaoScoreCollection is the media type for an array of ComJossemargtSaoScore (link view)
-//
-// Identifier: application/vnd.com.jossemargt.sao.score+json; type=collection; view=link
-type ComJossemargtSaoScoreLinkCollection []*ComJossemargtSaoScoreLink
-
-// Validate validates the ComJossemargtSaoScoreLinkCollection media type instance.
-func (mt ComJossemargtSaoScoreLinkCollection) Validate() (err error) {
-	for _, e := range mt {
-		if e != nil {
-			if err2 := e.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-	}
-	return
-}
-
-// DecodeComJossemargtSaoScoreCollection decodes the ComJossemargtSaoScoreCollection instance encoded in resp body.
-func (c *Client) DecodeComJossemargtSaoScoreCollection(resp *http.Response) (ComJossemargtSaoScoreCollection, error) {
-	var decoded ComJossemargtSaoScoreCollection
-	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
-	return decoded, err
-}
-
-// DecodeComJossemargtSaoScoreFullCollection decodes the ComJossemargtSaoScoreFullCollection instance encoded in resp body.
-func (c *Client) DecodeComJossemargtSaoScoreFullCollection(resp *http.Response) (ComJossemargtSaoScoreFullCollection, error) {
-	var decoded ComJossemargtSaoScoreFullCollection
-	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
-	return decoded, err
-}
-
-// DecodeComJossemargtSaoScoreLinkCollection decodes the ComJossemargtSaoScoreLinkCollection instance encoded in resp body.
-func (c *Client) DecodeComJossemargtSaoScoreLinkCollection(resp *http.Response) (ComJossemargtSaoScoreLinkCollection, error) {
-	var decoded ComJossemargtSaoScoreLinkCollection
-	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
-	return decoded, err
-}
-
 // The representation of a summarized entry's score (default view)
 //
-// Identifier: application/vnd.com.jossemargt.sao.scoresum+json; view=default
-type ComJossemargtSaoScoresum struct {
+// Identifier: application/vnd.com.jossemargt.sao.score-sum+json; view=default
+type ComJossemargtSaoScoreSum struct {
 	// Contest Identifier associated with this score
 	ContestID *int `form:"contestID,omitempty" json:"contestID,omitempty" yaml:"contestID,omitempty" xml:"contestID,omitempty"`
+	// The graded value relative to the contest
+	ContestValue float64 `form:"contestValue" json:"contestValue" yaml:"contestValue" xml:"contestValue"`
 	// Contest Identifier associated with this score
 	TaskID *int `form:"taskID,omitempty" json:"taskID,omitempty" yaml:"taskID,omitempty" xml:"taskID,omitempty"`
-	// An un-official graded score
-	UnofficialValue float64 `form:"unofficialValue" json:"unofficialValue" yaml:"unofficialValue" xml:"unofficialValue"`
+	// The graded value relative to the Task total score
+	TaskValue float64 `form:"taskValue" json:"taskValue" yaml:"taskValue" xml:"taskValue"`
 	// Contest Identifier associated with this score
 	UserID *int `form:"userID,omitempty" json:"userID,omitempty" yaml:"userID,omitempty" xml:"userID,omitempty"`
-	// An official graded score with a token
-	Value float64 `form:"value" json:"value" yaml:"value" xml:"value"`
 }
 
-// Validate validates the ComJossemargtSaoScoresum media type instance.
-func (mt *ComJossemargtSaoScoresum) Validate() (err error) {
+// Validate validates the ComJossemargtSaoScoreSum media type instance.
+func (mt *ComJossemargtSaoScoreSum) Validate() (err error) {
 
 	if mt.ContestID != nil {
 		if *mt.ContestID < 1 {
@@ -1064,20 +870,20 @@ func (mt *ComJossemargtSaoScoresum) Validate() (err error) {
 	return
 }
 
-// DecodeComJossemargtSaoScoresum decodes the ComJossemargtSaoScoresum instance encoded in resp body.
-func (c *Client) DecodeComJossemargtSaoScoresum(resp *http.Response) (*ComJossemargtSaoScoresum, error) {
-	var decoded ComJossemargtSaoScoresum
+// DecodeComJossemargtSaoScoreSum decodes the ComJossemargtSaoScoreSum instance encoded in resp body.
+func (c *Client) DecodeComJossemargtSaoScoreSum(resp *http.Response) (*ComJossemargtSaoScoreSum, error) {
+	var decoded ComJossemargtSaoScoreSum
 	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
 	return &decoded, err
 }
 
-// ComJossemargtSaoScoresumCollection is the media type for an array of ComJossemargtSaoScoresum (default view)
+// ComJossemargtSaoScore-SumCollection is the media type for an array of ComJossemargtSaoScore-Sum (default view)
 //
-// Identifier: application/vnd.com.jossemargt.sao.scoresum+json; type=collection; view=default
-type ComJossemargtSaoScoresumCollection []*ComJossemargtSaoScoresum
+// Identifier: application/vnd.com.jossemargt.sao.score-sum+json; type=collection; view=default
+type ComJossemargtSaoScoreSumCollection []*ComJossemargtSaoScoreSum
 
-// Validate validates the ComJossemargtSaoScoresumCollection media type instance.
-func (mt ComJossemargtSaoScoresumCollection) Validate() (err error) {
+// Validate validates the ComJossemargtSaoScoreSumCollection media type instance.
+func (mt ComJossemargtSaoScoreSumCollection) Validate() (err error) {
 	for _, e := range mt {
 		if e != nil {
 			if err2 := e.Validate(); err2 != nil {
@@ -1088,9 +894,9 @@ func (mt ComJossemargtSaoScoresumCollection) Validate() (err error) {
 	return
 }
 
-// DecodeComJossemargtSaoScoresumCollection decodes the ComJossemargtSaoScoresumCollection instance encoded in resp body.
-func (c *Client) DecodeComJossemargtSaoScoresumCollection(resp *http.Response) (ComJossemargtSaoScoresumCollection, error) {
-	var decoded ComJossemargtSaoScoresumCollection
+// DecodeComJossemargtSaoScoreSumCollection decodes the ComJossemargtSaoScoreSumCollection instance encoded in resp body.
+func (c *Client) DecodeComJossemargtSaoScoreSumCollection(resp *http.Response) (ComJossemargtSaoScoreSumCollection, error) {
+	var decoded ComJossemargtSaoScoreSumCollection
 	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
 	return decoded, err
 }

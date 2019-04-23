@@ -5,11 +5,120 @@ import (
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
-const (
-	cmsAsyncOK          = "ok"
-	cmsAsyncFail        = "fail"
-	cmsAsyncUnprocessed = "unprocessed"
-)
+var EntryMedia = MediaType("application/vnd.com.jossemargt.sao.entry+json", func() {
+	Description("Any source code or input to be compiled, executed and evaluated")
+	Reference(AbstractEntry)
+
+	Attributes(func() {
+		Attribute("id", Integer, "Unique entry ID", func() {
+			Example(1236)
+		})
+		Attribute("href", String, "API href for making requests on the entry", func() {
+			Example("/entries/1236")
+		})
+		Attribute("contestSlug")
+		Attribute("contestID", Integer, "Contest ID where this Entry has been submitted", func() {
+			Default(0)
+		})
+		Attribute("taskSlug")
+		Attribute("taskID", Integer, "Task ID where this Entry has been submitted", func() {
+			Default(0)
+		})
+		Attribute("userID", Integer, "User ID of the Entry's owner", func() {
+			Default(0)
+		})
+		Attribute("token")
+		Attribute("language")
+		Attribute("result", ResultMedia, "The entry processing result")
+
+		Required("id", "href")
+	})
+
+	Links(func() {
+		Link("result", "link")
+	})
+
+	View("link", func() {
+		Attribute("id")
+		Attribute("href")
+	})
+
+	View("default", func() {
+		Attribute("id")
+		Attribute("href")
+		Attribute("contestSlug")
+		Attribute("taskSlug")
+		Attribute("token")
+	})
+
+	View("full", func() {
+		Attribute("id")
+		Attribute("href")
+		Attribute("contestID")
+		Attribute("contestSlug")
+		Attribute("taskID")
+		Attribute("taskSlug")
+		Attribute("userID")
+		Attribute("token")
+		Attribute("links")
+	})
+})
+
+var DraftMedia = MediaType("application/vnd.com.jossemargt.sao.draft+json", func() {
+	Description("Any source code or input to be compiled and executed against the user test case")
+	Reference(AbstractEntry)
+
+	Attributes(func() {
+		Attribute("id", Integer, "Unique entry ID", func() {
+			Example(1236)
+		})
+		Attribute("href", String, "API href for making requests on the entry", func() {
+			Example("/drafts/1236")
+		})
+		Attribute("contestSlug")
+		Attribute("contestID", Integer, "Contest ID where this Entry has been submitted", func() {
+			Default(0)
+		})
+		Attribute("taskSlug")
+		Attribute("taskID", Integer, "Task ID where this Entry has been submitted", func() {
+			Default(0)
+		})
+		Attribute("userID", Integer, "User ID of the Entry's owner", func() {
+			Default(0)
+		})
+		Attribute("language")
+		Attribute("result", DraftResultMedia, "The entry processing result")
+
+		Required("id", "href")
+	})
+
+	Links(func() {
+		Link("result", "link")
+	})
+
+	View("link", func() {
+		Attribute("id")
+		Attribute("href")
+	})
+
+	View("default", func() {
+		Attribute("id")
+		Attribute("href")
+		Attribute("contestSlug")
+		Attribute("taskSlug")
+	})
+
+	View("full", func() {
+		Attribute("id")
+		Attribute("href")
+		Attribute("contestID")
+		Attribute("contestSlug")
+		Attribute("taskID")
+		Attribute("taskSlug")
+		Attribute("userID")
+		Attribute("links")
+	})
+})
 
 var ResultMedia = MediaType("application/vnd.com.jossemargt.sao.result+json", func() {
 	Description("The representation of the result of an entry compile, evaluation and grading process")
@@ -21,15 +130,10 @@ var ResultMedia = MediaType("application/vnd.com.jossemargt.sao.result+json", fu
 			Example("/results/1236-5689")
 		})
 		Attribute("compilation", CompilationResult, "Entry compilation result")
-		Attribute("execution", ArrayOf(ExecutionResult), "Entry execution result")
 		Attribute("evaluation", EvaluationResult, "Entry evaluation result")
-		Attribute("score", ScoreMedia, "The entry grading score if has any")
+		Attribute("score", ScoreResult, "Entry graded score")
 
 		Required("id", "href", "evaluation")
-	})
-
-	Links(func() {
-		Link("score", "link")
 	})
 
 	View("link", func() {
@@ -47,8 +151,8 @@ var ResultMedia = MediaType("application/vnd.com.jossemargt.sao.result+json", fu
 		Attribute("id")
 		Attribute("href")
 		Attribute("compilation")
-		Attribute("execution")
 		Attribute("evaluation")
+		Attribute("score")
 		Attribute("links")
 	})
 })
@@ -90,45 +194,7 @@ var DraftResultMedia = MediaType("application/vnd.com.jossemargt.sao.draft-resul
 	})
 })
 
-var ScoreMedia = MediaType("application/vnd.com.jossemargt.sao.score+json", func() {
-	Description("The representation of the entry's scoring after being evaluated")
-	Attributes(func() {
-		Attribute("id", String, "Compound unique score ID", func() {
-			Example("1236-5689")
-		})
-		Attribute("href", String, "API href for making requests on the score", func() {
-			Example("/scores/1236-5689")
-		})
-		Attribute("unofficialValue", Number, "An un-official graded score", func() {
-			Example(20.00)
-		})
-		Attribute("value", Number, "An official graded score with a token", func() {
-			Example(10.50)
-		})
-
-		Required("id", "href", "value")
-	})
-
-	View("link", func() {
-		Attribute("id")
-		Attribute("href")
-	})
-
-	View("default", func() {
-		Attribute("id")
-		Attribute("href")
-		Attribute("value")
-	})
-
-	View("full", func() {
-		Attribute("id")
-		Attribute("href")
-		Attribute("unofficialValue")
-		Attribute("value")
-	})
-})
-
-var ScoreSumMedia = MediaType("application/vnd.com.jossemargt.sao.scoresum+json", func() {
+var ScoreSumMedia = MediaType("application/vnd.com.jossemargt.sao.score-sum+json", func() {
 	Description("The representation of a summarized entry's score")
 	Attributes(func() {
 		Attribute("contestID", Integer, "Contest Identifier associated with this score", func() {
@@ -146,189 +212,21 @@ var ScoreSumMedia = MediaType("application/vnd.com.jossemargt.sao.scoresum+json"
 			Example(1)
 			Minimum(1)
 		})
-		Attribute("unofficialValue", Number, "An un-official graded score", func() {
-			Example(20.00)
+		Attribute("taskValue", Number, "The graded value relative to the Task total score", func() {
+			Example(100.00)
 		})
-		Attribute("value", Number, "An official graded score with a token", func() {
-			Example(10.50)
+		Attribute("contestValue", Number, "The graded value relative to the contest", func() {
+			Example(25.00)
 		})
 
-		Required("unofficialValue", "value")
+		Required("contestValue", "taskValue")
 	})
 
 	View("default", func() {
 		Attribute("contestID")
 		Attribute("userID")
 		Attribute("taskID")
-		Attribute("unofficialValue")
-		Attribute("value")
+		Attribute("taskValue")
+		Attribute("contestValue")
 	})
-})
-
-var EntryMedia = MediaType("application/vnd.com.jossemargt.sao.entry+json", func() {
-	Description("Any source code or input to be compiled, executed and evaluated")
-	Reference(AbstractEntry)
-
-	Attributes(func() {
-		Attribute("id", Integer, "Unique entry ID", func() {
-			Example(1236)
-		})
-		Attribute("href", String, "API href for making requests on the entry", func() {
-			Example("/entries/1236")
-		})
-		Attribute("contestSlug")
-		Attribute("contestID", Integer, "Contest ID", func() {
-			Default(0)
-		})
-		Attribute("taskSlug")
-		Attribute("taskID", Integer, "Task ID", func() {
-			Default(0)
-		})
-		Attribute("ranked")
-		Attribute("result", ResultMedia, "The entry processing result")
-		Attribute("score", ScoreMedia, "The entry grading score if has any")
-
-		Required("id", "href")
-	})
-
-	Links(func() {
-		Link("result", "link")
-		Link("score", "link")
-	})
-
-	View("link", func() {
-		Attribute("id")
-		Attribute("href")
-	})
-
-	View("default", func() {
-		Attribute("id")
-		Attribute("href")
-		Attribute("contestSlug")
-		Attribute("taskSlug")
-		Attribute("ranked")
-	})
-
-	View("full", func() {
-		Attribute("id")
-		Attribute("href")
-		Attribute("contestID")
-		Attribute("contestSlug")
-		Attribute("taskID")
-		Attribute("taskSlug")
-		Attribute("ranked")
-		Attribute("links")
-	})
-})
-
-var DraftMedia = MediaType("application/vnd.com.jossemargt.sao.draft+json", func() {
-	Description("Any source code or input to be compiled and executed against the user test case")
-	Reference(AbstractEntry)
-
-	Attributes(func() {
-		Attribute("id", Integer, "Unique entry ID", func() {
-			Example(1236)
-		})
-		Attribute("href", String, "API href for making requests on the entry", func() {
-			Example("/drafts/1236")
-		})
-		Attribute("contestSlug")
-		Attribute("contestID", Integer, "Contest ID", func() {
-			Default(0)
-		})
-		Attribute("taskSlug")
-		Attribute("taskID", Integer, "Task ID", func() {
-			Default(0)
-		})
-		Attribute("result", DraftResultMedia, "The entry processing result")
-
-		Required("id", "href")
-	})
-
-	Links(func() {
-		Link("result", "link")
-	})
-
-	View("link", func() {
-		Attribute("id")
-		Attribute("href")
-	})
-
-	View("default", func() {
-		Attribute("id")
-		Attribute("href")
-		Attribute("contestSlug")
-		Attribute("taskSlug")
-	})
-
-	View("full", func() {
-		Attribute("id")
-		Attribute("href")
-		Attribute("contestID")
-		Attribute("contestSlug")
-		Attribute("taskID")
-		Attribute("taskSlug")
-		Attribute("links")
-	})
-})
-
-// Embedded types -----------------------------------------------------------------------------------------------------
-
-var ExecutionResult = Type("ExecutionResult", func() {
-	Description("Embedded representation of an entry execution result")
-	Attribute("status", String, "Execution result status", func() {
-		// cms/cms/db/submission.py:721
-		Example("ok")
-	})
-	Attribute("time", Number, "The spent execution CPU time", func() {
-		Example(0.035)
-		Default(0)
-	})
-	Attribute("wallClockTime", Number, "The spent execution human perceived time", func() {
-		Example(0.568)
-		Default(0)
-	})
-	Attribute("memory", Integer, "Memory consumed", func() {
-		Example(64)
-		Default(0)
-	})
-	Attribute("output", String, "Execution output", func() {
-		Default("")
-	})
-})
-
-var CompilationResult = Type("CompilationResult", func() {
-	Description("Embedded representation of an entry compilation result")
-	Attribute("status", String, "Execution result status", func() {
-		// cms/cms/db/submission.py:300
-		Enum(cmsAsyncOK, cmsAsyncFail, cmsAsyncUnprocessed)
-		Default(cmsAsyncUnprocessed)
-	})
-	Attribute("tries", Integer, "Compilation retries", func() {
-		Minimum(0)
-	})
-	Attribute("stdout", String, "Compilation process' standard output")
-	Attribute("stderr", String, "Compilation process' standard error")
-	Attribute("time", Number, "The spent execution CPU time", func() {
-		Example(0.035)
-	})
-	Attribute("wallClockTime", Number, "The spent execution human perceived time", func() {
-		Example(0.568)
-	})
-	Attribute("memory", Integer, "Memory consumed", func() {
-		Example(64)
-	})
-})
-
-var EvaluationResult = Type("EvaluationResult", func() {
-	Description("Embedded reprensentation of an entry evaluation result")
-	Attribute("status", String, "Execution result status", func() {
-		// cms/cms/db/submission.py:348
-		Enum(cmsAsyncOK, cmsAsyncUnprocessed)
-		Default(cmsAsyncUnprocessed)
-	})
-	Attribute("tries", Integer, "Evaluation retries", func() {
-		Minimum(0)
-	})
-
 })

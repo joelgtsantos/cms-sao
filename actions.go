@@ -41,7 +41,7 @@ func (c *ActionsController) SummarizeScore(ctx *app.SummarizeScoreActionsContext
 
 	// Put your logic here
 
-	res := app.ComJossemargtSaoScoresumCollection{}
+	res := app.ComJossemargtSaoScoreSumCollection{}
 	return ctx.OK(res)
 	// ActionsController_SummarizeScore: end_implement
 }

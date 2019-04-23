@@ -91,9 +91,6 @@ var _ = Resource("result", func() {
 			Param("entry", Integer, "Entry ID", func() {
 				Minimum(0)
 			})
-			Param("ranked", Boolean, "List the ranked entries (the ones that have summit a token with it)", func() {
-				Default(true)
-			})
 			Param("page", Integer, "Page number", func() {
 				Default(1)
 				Minimum(1)
@@ -123,59 +120,6 @@ var _ = Resource("result", func() {
 		})
 		Response(NotFound)
 	})
-})
-
-var _ = Resource("scores", func() {
-	Description("Represents an entry grading value")
-	BasePath("/scores")
-	Response(BadRequest, ErrorMedia)
-
-	Action("show", func() {
-		Description("List all the scores delimited by the query params")
-		Routing(GET("/"))
-		Params(func() {
-			Param("contest", Integer, "Contest ID", func() {
-				Minimum(0)
-			})
-			Param("task", Integer, "Task ID", func() {
-				Minimum(0)
-			})
-			Param("user", Integer, "User ID", func() {
-				Minimum(0)
-			})
-			Param("entry", Integer, "Entry ID", func() {
-				Minimum(0)
-			})
-			Param("page", Integer, "Page number", func() {
-				Default(1)
-				Minimum(1)
-			})
-			Param("page_size", Integer, "Item amount per page", func() {
-				Default(10)
-				Minimum(5)
-			})
-			Param("sort", String, "Sorting order", func() {
-				Enum("asc", "desc")
-				Default("desc")
-			})
-		})
-		Response(OK, CollectionOf(ScoreMedia))
-	})
-
-	Action("get", func() {
-		Description("Returns an specific score with the given entry and testcase ID")
-		Routing(GET("/:scoreID"))
-		Params(func() {
-			Param("scoreID", String, "Score ID", func() {
-				Example("1234-5987")
-			})
-		})
-		Response(OK, func() {
-			Media(ScoreMedia, "full")
-		})
-		Response(NotFound)
-	})
-
 })
 
 var _ = Resource("draft", func() {
@@ -310,7 +254,7 @@ var _ = Resource("actions", func() {
 
 	Action("submitEntryDraft", func() {
 		Description("Orchestrates the resource creation related to a entry draft submit process (Draft and Result).")
-		Routing(POST("/submit-entry-draft"))
+		Routing(POST("/submit-draft"))
 		Payload(EntryPayload)
 
 		Response(Created, func() {

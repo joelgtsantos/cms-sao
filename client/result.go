@@ -56,8 +56,8 @@ func ShowResultPath() string {
 }
 
 // List the Results delimited and grouped by contest, task, entry or user identifier
-func (c *Client) ShowResult(ctx context.Context, path string, contest *int, entry *int, page *int, pageSize *int, ranked *bool, sort *string, task *int, user *int) (*http.Response, error) {
-	req, err := c.NewShowResultRequest(ctx, path, contest, entry, page, pageSize, ranked, sort, task, user)
+func (c *Client) ShowResult(ctx context.Context, path string, contest *int, entry *int, page *int, pageSize *int, sort *string, task *int, user *int) (*http.Response, error) {
+	req, err := c.NewShowResultRequest(ctx, path, contest, entry, page, pageSize, sort, task, user)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (c *Client) ShowResult(ctx context.Context, path string, contest *int, entr
 }
 
 // NewShowResultRequest create the request corresponding to the show action endpoint of the result resource.
-func (c *Client) NewShowResultRequest(ctx context.Context, path string, contest *int, entry *int, page *int, pageSize *int, ranked *bool, sort *string, task *int, user *int) (*http.Request, error) {
+func (c *Client) NewShowResultRequest(ctx context.Context, path string, contest *int, entry *int, page *int, pageSize *int, sort *string, task *int, user *int) (*http.Request, error) {
 	scheme := c.Scheme
 	if scheme == "" {
 		scheme = "http"
@@ -88,20 +88,16 @@ func (c *Client) NewShowResultRequest(ctx context.Context, path string, contest 
 		tmp25 := strconv.Itoa(*pageSize)
 		values.Set("page_size", tmp25)
 	}
-	if ranked != nil {
-		tmp26 := strconv.FormatBool(*ranked)
-		values.Set("ranked", tmp26)
-	}
 	if sort != nil {
 		values.Set("sort", *sort)
 	}
 	if task != nil {
-		tmp27 := strconv.Itoa(*task)
-		values.Set("task", tmp27)
+		tmp26 := strconv.Itoa(*task)
+		values.Set("task", tmp26)
 	}
 	if user != nil {
-		tmp28 := strconv.Itoa(*user)
-		values.Set("user", tmp28)
+		tmp27 := strconv.Itoa(*user)
+		values.Set("user", tmp27)
 	}
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("GET", u.String(), nil)

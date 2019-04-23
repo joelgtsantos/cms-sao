@@ -40,7 +40,7 @@ func TestEntryController_Get(t *testing.T) {
 				TaskID:      7,
 				ContestSlug: "con_test",
 				TaskSlug:    "batch_test",
-				Ranked:      true,
+				Token:       true,
 				Href:        fmt.Sprintf("%s%d", app.EntryHref(), 5),
 			},
 			goaFnWrapper: func(t *testing.T, c context.Context, s *goa.Service, ctrl app.EntryController) *app.ComJossemargtSaoEntryFull {
@@ -67,16 +67,12 @@ func TestEntryController_Get(t *testing.T) {
 				TaskID:      7,
 				ContestSlug: "con_test",
 				TaskSlug:    "batch_test",
-				Ranked:      true,
+				Token:       true,
 				Href:        fmt.Sprintf("%s%d", app.EntryHref(), 5),
 				Links: &app.ComJossemargtSaoEntryLinks{
 					Result: &app.ComJossemargtSaoResultLink{
 						ID:   "5-7",
 						Href: fmt.Sprintf("%s%s", app.ResultHref(), "5-7"),
-					},
-					Score: &app.ComJossemargtSaoScoreLink{
-						ID:   "5-7",
-						Href: fmt.Sprintf("%s%s", app.ScoresHref(), "5-7"),
 					},
 				},
 			},
@@ -141,7 +137,7 @@ func TestEntryController_Show(t *testing.T) {
 					ID:          5,
 					ContestSlug: "con_test",
 					TaskSlug:    "batch_test",
-					Ranked:      true,
+					Token:       true,
 					Href:        fmt.Sprintf("%s%d", app.EntryHref(), 5),
 				},
 			},
@@ -175,7 +171,7 @@ func TestEntryController_Show(t *testing.T) {
 						ID:          i,
 						ContestSlug: "con_test",
 						TaskSlug:    "batch_test",
-						Ranked:      true,
+						Token:       true,
 						Href:        fmt.Sprintf("%s%d", app.EntryHref(), i),
 					})
 				}

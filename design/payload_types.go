@@ -17,7 +17,13 @@ var AbstractEntry = Type("AbstractEntry", func() {
 		Example("simpleBatch-95")
 		Default("")
 	})
-	Attribute("ranked", Boolean,
+	Attribute("language", String,
+		`Identifies the programming language used in the entry's content. The special keyword "none" should be used 
+		instead when submitting plain text, which are used for user test inputs and  diff based grading`, func() {
+			Example("none")
+			Example("Python 3")
+		})
+	Attribute("token", Boolean,
 		`Identifies when an Entry has been processed using a CMS Entry Token. The default value is true, in other words 
 		any submitted Entry will use a CMS Token`, func() {
 			Default(true)
@@ -50,12 +56,12 @@ var EntryPayload = Type("EntryPayload", func() {
 	Reference(AbstractEntry)
 	Attribute("contestSlug")
 	Attribute("taskSlug")
-	Attribute("ranked")
+	Attribute("token")
 
 	Attribute("sources", ArrayOf(SourceType), func() {
 		Description("Source files representation. Within this list the source code files and input files can be sent alike.")
 		MinLength(1)
 	})
 
-	Required("contestSlug", "taskSlug", "ranked", "sources")
+	Required("contestSlug", "taskSlug", "token", "sources")
 })
