@@ -8,6 +8,14 @@ type Result struct {
 	Scoring
 }
 
+type DraftResult struct {
+	DatasetID int `db:"dataset_id"`
+	EntryID   int `db:"entry_id"`
+	Compilation
+	Evaluation
+	Execution
+}
+
 type Compilation struct {
 	Status        *string `db:"compilation_status"`
 	Tries         int     `db:"compilation_tries"`
@@ -26,4 +34,11 @@ type Evaluation struct {
 type Scoring struct {
 	TaskScore    float32 `db:"score"`
 	ContestScore float32 `db:"public_score"`
+}
+
+type Execution struct {
+	Time          float32 `db:"execution_time"`
+	WallClockTime float32 `db:"execution_wall_clock_time"`
+	Memory        int     `db:"execution_memory"`
+	Output        []byte  `db:"output_data"`
 }
