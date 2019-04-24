@@ -65,6 +65,6 @@ func TestDefaultDraftResultRepository_FindByIntegration(t *testing.T) {
 
 	for _, result := range results {
 		// t.Logf("%T -> %d-%d", result, result.EntryID, result.DatasetID)
-		t.Logf("id: %d-%d, score: %s", result.EntryID, result.DatasetID, string(result.Output))
+		t.Logf("id: %d-%d, output: %s", result.EntryID, result.DatasetID, string(result.Output))
 	}
 }

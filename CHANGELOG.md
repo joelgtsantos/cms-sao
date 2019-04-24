@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0 (next)
+
+- Expose Draft Result resource (analogous to CMS UserTestResult entity)
+
 ## 0.3.0
 
 - Expose Result resource (analogous to CMS SubmissionResult entity)

@@ -1,14 +1,14 @@
 package storage
 
 const (
-	entryTable                 = "submissions"
-	taskTable                  = "tasks"
-	contestTable               = "contests"
-	resultTable                = "submission_results"
-	entryDraftTable            = "user_tests"
-	entryDraftResultTable      = "user_test_results"
-	tokenTable                 = "tokens"
-	contestUserAsignationTable = "participations"
+	entryTable                  = "submissions"
+	taskTable                   = "tasks"
+	contestTable                = "contests"
+	resultTable                 = "submission_results"
+	entryDraftTable             = "user_tests"
+	entryDraftResultTable       = "user_test_results"
+	tokenTable                  = "tokens"
+	contestUserAssignationTable = "participations"
 
 	pgFsObjects   = "fsobjects"
 	pgLargeObject = "pg_largeobject"

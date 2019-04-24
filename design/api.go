@@ -203,20 +203,24 @@ var _ = Resource("draftresult", func() {
 		Params(func() {
 			Param("contest", Integer, "Contest ID", func() {
 				Default(0)
+				Minimum(0)
 			})
 			Param("contest_slug", String, "Contest Slug", func() {
 				Default("")
 			})
 			Param("task", Integer, "Task ID", func() {
 				Default(0)
+				Minimum(0)
 			})
 			Param("task_slug", String, "Task Slug", func() {
 				Default("")
 			})
 			Param("user", Integer, "User ID", func() {
+				Default(0)
 				Minimum(0)
 			})
 			Param("entry", Integer, "Entry ID", func() {
+				Default(0)
 				Minimum(0)
 			})
 			Param("page", Integer, "Page number", func() {
@@ -241,6 +245,7 @@ var _ = Resource("draftresult", func() {
 		Params(func() {
 			Param("resultID", String, "Result ID", func() {
 				Example("4590-1325")
+				Pattern("\\d+-\\d+")
 			})
 		})
 		Response(OK, func() {

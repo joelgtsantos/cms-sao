@@ -101,7 +101,9 @@ func buildFindDraftResultByQuery(dto DraftResultDTO) (string, error) {
 			"lo.data AS output_data",
 		),
 		From(fmt.Sprintf("%s AS utr", entryDraftResultTable)),
+		// TODO: Change to LeftJoin and have fun with the null values
 		Join("%s AS fso ON fso.digest = utr.output", pgFsObjects),
+		// TODO: Change to LeftJoin and have fun with the null values
 		Join("%s AS lo ON lo.loid = fso.loid", pgLargeObject),
 		Join("%s AS sb ON sb.id = utr.user_test_id", entryDraftTable),
 		Join("%s AS tsk ON tsk.id = sb.task_id", taskTable),
@@ -132,7 +134,7 @@ func buildFindDraftResultByQuery(dto DraftResultDTO) (string, error) {
 
 	if dto.UserID > 0 {
 		sqlParts = append(sqlParts,
-			Join("%s AS prts ON prts.id = sb.participation_id", contestUserAsignationTable),
+			Join("%s AS prts ON prts.id = sb.participation_id", contestUserAssignationTable),
 			Where(fmt.Sprintf("prts.user_id = %d", dto.UserID)),
 		)
 	}

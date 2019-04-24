@@ -13,10 +13,6 @@ const (
 
 var ExecutionResult = Type("ExecutionResult", func() {
 	Description("Embedded representation of an entry execution result")
-	Attribute("status", String, "Execution result status", func() {
-		// cms/cms/db/submission.py:721
-		Example("ok")
-	})
 	Attribute("time", Number, "The spent execution CPU time", func() {
 		Example(0.035)
 		Default(0)

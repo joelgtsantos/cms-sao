@@ -127,8 +127,8 @@ func (ut *ComJossemargtSaoDraftLinks) Validate() (err error) {
 //
 // Identifier: application/vnd.com.jossemargt.sao.draft-result+json; view=default
 type ComJossemargtSaoDraftResult struct {
-	// Entry evaluation result
-	Evaluation *EvaluationResult `form:"evaluation,omitempty" json:"evaluation,omitempty" yaml:"evaluation,omitempty" xml:"evaluation,omitempty"`
+	// Entry execution result
+	Execution *ExecutionResult `form:"execution" json:"execution" yaml:"execution" xml:"execution"`
 	// API href for making requests on the result
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Compound Result ID
@@ -143,10 +143,8 @@ func (mt *ComJossemargtSaoDraftResult) Validate() (err error) {
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
-	if mt.Evaluation != nil {
-		if err2 := mt.Evaluation.Validate(); err2 != nil {
-			err = goa.MergeErrors(err, err2)
-		}
+	if mt.Execution == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "execution"))
 	}
 	return
 }
@@ -165,8 +163,6 @@ type ComJossemargtSaoDraftResultFull struct {
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Compound Result ID
 	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
-	// Links to related resources
-	Links *ComJossemargtSaoDraftResultLinks `form:"links,omitempty" json:"links,omitempty" yaml:"links,omitempty" xml:"links,omitempty"`
 }
 
 // Validate validates the ComJossemargtSaoDraftResultFull media type instance.
@@ -212,10 +208,6 @@ func (mt *ComJossemargtSaoDraftResultLink) Validate() (err error) {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
 	return
-}
-
-// ComJossemargtSaoDraft-ResultLinks contains links to related resources of ComJossemargtSaoDraft-Result.
-type ComJossemargtSaoDraftResultLinks struct {
 }
 
 // ComJossemargtSaoDraft-ResultCollection is the media type for an array of ComJossemargtSaoDraft-Result (default view)
@@ -268,9 +260,6 @@ func (mt ComJossemargtSaoDraftResultLinkCollection) Validate() (err error) {
 	}
 	return
 }
-
-// ComJossemargtSaoDraft-ResultLinksArray contains links to related resources of ComJossemargtSaoDraft-ResultCollection.
-type ComJossemargtSaoDraftResultLinksArray []*ComJossemargtSaoDraftResultLinks
 
 // ComJossemargtSaoDraftCollection is the media type for an array of ComJossemargtSaoDraft (default view)
 //

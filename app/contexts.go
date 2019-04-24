@@ -496,6 +496,9 @@ func NewGetDraftresultContext(ctx context.Context, r *http.Request, service *goa
 	if len(paramResultID) > 0 {
 		rawResultID := paramResultID[0]
 		rctx.ResultID = rawResultID
+		if ok := goa.ValidatePattern(`\d+-\d+`, rctx.ResultID); !ok {
+			err = goa.MergeErrors(err, goa.InvalidPatternError(`resultID`, rctx.ResultID, `\d+-\d+`))
+		}
 	}
 	return &rctx, err
 }
@@ -529,13 +532,13 @@ type ShowDraftresultContext struct {
 	*goa.RequestData
 	Contest     int
 	ContestSlug string
-	Entry       *int
+	Entry       int
 	Page        int
 	PageSize    int
 	Sort        string
 	Task        int
 	TaskSlug    string
-	User        *int
+	User        int
 }
 
 // NewShowDraftresultContext parses the incoming request URL and body, performs validations and creates the
@@ -557,6 +560,9 @@ func NewShowDraftresultContext(ctx context.Context, r *http.Request, service *go
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("contest", rawContest, "integer"))
 		}
+		if rctx.Contest < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`contest`, rctx.Contest, 0, true))
+		}
 	}
 	paramContestSlug := req.Params["contest_slug"]
 	if len(paramContestSlug) == 0 {
@@ -566,19 +572,17 @@ func NewShowDraftresultContext(ctx context.Context, r *http.Request, service *go
 		rctx.ContestSlug = rawContestSlug
 	}
 	paramEntry := req.Params["entry"]
-	if len(paramEntry) > 0 {
+	if len(paramEntry) == 0 {
+		rctx.Entry = 0
+	} else {
 		rawEntry := paramEntry[0]
 		if entry, err2 := strconv.Atoi(rawEntry); err2 == nil {
-			tmp17 := entry
-			tmp16 := &tmp17
-			rctx.Entry = tmp16
+			rctx.Entry = entry
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("entry", rawEntry, "integer"))
 		}
-		if rctx.Entry != nil {
-			if *rctx.Entry < 0 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`entry`, *rctx.Entry, 0, true))
-			}
+		if rctx.Entry < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`entry`, rctx.Entry, 0, true))
 		}
 	}
 	paramPage := req.Params["page"]
@@ -629,6 +633,9 @@ func NewShowDraftresultContext(ctx context.Context, r *http.Request, service *go
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("task", rawTask, "integer"))
 		}
+		if rctx.Task < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`task`, rctx.Task, 0, true))
+		}
 	}
 	paramTaskSlug := req.Params["task_slug"]
 	if len(paramTaskSlug) == 0 {
@@ -638,19 +645,17 @@ func NewShowDraftresultContext(ctx context.Context, r *http.Request, service *go
 		rctx.TaskSlug = rawTaskSlug
 	}
 	paramUser := req.Params["user"]
-	if len(paramUser) > 0 {
+	if len(paramUser) == 0 {
+		rctx.User = 0
+	} else {
 		rawUser := paramUser[0]
 		if user, err2 := strconv.Atoi(rawUser); err2 == nil {
-			tmp22 := user
-			tmp21 := &tmp22
-			rctx.User = tmp21
+			rctx.User = user
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("user", rawUser, "integer"))
 		}
-		if rctx.User != nil {
-			if *rctx.User < 0 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`user`, *rctx.User, 0, true))
-			}
+		if rctx.User < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`user`, rctx.User, 0, true))
 		}
 	}
 	return &rctx, err
