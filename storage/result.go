@@ -124,7 +124,7 @@ func buildFindResultByQuery(dto ResultDTO) (string, error) {
 
 	if dto.UserID > 0 {
 		sqlParts = append(sqlParts,
-			Join("%s AS prts ON prts.id = sb.participation_id", contestUserAsignationTable),
+			Join("%s AS prts ON prts.id = sb.participation_id", contestUserAssignationTable),
 			Where(fmt.Sprintf("prts.user_id = %d", dto.UserID)),
 		)
 	}

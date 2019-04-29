@@ -183,7 +183,7 @@ var DraftResultMedia = MediaType("application/vnd.com.jossemargt.sao.draft-resul
 	View("default", func() {
 		Attribute("id")
 		Attribute("href")
-		Attribute("evaluation")
+		Attribute("execution")
 	})
 
 	View("full", func() {
@@ -192,7 +192,6 @@ var DraftResultMedia = MediaType("application/vnd.com.jossemargt.sao.draft-resul
 		Attribute("compilation")
 		Attribute("execution")
 		Attribute("evaluation")
-		Attribute("links")
 	})
 })
 

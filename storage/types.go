@@ -1,14 +1,17 @@
 package storage
 
 const (
-	entryTable                 = "submissions"
-	taskTable                  = "tasks"
-	contestTable               = "contests"
-	resultTable                = "submission_results"
-	entryDraftTable            = "user_tests"
-	entryDraftResultTable      = "user_test_results"
-	tokenTable                 = "tokens"
-	contestUserAsignationTable = "participations"
+	entryTable                  = "submissions"
+	taskTable                   = "tasks"
+	contestTable                = "contests"
+	resultTable                 = "submission_results"
+	entryDraftTable             = "user_tests"
+	entryDraftResultTable       = "user_test_results"
+	tokenTable                  = "tokens"
+	contestUserAssignationTable = "participations"
+
+	pgFsObjects   = "fsobjects"
+	pgLargeObject = "pg_largeobject"
 )
 
 type DTO struct {
@@ -58,4 +61,14 @@ type ResultDTO struct {
 	EntryID     int
 	UserID      int
 	MaxScore    bool
+}
+
+type DraftResultDTO struct {
+	DTO
+	ContestID   int
+	ContestSlug string
+	TaskID      int
+	TaskSlug    string
+	DraftID     int
+	UserID      int
 }

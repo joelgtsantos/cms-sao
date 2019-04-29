@@ -473,8 +473,6 @@ type executionResult struct {
 	Memory *int `form:"memory,omitempty" json:"memory,omitempty" yaml:"memory,omitempty" xml:"memory,omitempty"`
 	// Execution output
 	Output *string `form:"output,omitempty" json:"output,omitempty" yaml:"output,omitempty" xml:"output,omitempty"`
-	// Execution result status
-	Status *string `form:"status,omitempty" json:"status,omitempty" yaml:"status,omitempty" xml:"status,omitempty"`
 	// The spent execution CPU time
 	Time *float64 `form:"time,omitempty" json:"time,omitempty" yaml:"time,omitempty" xml:"time,omitempty"`
 	// The spent execution human perceived time
@@ -510,9 +508,6 @@ func (ut *executionResult) Publicize() *ExecutionResult {
 	if ut.Output != nil {
 		pub.Output = *ut.Output
 	}
-	if ut.Status != nil {
-		pub.Status = ut.Status
-	}
 	if ut.Time != nil {
 		pub.Time = *ut.Time
 	}
@@ -528,8 +523,6 @@ type ExecutionResult struct {
 	Memory int `form:"memory" json:"memory" yaml:"memory" xml:"memory"`
 	// Execution output
 	Output string `form:"output" json:"output" yaml:"output" xml:"output"`
-	// Execution result status
-	Status *string `form:"status,omitempty" json:"status,omitempty" yaml:"status,omitempty" xml:"status,omitempty"`
 	// The spent execution CPU time
 	Time float64 `form:"time" json:"time" yaml:"time" xml:"time"`
 	// The spent execution human perceived time
