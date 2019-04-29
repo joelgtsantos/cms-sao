@@ -80,11 +80,8 @@ func entryToDraftFullMedia(entry *model.Entry) *app.ComJossemargtSaoDraftFull {
 		ContestSlug: entry.ContestSlug,
 		TaskID:      entry.TaskID,
 		TaskSlug:    entry.TaskSlug,
+		Language:    entry.Language,
 		Href:        fmt.Sprintf("%s%d", app.DraftHref(), entry.ID),
-	}
-
-	if entry.Language != nil {
-		media.Language = *entry.Language
 	}
 
 	links := new(app.ComJossemargtSaoDraftLinks)

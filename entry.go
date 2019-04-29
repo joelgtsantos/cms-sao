@@ -75,15 +75,13 @@ func (c *EntryController) Show(ctx *app.ShowEntryContext) error {
 }
 
 func entryModelToMedia(entry *model.Entry) *app.ComJossemargtSaoEntry {
-	media := app.ComJossemargtSaoEntry{
+	return &app.ComJossemargtSaoEntry{
 		ID:          entry.ID,
 		ContestSlug: entry.ContestSlug,
 		TaskSlug:    entry.TaskSlug,
 		Token:       entry.Token,
 		Href:        fmt.Sprintf("%s%d", app.EntryHref(), entry.ID),
 	}
-
-	return &media
 }
 
 func entryModelToMediaFull(entry *model.Entry) *app.ComJossemargtSaoEntryFull {
@@ -94,11 +92,8 @@ func entryModelToMediaFull(entry *model.Entry) *app.ComJossemargtSaoEntryFull {
 		TaskID:      entry.TaskID,
 		TaskSlug:    entry.TaskSlug,
 		Token:       entry.Token,
+		Language:    entry.Language,
 		Href:        fmt.Sprintf("%s%d", app.EntryHref(), entry.ID),
-	}
-
-	if entry.Language != nil {
-		media.Language = *entry.Language
 	}
 
 	links := new(app.ComJossemargtSaoEntryLinks)

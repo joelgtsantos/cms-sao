@@ -27,7 +27,7 @@ func buildEntryDraftFindByIDQuery() (string, error) {
 		From(fmt.Sprintf("%s AS ut", entryDraftTable)),
 		Join("%s AS tsk ON tsk.id = ut.task_id", taskTable),
 		Join("%s AS cts ON cts.id = tsk.contest_id", contestTable),
-		Join("%s AS utr ON utr.user_test_id = ut.id", entryDraftResultTable),
+		LeftJoin("%s AS utr ON utr.user_test_id = ut.id", entryDraftResultTable),
 		Where("ut.id = $1"),
 	)
 }
@@ -48,7 +48,7 @@ func buildEntryDraftFindQuery(dto EntryDTO) (string, error) {
 		From(fmt.Sprintf("%s AS ut", entryDraftTable)),
 		Join("%s AS tsk ON tsk.id = ut.task_id", taskTable),
 		Join("%s AS cts ON cts.id = tsk.contest_id", contestTable),
-		Join("%s AS utr ON utr.user_test_id = ut.id", entryDraftResultTable),
+		LeftJoin("%s AS utr ON utr.user_test_id = ut.id", entryDraftResultTable),
 		OrderBy(fmt.Sprintf("id %s", dto.Order)),
 		Limit(dto.limit),
 	}
