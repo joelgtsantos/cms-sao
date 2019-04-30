@@ -1,8 +1,9 @@
 # Changelog
 
-## 0.4.0 (next)
+## 0.4.0
 
 - Expose Draft Result resource (analogous to CMS UserTestResult entity)
+- Fix Entry and Draft list endpoints to display unproccesed resources
 
 ## 0.3.0
 
