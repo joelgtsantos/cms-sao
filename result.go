@@ -104,13 +104,12 @@ func resultModelToMedia(result *model.Result, view string) *app.ComJossemargtSao
 			TaskValue:    float64(result.Scoring.TaskScore),
 		},
 		Evaluation: &app.EvaluationResult{
-			Tries: result.Evaluation.Tries,
+			Status: "ok",
+			Tries:  result.Evaluation.Tries,
 		},
 	}
 
-	if result.Evaluation.Done {
-		media.Evaluation.Status = "ok"
-	} else {
+	if !result.Evaluation.Done {
 		media.Evaluation.Status = "unprocessed"
 	}
 
@@ -127,29 +126,25 @@ func resultModelToMediaFull(result *model.Result) *app.ComJossemargtSaoResultFul
 		ID:   id,
 		Href: fmt.Sprintf("%s%s", app.ResultHref(), id),
 		Evaluation: &app.EvaluationResult{
-			Tries: result.Evaluation.Tries,
+			Status: "ok",
+			Tries:  result.Evaluation.Tries,
 		},
 		Score: &app.ScoreResult{
 			ContestValue: float64(result.Scoring.ContestScore),
 			TaskValue:    float64(result.Scoring.TaskScore),
 		},
-	}
-
-	if result.Compilation.Status != nil {
-		media.Compilation = &app.CompilationResult{
-			Status:        *result.Compilation.Status,
+		Compilation: &app.CompilationResult{
+			Status:        result.Compilation.Status,
 			Tries:         result.Compilation.Tries,
 			Stdout:        result.Compilation.Stdout,
 			Stderr:        result.Compilation.Stderr,
 			Time:          float64(result.Compilation.Time),
 			WallClockTime: float64(result.Compilation.WallClockTime),
 			Memory:        result.Compilation.Memory,
-		}
+		},
 	}
 
-	if result.Evaluation.Done {
-		media.Evaluation.Status = "ok"
-	} else {
+	if !result.Evaluation.Done {
 		media.Evaluation.Status = "unprocessed"
 	}
 

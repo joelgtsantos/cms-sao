@@ -17,8 +17,6 @@ import (
 )
 
 func TestDraftResultController_Get(t *testing.T) {
-	okString := "ok"
-
 	scenarios := []struct {
 		name             string
 		mockRepo         storage.DraftResultRepository
@@ -32,7 +30,7 @@ func TestDraftResultController_Get(t *testing.T) {
 					EntryID:   5,
 					DatasetID: 7,
 					Compilation: model.Compilation{
-						Status:        &okString,
+						Status:        "ok",
 						Tries:         1,
 						Memory:        125,
 						WallClockTime: 2,
@@ -44,7 +42,7 @@ func TestDraftResultController_Get(t *testing.T) {
 			expectedResource: &app.ComJossemargtSaoDraftResultFull{
 				ID: "5-7",
 				Compilation: &app.CompilationResult{
-					Status:        okString,
+					Status:        "ok",
 					Tries:         1,
 					Memory:        125,
 					WallClockTime: 2,
