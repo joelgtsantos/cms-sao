@@ -5,8 +5,6 @@ import (
 	"reflect"
 	"strings"
 	"testing"
-
-	"github.com/jossemargt/cms-sao/model"
 )
 
 func TestDefaultEntryRepository_FindByID(t *testing.T) {
@@ -20,7 +18,7 @@ func TestDefaultEntryRepository_FindByID(t *testing.T) {
 			queryer: func() *mockDB {
 				m := new(mockDB)
 				m.fnGet = func(d interface{}, q string, a ...interface{}) error {
-					e := model.Entry{
+					e := sqlEntry{
 						ID:          123,
 						ContestSlug: "con_test",
 						TaskSlug:    "a_task",
@@ -82,8 +80,8 @@ func TestDefaultEntryRepository_FindBy(t *testing.T) {
 			queryerFactory: func(t *testing.T) *mockDB {
 				m := new(mockDB)
 				m.fnQuery = func(d interface{}, q string, a ...interface{}) error {
-					es := []model.Entry{
-						model.Entry{
+					es := []sqlEntry{
+						sqlEntry{
 							ID:          123,
 							ContestSlug: "con_test",
 							TaskSlug:    "a_task",
@@ -112,29 +110,19 @@ func TestDefaultEntryRepository_FindBy(t *testing.T) {
 			queryerFactory: func(t *testing.T) *mockDB {
 				m := new(mockDB)
 				m.fnQuery = func(d interface{}, q string, a ...interface{}) error {
-					es := []model.Entry{
-						model.Entry{
+					es := []sqlEntry{
+						sqlEntry{
 							ID:          123,
 							ContestSlug: "con_test",
 							TaskSlug:    "a_task",
 						},
-						model.Entry{
+						sqlEntry{
 							ID:          124,
 							ContestSlug: "con_test",
 							TaskSlug:    "b_task",
 						},
 					}
 					reflect.ValueOf(d).Elem().Set(reflect.ValueOf(es))
-
-					// Checking query
-					if !strings.Contains(q, "LIMIT 15") {
-						t.Error("Expected LIMIT 15 in query statement")
-					}
-
-					if !strings.Contains(q, "OFFSET 15") {
-						t.Error("Expected OFFSET 15 in query statement")
-					}
-
 					return nil
 				}
 				return m

@@ -35,7 +35,7 @@ func TestEntryController_Get(t *testing.T) {
 					TaskSlug:    "batch_test",
 					ContestSlug: "con_test",
 					Token:       true,
-					Language:    &defLan,
+					Language:    defLan,
 				},
 			},
 			expectedResource: &app.ComJossemargtSaoEntryFull{
@@ -64,6 +64,7 @@ func TestEntryController_Get(t *testing.T) {
 					TaskSlug:    "batch_test",
 					ContestSlug: "con_test",
 					DatasetID:   7,
+					Language:    "none",
 				},
 			},
 			expectedResource: &app.ComJossemargtSaoEntryFull{
@@ -73,6 +74,7 @@ func TestEntryController_Get(t *testing.T) {
 				ContestSlug: "con_test",
 				TaskSlug:    "batch_test",
 				Token:       false,
+				Language:    "none",
 				Href:        fmt.Sprintf("%s%d", app.EntryHref(), 5),
 				Links: &app.ComJossemargtSaoEntryLinks{
 					Result: &app.ComJossemargtSaoResultLink{

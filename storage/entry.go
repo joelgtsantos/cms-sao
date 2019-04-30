@@ -28,7 +28,7 @@ type defaultEntryRepository struct {
 }
 
 func (entryRepo *defaultEntryRepository) FindByID(entryID int) (*model.Entry, error) {
-	entry := model.Entry{}
+	entry := sqlEntry{}
 
 	query, err := entryRepo.findByIDQuery()
 
@@ -42,7 +42,8 @@ func (entryRepo *defaultEntryRepository) FindByID(entryID int) (*model.Entry, er
 		return nil, errors.Wrapf(err, "Failed query with Entry ID %d", entryID)
 	}
 
-	return &entry, nil
+	rEntry := entry.toEntry()
+	return &rEntry, nil
 }
 
 func (entryRepo *defaultEntryRepository) FindBy(dto EntryDTO) ([]model.Entry, error) {
@@ -51,11 +52,16 @@ func (entryRepo *defaultEntryRepository) FindBy(dto EntryDTO) ([]model.Entry, er
 		return nil, errors.Wrapf(err, "Failed building Entry SQL projection")
 	}
 
-	entries := make([]model.Entry, dto.limit)
-	err = entryRepo.source.Select(&entries, query)
+	nullableEntries := make([]sqlEntry, 0, dto.limit)
+	err = entryRepo.source.Select(&nullableEntries, query)
 
 	if err != nil {
 		return nil, errors.Wrapf(err, "Failed Entries query")
+	}
+
+	entries := make([]model.Entry, len(nullableEntries))
+	for i, entry := range nullableEntries {
+		entries[i] = entry.toEntry()
 	}
 
 	return entries, nil
@@ -76,7 +82,7 @@ func buildEntryFindByIDQuery() (string, error) {
 		From(fmt.Sprintf("%s AS sb", entryTable)),
 		Join("%s AS tsk ON tsk.id = sb.task_id", taskTable),
 		Join("%s AS cts ON cts.id = tsk.contest_id", contestTable),
-		Join("%s AS sbr ON sbr.submission_id = sb.id", resultTable),
+		LeftJoin("%s AS sbr ON sbr.submission_id = sb.id", resultTable),
 		LeftJoin("%s AS tkn ON sb.id = tkn.submission_id", tokenTable),
 		Where("sb.id = $1"),
 	)
@@ -99,7 +105,7 @@ func buildEntryFindByQuery(dto EntryDTO) (string, error) {
 		From(fmt.Sprintf("%s AS sb", entryTable)),
 		Join("%s AS tsk ON tsk.id = sb.task_id", taskTable),
 		Join("%s AS cts ON cts.id = tsk.contest_id", contestTable),
-		Join("%s AS sbr ON sbr.submission_id = sb.id", resultTable),
+		LeftJoin("%s AS sbr ON sbr.submission_id = sb.id", resultTable),
 		LeftJoin("%s AS tkn ON sb.id = tkn.submission_id", tokenTable),
 		OrderBy(fmt.Sprintf("id %s", dto.Order)),
 		Limit(dto.limit),

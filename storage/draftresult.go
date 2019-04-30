@@ -21,7 +21,7 @@ type defaultDraftResultRepository struct {
 }
 
 func (repo *defaultDraftResultRepository) FindByID(entryID, datasetID int) (*model.DraftResult, error) {
-	result := model.DraftResult{}
+	result := sqlDraftResult{}
 	query, err := buildFindDraftResultByIDQuery()
 	if err != nil {
 		return nil, errors.Wrapf(err, "Failed building Result SQL projection")
@@ -33,7 +33,8 @@ func (repo *defaultDraftResultRepository) FindByID(entryID, datasetID int) (*mod
 		return nil, errors.Wrapf(err, "Failed query with Result ID %d-%d", entryID, datasetID)
 	}
 
-	return &result, nil
+	rResult := result.toDraftResult()
+	return &rResult, nil
 }
 
 func (repo *defaultDraftResultRepository) FindBy(dto DraftResultDTO) ([]model.DraftResult, error) {
@@ -42,11 +43,16 @@ func (repo *defaultDraftResultRepository) FindBy(dto DraftResultDTO) ([]model.Dr
 		return nil, errors.Wrapf(err, "Failed building Entry SQL projection")
 	}
 
-	results := make([]model.DraftResult, 0, dto.limit)
-	err = repo.source.Select(&results, query)
+	nullableResults := make([]sqlDraftResult, 0, dto.limit)
+	err = repo.source.Select(&nullableResults, query)
 
 	if err != nil {
 		return nil, errors.Wrapf(err, "Failed Result query")
+	}
+
+	results := make([]model.DraftResult, len(nullableResults))
+	for i, result := range nullableResults {
+		results[i] = result.toDraftResult()
 	}
 
 	return results, nil
@@ -72,8 +78,8 @@ func buildFindDraftResultByIDQuery() (string, error) {
 			"lo.data AS output_data",
 		),
 		From(fmt.Sprintf("%s AS utr", entryDraftResultTable)),
-		Join("%s AS fso ON fso.digest = utr.output", pgFsObjects),
-		Join("%s AS lo ON lo.loid = fso.loid", pgLargeObject),
+		LeftJoin("%s AS fso ON fso.digest = utr.output", pgFsObjects),
+		LeftJoin("%s AS lo ON lo.loid = fso.loid", pgLargeObject),
 		Where("utr.user_test_id = $1"),
 		Where("utr.dataset_id = $2"),
 	)
@@ -101,10 +107,8 @@ func buildFindDraftResultByQuery(dto DraftResultDTO) (string, error) {
 			"lo.data AS output_data",
 		),
 		From(fmt.Sprintf("%s AS utr", entryDraftResultTable)),
-		// TODO: Change to LeftJoin and have fun with the null values
-		Join("%s AS fso ON fso.digest = utr.output", pgFsObjects),
-		// TODO: Change to LeftJoin and have fun with the null values
-		Join("%s AS lo ON lo.loid = fso.loid", pgLargeObject),
+		LeftJoin("%s AS fso ON fso.digest = utr.output", pgFsObjects),
+		LeftJoin("%s AS lo ON lo.loid = fso.loid", pgLargeObject),
 		Join("%s AS sb ON sb.id = utr.user_test_id", entryDraftTable),
 		Join("%s AS tsk ON tsk.id = sb.task_id", taskTable),
 		Join("%s AS cts ON cts.id = tsk.contest_id", contestTable),

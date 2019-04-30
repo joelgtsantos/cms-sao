@@ -107,18 +107,15 @@ func draftresultModelToMediaFull(result *model.DraftResult) *app.ComJossemargtSa
 			WallClockTime: float64(result.Execution.WallClockTime),
 			Output:        string(result.Output),
 		},
-	}
-
-	if result.Compilation.Status != nil {
-		media.Compilation = &app.CompilationResult{
-			Status:        *result.Compilation.Status,
+		Compilation: &app.CompilationResult{
+			Status:        result.Compilation.Status,
 			Tries:         result.Compilation.Tries,
 			Stdout:        result.Compilation.Stdout,
 			Stderr:        result.Compilation.Stderr,
 			Time:          float64(result.Compilation.Time),
 			WallClockTime: float64(result.Compilation.WallClockTime),
 			Memory:        result.Compilation.Memory,
-		}
+		},
 	}
 
 	if !result.Evaluation.Done {

@@ -21,7 +21,7 @@ type defaultResultRepository struct {
 }
 
 func (repo *defaultResultRepository) FindByID(entryID, datasetID int) (*model.Result, error) {
-	result := model.Result{}
+	result := sqlResult{}
 	query, err := buildFindResultByIDQuery()
 	if err != nil {
 		return nil, errors.Wrapf(err, "Failed building Result SQL projection")
@@ -33,7 +33,9 @@ func (repo *defaultResultRepository) FindByID(entryID, datasetID int) (*model.Re
 		return nil, errors.Wrapf(err, "Failed query with Result ID %d-%d", entryID, datasetID)
 	}
 
-	return &result, nil
+	rResult := result.toResult()
+
+	return &rResult, nil
 }
 
 func (repo *defaultResultRepository) FindBy(dto ResultDTO) ([]model.Result, error) {
@@ -42,11 +44,16 @@ func (repo *defaultResultRepository) FindBy(dto ResultDTO) ([]model.Result, erro
 		return nil, errors.Wrapf(err, "Failed building Entry SQL projection")
 	}
 
-	results := make([]model.Result, 0, dto.limit)
-	err = repo.source.Select(&results, query)
+	nullableResults := make([]sqlResult, 0, dto.limit)
+	err = repo.source.Select(&nullableResults, query)
 
 	if err != nil {
 		return nil, errors.Wrapf(err, "Failed Result query")
+	}
+
+	results := make([]model.Result, len(nullableResults))
+	for i, nResult := range nullableResults {
+		results[i] = nResult.toResult()
 	}
 
 	return results, nil
