@@ -3,11 +3,7 @@
 // API "SAO": result Resource Client
 //
 // Command:
-// $ goagen
-// --design=github.com/jossemargt/cms-sao/design
-// --notool=true
-// --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
-// --version=v1.4.1
+// $ go generate
 
 package client
 
@@ -73,41 +69,41 @@ func (c *Client) NewShowResultRequest(ctx context.Context, path string, contest 
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	values := u.Query()
 	if contest != nil {
-		tmp22 := strconv.Itoa(*contest)
-		values.Set("contest", tmp22)
+		tmp61 := strconv.Itoa(*contest)
+		values.Set("contest", tmp61)
 	}
 	if contestSlug != nil {
 		values.Set("contest_slug", *contestSlug)
 	}
 	if entry != nil {
-		tmp23 := strconv.Itoa(*entry)
-		values.Set("entry", tmp23)
+		tmp62 := strconv.Itoa(*entry)
+		values.Set("entry", tmp62)
 	}
 	if max != nil {
-		tmp24 := strconv.FormatBool(*max)
-		values.Set("max", tmp24)
+		tmp63 := strconv.FormatBool(*max)
+		values.Set("max", tmp63)
 	}
 	if page != nil {
-		tmp25 := strconv.Itoa(*page)
-		values.Set("page", tmp25)
+		tmp64 := strconv.Itoa(*page)
+		values.Set("page", tmp64)
 	}
 	if pageSize != nil {
-		tmp26 := strconv.Itoa(*pageSize)
-		values.Set("page_size", tmp26)
+		tmp65 := strconv.Itoa(*pageSize)
+		values.Set("page_size", tmp65)
 	}
 	if sort != nil {
 		values.Set("sort", *sort)
 	}
 	if task != nil {
-		tmp27 := strconv.Itoa(*task)
-		values.Set("task", tmp27)
+		tmp66 := strconv.Itoa(*task)
+		values.Set("task", tmp66)
 	}
 	if taskSlug != nil {
 		values.Set("task_slug", *taskSlug)
 	}
 	if user != nil {
-		tmp28 := strconv.Itoa(*user)
-		values.Set("user", tmp28)
+		tmp67 := strconv.Itoa(*user)
+		values.Set("user", tmp67)
 	}
 	if view != nil {
 		values.Set("view", *view)

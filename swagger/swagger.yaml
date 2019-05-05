@@ -80,6 +80,20 @@ definitions:
         wallClockTime: 0.568
       href: /draft-results/1236-5689
       id: 1236-5689
+    - execution:
+        memory: 64
+        output: Voluptatem porro.
+        time: 0.035
+        wallClockTime: 0.568
+      href: /draft-results/1236-5689
+      id: 1236-5689
+    - execution:
+        memory: 64
+        output: Voluptatem porro.
+        time: 0.035
+        wallClockTime: 0.568
+      href: /draft-results/1236-5689
+      id: 1236-5689
     items:
       $ref: '#/definitions/ComJossemargtSaoDraft-Result'
     title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.draft-result+json;
@@ -150,10 +164,80 @@ definitions:
     title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.draft-result+json;
       view=link'
     type: object
+  ComJossemargtSaoDraft-Submit-TransactionFull:
+    description: Represents the process of queueing, compilation and execution of
+      an Entry Draft (full view)
+    example:
+      createdAt: "1981-11-23T19:41:34Z"
+      href: /draft-submit-transaction/1236
+      id: 1236
+      links:
+        draft:
+          href: /drafts/1236
+          id: 1236
+        result:
+          href: /draft-results/1236-5689
+          id: 1236-5689
+      status: Eaque sint itaque.
+      updatedAt: "1971-12-18T17:02:11Z"
+    properties:
+      createdAt:
+        description: Transaction creation timestamp
+        example: "1981-11-23T19:41:34Z"
+        format: date-time
+        type: string
+      href:
+        description: API href for making requests on the entry
+        example: /draft-submit-transaction/1236
+        type: string
+      id:
+        description: Unique SubmitDraftTransaction ID
+        example: 1236
+        format: int64
+        type: integer
+      links:
+        $ref: '#/definitions/ComJossemargtSaoDraft-Submit-TransactionLinks'
+      status:
+        default: unprocessed
+        example: Eaque sint itaque.
+        type: string
+      updatedAt:
+        description: Transaction last update timestamp
+        example: "1971-12-18T17:02:11Z"
+        format: date-time
+        type: string
+    required:
+    - id
+    - href
+    - status
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.draft-submit-transaction+json;
+      view=full'
+    type: object
+  ComJossemargtSaoDraft-Submit-TransactionLinks:
+    description: ComJossemargtSaoDraft-Submit-TransactionLinks contains links to related
+      resources of ComJossemargtSaoDraft-Submit-Transaction.
+    example:
+      draft:
+        href: /drafts/1236
+        id: 1236
+      result:
+        href: /draft-results/1236-5689
+        id: 1236-5689
+    properties:
+      draft:
+        $ref: '#/definitions/ComJossemargtSaoDraftLink'
+      result:
+        $ref: '#/definitions/ComJossemargtSaoDraft-ResultLink'
+    title: ComJossemargtSaoDraft-Submit-TransactionLinks
+    type: object
   ComJossemargtSaoDraftCollection:
     description: ComJossemargtSaoDraftCollection is the media type for an array of
       ComJossemargtSaoDraft (default view)
     example:
+    - contestSlug: con_test
+      href: /drafts/1236
+      id: 1236
+      taskSlug: simpleBatch-95
     - contestSlug: con_test
       href: /drafts/1236
       id: 1236
@@ -233,6 +317,27 @@ definitions:
     - href
     title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.draft+json; view=full'
     type: object
+  ComJossemargtSaoDraftLink:
+    description: Any source code or input to be compiled and executed against the
+      user test case (link view)
+    example:
+      href: /drafts/1236
+      id: 1236
+    properties:
+      href:
+        description: API href for making requests on the entry
+        example: /drafts/1236
+        type: string
+      id:
+        description: Unique entry ID
+        example: 1236
+        format: int64
+        type: integer
+    required:
+    - id
+    - href
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.draft+json; view=link'
+    type: object
   ComJossemargtSaoDraftLinks:
     description: ComJossemargtSaoDraftLinks contains links to related resources of
       ComJossemargtSaoDraft.
@@ -288,15 +393,76 @@ definitions:
     - href
     title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.entry+json; view=default'
     type: object
+  ComJossemargtSaoEntry-Submit-TransactionFull:
+    description: Represents the process of queueing, compilation, evaluation and grading
+      of an Entry (full view)
+    example:
+      createdAt: "2006-07-14T09:56:49Z"
+      href: /entry-submit-transaction/1236
+      id: 1236
+      links:
+        entry:
+          href: /entries/1236
+          id: 1236
+        result:
+          href: /results/1236-5689
+          id: 1236-5689
+      status: Iste ut.
+      updatedAt: "2000-06-25T05:29:05Z"
+    properties:
+      createdAt:
+        description: Transaction creation timestamp
+        example: "2006-07-14T09:56:49Z"
+        format: date-time
+        type: string
+      href:
+        description: API href for making requests on the entry
+        example: /entry-submit-transaction/1236
+        type: string
+      id:
+        description: Unique SubmitEntryTransaction ID
+        example: 1236
+        format: int64
+        type: integer
+      links:
+        $ref: '#/definitions/ComJossemargtSaoEntry-Submit-TransactionLinks'
+      status:
+        default: unprocessed
+        example: Iste ut.
+        type: string
+      updatedAt:
+        description: Transaction last update timestamp
+        example: "2000-06-25T05:29:05Z"
+        format: date-time
+        type: string
+    required:
+    - id
+    - href
+    - status
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.entry-submit-transaction+json;
+      view=full'
+    type: object
+  ComJossemargtSaoEntry-Submit-TransactionLinks:
+    description: ComJossemargtSaoEntry-Submit-TransactionLinks contains links to related
+      resources of ComJossemargtSaoEntry-Submit-Transaction.
+    example:
+      entry:
+        href: /entries/1236
+        id: 1236
+      result:
+        href: /results/1236-5689
+        id: 1236-5689
+    properties:
+      entry:
+        $ref: '#/definitions/ComJossemargtSaoEntryLink'
+      result:
+        $ref: '#/definitions/ComJossemargtSaoResultLink'
+    title: ComJossemargtSaoEntry-Submit-TransactionLinks
+    type: object
   ComJossemargtSaoEntryCollection:
     description: ComJossemargtSaoEntryCollection is the media type for an array of
       ComJossemargtSaoEntry (default view)
     example:
-    - contestSlug: con_test
-      href: /entries/1236
-      id: 1236
-      taskSlug: simpleBatch-95
-      token: false
     - contestSlug: con_test
       href: /entries/1236
       id: 1236
@@ -316,7 +482,7 @@ definitions:
     description: Any source code or input to be compiled, executed and evaluated (full
       view)
     example:
-      contestID: 6690272992620418326
+      contestID: 3194439882473465766
       contestSlug: con_test
       href: /entries/1236
       id: 1236
@@ -325,15 +491,15 @@ definitions:
         result:
           href: /results/1236-5689
           id: 1236-5689
-      taskID: 1098509116991694308
+      taskID: 7319428538734610834
       taskSlug: simpleBatch-95
       token: false
-      userID: 6930846523079901559
+      userID: 6322106289428691694
     properties:
       contestID:
         default: 0
         description: Contest ID where this Entry has been submitted
-        example: 6690272992620418326
+        example: 3194439882473465766
         format: int64
         type: integer
       contestSlug:
@@ -363,7 +529,7 @@ definitions:
       taskID:
         default: 0
         description: Task ID where this Entry has been submitted
-        example: 1098509116991694308
+        example: 7319428538734610834
         format: int64
         type: integer
       taskSlug:
@@ -382,13 +548,34 @@ definitions:
       userID:
         default: 0
         description: User ID of the Entry's owner
-        example: 6930846523079901559
+        example: 6322106289428691694
         format: int64
         type: integer
     required:
     - id
     - href
     title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.entry+json; view=full'
+    type: object
+  ComJossemargtSaoEntryLink:
+    description: Any source code or input to be compiled, executed and evaluated (link
+      view)
+    example:
+      href: /entries/1236
+      id: 1236
+    properties:
+      href:
+        description: API href for making requests on the entry
+        example: /entries/1236
+        type: string
+      id:
+        description: Unique entry ID
+        example: 1236
+        format: int64
+        type: integer
+    required:
+    - id
+    - href
+    title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.entry+json; view=link'
     type: object
   ComJossemargtSaoEntryLinks:
     description: ComJossemargtSaoEntryLinks contains links to related resources of
@@ -576,6 +763,11 @@ definitions:
       taskID: 1
       taskValue: 100
       userID: 1
+    - contestID: 1
+      contestValue: 25
+      taskID: 1
+      taskValue: 100
+      userID: 1
     items:
       $ref: '#/definitions/ComJossemargtSaoScore-Sum'
     title: 'Mediatype identifier: application/vnd.com.jossemargt.sao.score-sum+json;
@@ -642,20 +834,20 @@ definitions:
     example:
       contestSlug: con_test
       sources:
-      - content: Sunt totam perspiciatis iste ut.
-        encoding: Dignissimos velit dolores numquam.
+      - content: Et maxime aut velit numquam beatae odio.
+        encoding: Vel et non atque suscipit.
         language: Python 3
         name: my_solution.py
-      - content: Sunt totam perspiciatis iste ut.
-        encoding: Dignissimos velit dolores numquam.
+      - content: Et maxime aut velit numquam beatae odio.
+        encoding: Vel et non atque suscipit.
         language: Python 3
         name: my_solution.py
-      - content: Sunt totam perspiciatis iste ut.
-        encoding: Dignissimos velit dolores numquam.
+      - content: Et maxime aut velit numquam beatae odio.
+        encoding: Vel et non atque suscipit.
         language: Python 3
         name: my_solution.py
       taskSlug: simpleBatch-95
-      token: true
+      token: false
     properties:
       contestSlug:
         default: ""
@@ -667,16 +859,16 @@ definitions:
         description: Source files representation. Within this list the source code
           files and input files can be sent alike.
         example:
-        - content: Sunt totam perspiciatis iste ut.
-          encoding: Dignissimos velit dolores numquam.
+        - content: Et maxime aut velit numquam beatae odio.
+          encoding: Vel et non atque suscipit.
           language: Python 3
           name: my_solution.py
-        - content: Sunt totam perspiciatis iste ut.
-          encoding: Dignissimos velit dolores numquam.
+        - content: Et maxime aut velit numquam beatae odio.
+          encoding: Vel et non atque suscipit.
           language: Python 3
           name: my_solution.py
-        - content: Sunt totam perspiciatis iste ut.
-          encoding: Dignissimos velit dolores numquam.
+        - content: Et maxime aut velit numquam beatae odio.
+          encoding: Vel et non atque suscipit.
           language: Python 3
           name: my_solution.py
         items:
@@ -694,7 +886,7 @@ definitions:
         description: "Identifies when an Entry has been processed using a CMS Entry
           Token. The default value is true, in other words \n\t\tany submitted Entry
           will use a CMS Token"
-        example: true
+        example: false
         type: boolean
     required:
     - contestSlug
@@ -706,19 +898,19 @@ definitions:
   EntrySource:
     description: Entry's embed type which represents a source file
     example:
-      content: Sunt totam perspiciatis iste ut.
-      encoding: Dignissimos velit dolores numquam.
+      content: Et maxime aut velit numquam beatae odio.
+      encoding: Vel et non atque suscipit.
       language: Python 3
       name: my_solution.py
     properties:
       content:
         description: Source content
-        example: Sunt totam perspiciatis iste ut.
+        example: Et maxime aut velit numquam beatae odio.
         type: string
       encoding:
         default: utf8
         description: Source content's encoding
-        example: Dignissimos velit dolores numquam.
+        example: Vel et non atque suscipit.
         type: string
       language:
         description: "Identifies the programming language used in the entry's content.
@@ -970,6 +1162,41 @@ paths:
       summary: get draftresult
       tags:
       - draftresult
+  /draft-submit-transaction/{trxID}:
+    get:
+      description: Get submitted draft transaction metadata for the given ID
+      operationId: DraftSubmitTrx#get
+      parameters:
+      - description: Submit draft transaction ID
+        in: query
+        name: trxD
+        required: false
+        type: integer
+      - in: path
+        name: trxID
+        required: true
+        type: string
+      produces:
+      - application/vnd.com.jossemargt.sao.draft-submit-transaction+json
+      - application/vnd.goa.error
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ComJossemargtSaoDraft-Submit-TransactionFull'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+        "410":
+          description: Gone
+      schemes:
+      - http
+      summary: get DraftSubmitTrx
+      tags:
+      - DraftSubmitTrx
   /drafts/:
     get:
       description: List the entry drafts without their sources.
@@ -1040,10 +1267,6 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/error'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/error'
       schemes:
       - http
       summary: show draft
@@ -1070,10 +1293,6 @@ paths:
             $ref: '#/definitions/ComJossemargtSaoDraftFull'
         "400":
           description: Bad Request
-          schema:
-            $ref: '#/definitions/error'
-        "401":
-          description: Unauthorized
           schema:
             $ref: '#/definitions/error'
         "404":
@@ -1153,10 +1372,6 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/error'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/error'
       schemes:
       - http
       summary: show entry
@@ -1185,10 +1400,6 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/error'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/error'
         "404":
           description: Not Found
       schemes:
@@ -1196,6 +1407,41 @@ paths:
       summary: get entry
       tags:
       - entry
+  /entry-submit-transaction/{trxID}:
+    get:
+      description: Get submitted entry transaction metadata for the given ID
+      operationId: EntrySubmitTrx#get
+      parameters:
+      - description: Submit entry transaction ID
+        in: query
+        name: trxD
+        required: false
+        type: integer
+      - in: path
+        name: trxID
+        required: true
+        type: string
+      produces:
+      - application/vnd.com.jossemargt.sao.entry-submit-transaction+json
+      - application/vnd.goa.error
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ComJossemargtSaoEntry-Submit-TransactionFull'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+        "410":
+          description: Gone
+      schemes:
+      - http
+      summary: get EntrySubmitTrx
+      tags:
+      - EntrySubmitTrx
   /results/:
     get:
       description: List the Results delimited and grouped by contest, task, entry
@@ -1346,7 +1592,7 @@ paths:
           headers:
             Location:
               description: href to created entry
-              pattern: /drafts/\d+
+              pattern: /draft-submit-transaction/\d+
               type: string
           schema:
             $ref: '#/definitions/ComJossemargtSaoEntryFull'
@@ -1383,7 +1629,7 @@ paths:
           headers:
             Location:
               description: href to created entry
-              pattern: /entries/\d+
+              pattern: /entry-submit-transaction/\d+
               type: string
           schema:
             $ref: '#/definitions/ComJossemargtSaoEntryFull'
@@ -1478,10 +1724,9 @@ paths:
       - actions
 produces:
 - application/json
-- application/xml
-- application/gob
-- application/x-gob
 responses:
+  Gone:
+    description: Gone
   NotFound:
     description: Not Found
 schemes:

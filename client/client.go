@@ -3,11 +3,7 @@
 // API "SAO": Client
 //
 // Command:
-// $ goagen
-// --design=github.com/jossemargt/cms-sao/design
-// --notool=true
-// --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
-// --version=v1.4.1
+// $ go generate
 
 package client
 
@@ -33,8 +29,6 @@ func New(c goaclient.Doer) *Client {
 
 	// Setup encoders and decoders
 	client.Encoder.Register(goa.NewJSONEncoder, "application/json")
-	client.Encoder.Register(goa.NewGobEncoder, "application/gob", "application/x-gob")
-	client.Encoder.Register(goa.NewXMLEncoder, "application/xml")
 	client.Decoder.Register(goa.NewJSONDecoder, "application/json")
 	client.Decoder.Register(goa.NewGobDecoder, "application/gob", "application/x-gob")
 	client.Decoder.Register(goa.NewXMLDecoder, "application/xml")

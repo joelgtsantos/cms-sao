@@ -3,11 +3,7 @@
 // API "SAO": Application Contexts
 //
 // Command:
-// $ goagen
-// --design=github.com/jossemargt/cms-sao/design
-// --notool=true
-// --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
-// --version=v1.4.1
+// $ go generate
 
 package app
 
@@ -17,6 +13,136 @@ import (
 	"net/http"
 	"strconv"
 )
+
+// GetDraftSubmitTrxContext provides the DraftSubmitTrx get action context.
+type GetDraftSubmitTrxContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	TrxD  *int
+	TrxID string
+}
+
+// NewGetDraftSubmitTrxContext parses the incoming request URL and body, performs validations and creates the
+// context used by the DraftSubmitTrx controller get action.
+func NewGetDraftSubmitTrxContext(ctx context.Context, r *http.Request, service *goa.Service) (*GetDraftSubmitTrxContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := GetDraftSubmitTrxContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramTrxD := req.Params["trxD"]
+	if len(paramTrxD) > 0 {
+		rawTrxD := paramTrxD[0]
+		if trxD, err2 := strconv.Atoi(rawTrxD); err2 == nil {
+			tmp2 := trxD
+			tmp1 := &tmp2
+			rctx.TrxD = tmp1
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("trxD", rawTrxD, "integer"))
+		}
+	}
+	paramTrxID := req.Params["trxID"]
+	if len(paramTrxID) > 0 {
+		rawTrxID := paramTrxID[0]
+		rctx.TrxID = rawTrxID
+	}
+	return &rctx, err
+}
+
+// OKFull sends a HTTP response with status code 200.
+func (ctx *GetDraftSubmitTrxContext) OKFull(r *ComJossemargtSaoDraftSubmitTransactionFull) error {
+	if ctx.ResponseData.Header().Get("Content-Type") == "" {
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.draft-submit-transaction+json")
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *GetDraftSubmitTrxContext) BadRequest(r error) error {
+	if ctx.ResponseData.Header().Get("Content-Type") == "" {
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *GetDraftSubmitTrxContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}
+
+// Gone sends a HTTP response with status code 410.
+func (ctx *GetDraftSubmitTrxContext) Gone() error {
+	ctx.ResponseData.WriteHeader(410)
+	return nil
+}
+
+// GetEntrySubmitTrxContext provides the EntrySubmitTrx get action context.
+type GetEntrySubmitTrxContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	TrxD  *int
+	TrxID string
+}
+
+// NewGetEntrySubmitTrxContext parses the incoming request URL and body, performs validations and creates the
+// context used by the EntrySubmitTrx controller get action.
+func NewGetEntrySubmitTrxContext(ctx context.Context, r *http.Request, service *goa.Service) (*GetEntrySubmitTrxContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := GetEntrySubmitTrxContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramTrxD := req.Params["trxD"]
+	if len(paramTrxD) > 0 {
+		rawTrxD := paramTrxD[0]
+		if trxD, err2 := strconv.Atoi(rawTrxD); err2 == nil {
+			tmp4 := trxD
+			tmp3 := &tmp4
+			rctx.TrxD = tmp3
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("trxD", rawTrxD, "integer"))
+		}
+	}
+	paramTrxID := req.Params["trxID"]
+	if len(paramTrxID) > 0 {
+		rawTrxID := paramTrxID[0]
+		rctx.TrxID = rawTrxID
+	}
+	return &rctx, err
+}
+
+// OKFull sends a HTTP response with status code 200.
+func (ctx *GetEntrySubmitTrxContext) OKFull(r *ComJossemargtSaoEntrySubmitTransactionFull) error {
+	if ctx.ResponseData.Header().Get("Content-Type") == "" {
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.entry-submit-transaction+json")
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *GetEntrySubmitTrxContext) BadRequest(r error) error {
+	if ctx.ResponseData.Header().Get("Content-Type") == "" {
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *GetEntrySubmitTrxContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}
+
+// Gone sends a HTTP response with status code 410.
+func (ctx *GetEntrySubmitTrxContext) Gone() error {
+	ctx.ResponseData.WriteHeader(410)
+	return nil
+}
 
 // SubmitEntryActionsContext provides the actions submitEntry action context.
 type SubmitEntryActionsContext struct {
@@ -129,9 +255,9 @@ func NewSummarizeScoreActionsContext(ctx context.Context, r *http.Request, servi
 	if len(paramContest) > 0 {
 		rawContest := paramContest[0]
 		if contest, err2 := strconv.Atoi(rawContest); err2 == nil {
-			tmp2 := contest
-			tmp1 := &tmp2
-			rctx.Contest = tmp1
+			tmp6 := contest
+			tmp5 := &tmp6
+			rctx.Contest = tmp5
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("contest", rawContest, "integer"))
 		}
@@ -193,9 +319,9 @@ func NewSummarizeScoreActionsContext(ctx context.Context, r *http.Request, servi
 	if len(paramTask) > 0 {
 		rawTask := paramTask[0]
 		if task, err2 := strconv.Atoi(rawTask); err2 == nil {
-			tmp6 := task
-			tmp5 := &tmp6
-			rctx.Task = tmp5
+			tmp10 := task
+			tmp9 := &tmp10
+			rctx.Task = tmp9
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("task", rawTask, "integer"))
 		}
@@ -209,9 +335,9 @@ func NewSummarizeScoreActionsContext(ctx context.Context, r *http.Request, servi
 	if len(paramUser) > 0 {
 		rawUser := paramUser[0]
 		if user, err2 := strconv.Atoi(rawUser); err2 == nil {
-			tmp8 := user
-			tmp7 := &tmp8
-			rctx.User = tmp7
+			tmp12 := user
+			tmp11 := &tmp12
+			rctx.User = tmp11
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("user", rawUser, "integer"))
 		}
@@ -298,14 +424,6 @@ func (ctx *GetDraftContext) BadRequest(r error) error {
 		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
-}
-
-// Unauthorized sends a HTTP response with status code 401.
-func (ctx *GetDraftContext) Unauthorized(r error) error {
-	if ctx.ResponseData.Header().Get("Content-Type") == "" {
-		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
-	}
-	return ctx.ResponseData.Service.Send(ctx.Context, 401, r)
 }
 
 // NotFound sends a HTTP response with status code 404.
@@ -465,14 +583,6 @@ func (ctx *ShowDraftContext) BadRequest(r error) error {
 		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
-}
-
-// Unauthorized sends a HTTP response with status code 401.
-func (ctx *ShowDraftContext) Unauthorized(r error) error {
-	if ctx.ResponseData.Header().Get("Content-Type") == "" {
-		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
-	}
-	return ctx.ResponseData.Service.Send(ctx.Context, 401, r)
 }
 
 // GetDraftresultContext provides the draftresult get action context.
@@ -747,14 +857,6 @@ func (ctx *GetEntryContext) BadRequest(r error) error {
 	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
 }
 
-// Unauthorized sends a HTTP response with status code 401.
-func (ctx *GetEntryContext) Unauthorized(r error) error {
-	if ctx.ResponseData.Header().Get("Content-Type") == "" {
-		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
-	}
-	return ctx.ResponseData.Service.Send(ctx.Context, 401, r)
-}
-
 // NotFound sends a HTTP response with status code 404.
 func (ctx *GetEntryContext) NotFound() error {
 	ctx.ResponseData.WriteHeader(404)
@@ -912,14 +1014,6 @@ func (ctx *ShowEntryContext) BadRequest(r error) error {
 		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
-}
-
-// Unauthorized sends a HTTP response with status code 401.
-func (ctx *ShowEntryContext) Unauthorized(r error) error {
-	if ctx.ResponseData.Header().Get("Content-Type") == "" {
-		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
-	}
-	return ctx.ResponseData.Service.Send(ctx.Context, 401, r)
 }
 
 // GetResultContext provides the result get action context.

@@ -3,11 +3,7 @@
 // API "SAO": actions TestHelpers
 //
 // Command:
-// $ goagen
-// --design=github.com/jossemargt/cms-sao/design
-// --notool=true
-// --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
-// --version=v1.4.1
+// $ go generate
 
 package test
 

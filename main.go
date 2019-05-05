@@ -1,4 +1,4 @@
-//go:generate goagen bootstrap -d github.com/jossemargt/cms-sao/design
+//go:generate go run gen/main.go
 
 package main
 
@@ -100,6 +100,12 @@ func main() {
 	// Mount "result" controller
 	c5 := NewResultController(service, resultRepository)
 	app.MountResultController(service, c5)
+	// Mount "submit entry transaction" controller
+	c6 := NewEntrySubmitTrxController(service)
+	app.MountEntrySubmitTrxController(service, c6)
+	// Mount "submit entry draft transaction" controller
+	c7 := NewDraftSubmitTrxController(service)
+	app.MountDraftSubmitTrxController(service, c7)
 
 	// Start service
 	serverAddr := fmt.Sprintf("%s:%s", "", up.GetStringOrDefault("server.port", "8000"))

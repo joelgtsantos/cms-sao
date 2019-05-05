@@ -3,11 +3,7 @@
 // API "SAO": Application Controllers
 //
 // Command:
-// $ goagen
-// --design=github.com/jossemargt/cms-sao/design
-// --notool=true
-// --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
-// --version=v1.4.1
+// $ go generate
 
 package app
 
@@ -21,8 +17,6 @@ import (
 func initService(service *goa.Service) {
 	// Setup encoders and decoders
 	service.Encoder.Register(goa.NewJSONEncoder, "application/json")
-	service.Encoder.Register(goa.NewGobEncoder, "application/gob", "application/x-gob")
-	service.Encoder.Register(goa.NewXMLEncoder, "application/xml")
 	service.Decoder.Register(goa.NewJSONDecoder, "application/json")
 	service.Decoder.Register(goa.NewGobDecoder, "application/gob", "application/x-gob")
 	service.Decoder.Register(goa.NewXMLDecoder, "application/xml")
@@ -30,6 +24,60 @@ func initService(service *goa.Service) {
 	// Setup default encoder and decoder
 	service.Encoder.Register(goa.NewJSONEncoder, "*/*")
 	service.Decoder.Register(goa.NewJSONDecoder, "*/*")
+}
+
+// DraftSubmitTrxController is the controller interface for the DraftSubmitTrx actions.
+type DraftSubmitTrxController interface {
+	goa.Muxer
+	Get(*GetDraftSubmitTrxContext) error
+}
+
+// MountDraftSubmitTrxController "mounts" a DraftSubmitTrx resource controller on the given service.
+func MountDraftSubmitTrxController(service *goa.Service, ctrl DraftSubmitTrxController) {
+	initService(service)
+	var h goa.Handler
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewGetDraftSubmitTrxContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.Get(rctx)
+	}
+	service.Mux.Handle("GET", "/sao/v1/draft-submit-transaction/:trxID", ctrl.MuxHandler("get", h, nil))
+	service.LogInfo("mount", "ctrl", "DraftSubmitTrx", "action", "Get", "route", "GET /sao/v1/draft-submit-transaction/:trxID")
+}
+
+// EntrySubmitTrxController is the controller interface for the EntrySubmitTrx actions.
+type EntrySubmitTrxController interface {
+	goa.Muxer
+	Get(*GetEntrySubmitTrxContext) error
+}
+
+// MountEntrySubmitTrxController "mounts" a EntrySubmitTrx resource controller on the given service.
+func MountEntrySubmitTrxController(service *goa.Service, ctrl EntrySubmitTrxController) {
+	initService(service)
+	var h goa.Handler
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewGetEntrySubmitTrxContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.Get(rctx)
+	}
+	service.Mux.Handle("GET", "/sao/v1/entry-submit-transaction/:trxID", ctrl.MuxHandler("get", h, nil))
+	service.LogInfo("mount", "ctrl", "EntrySubmitTrx", "action", "Get", "route", "GET /sao/v1/entry-submit-transaction/:trxID")
 }
 
 // ActionsController is the controller interface for the Actions actions.

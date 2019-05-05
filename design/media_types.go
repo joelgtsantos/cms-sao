@@ -195,6 +195,110 @@ var DraftResultMedia = MediaType("application/vnd.com.jossemargt.sao.draft-resul
 	})
 })
 
+var AbstractEntrySubmitTrx = Type("AbstractEntrySubmitTrx", func() {
+	Description("Abstracts the common attributes from SubmitEntry and SubmitDraft transactional resources")
+	Attribute("createdAt", DateTime, "Transaction creation timestamp")
+	Attribute("updatedAt", DateTime, "Transaction last update timestamp")
+	Attribute("status", String, "", func() {
+		// TODO: Define Entry Trx States
+		Default(cmsAsyncUnprocessed)
+	})
+})
+
+var EntrySubmitTrx = MediaType("application/vnd.com.jossemargt.sao.entry-submit-transaction+json", func() {
+	Description("Represents the process of queueing, compilation, evaluation and grading of an Entry")
+	Reference(AbstractEntrySubmitTrx)
+
+	Attributes(func() {
+		Attribute("id", Integer, "Unique SubmitEntryTransaction ID", func() {
+			Example(1236)
+		})
+		Attribute("href", String, "API href for making requests on the entry", func() {
+			Example("/entry-submit-transaction/1236")
+		})
+		Attribute("createdAt")
+		Attribute("updatedAt")
+		Attribute("status")
+
+		Attribute("entry", EntryMedia, "The entry being processed on this transaction")
+		Attribute("result", ResultMedia, "The entry processing result")
+
+		Required("id", "href", "status")
+	})
+
+	Links(func() {
+		Link("entry", "link")
+		Link("result", "link")
+	})
+
+	View("link", func() {
+		Attribute("id")
+		Attribute("href")
+	})
+
+	View("default", func() {
+		Attribute("id")
+		Attribute("href")
+		Attribute("status")
+	})
+
+	View("full", func() {
+		Attribute("id")
+		Attribute("href")
+		Attribute("status")
+		Attribute("createdAt")
+		Attribute("updatedAt")
+		Attribute("links")
+	})
+})
+
+var DraftSubmitTrx = MediaType("application/vnd.com.jossemargt.sao.draft-submit-transaction+json", func() {
+	Description("Represents the process of queueing, compilation and execution of an Entry Draft")
+	Reference(AbstractEntrySubmitTrx)
+
+	Attributes(func() {
+		Attribute("id", Integer, "Unique SubmitDraftTransaction ID", func() {
+			Example(1236)
+		})
+		Attribute("href", String, "API href for making requests on the entry", func() {
+			Example("/draft-submit-transaction/1236")
+		})
+		Attribute("createdAt")
+		Attribute("updatedAt")
+		Attribute("status")
+
+		Attribute("draft", DraftMedia, "The entry draft being processed on this transaction")
+		Attribute("result", DraftResultMedia, "The entry draft processing result")
+
+		Required("id", "href", "status")
+	})
+
+	Links(func() {
+		Link("draft", "link")
+		Link("result", "link")
+	})
+
+	View("link", func() {
+		Attribute("id")
+		Attribute("href")
+	})
+
+	View("default", func() {
+		Attribute("id")
+		Attribute("href")
+		Attribute("status")
+	})
+
+	View("full", func() {
+		Attribute("id")
+		Attribute("href")
+		Attribute("status")
+		Attribute("createdAt")
+		Attribute("updatedAt")
+		Attribute("links")
+	})
+})
+
 var ScoreSumMedia = MediaType("application/vnd.com.jossemargt.sao.score-sum+json", func() {
 	Description("The representation of a summarized entry's score")
 	Attributes(func() {
