@@ -1,9 +1,13 @@
 # Changelog
 
+## 0.5.0 (next)
+
+- Enable tooling to generate code using vendor dependencies.
+
 ## 0.4.0
 
 - Expose Draft Result resource (analogous to CMS UserTestResult entity)
-- Fix Entry and Draft list endpoints to display unproccesed resources
+- Fix Entry and Draft list endpoints to display unprocessed resources
 
 ## 0.3.0
 
