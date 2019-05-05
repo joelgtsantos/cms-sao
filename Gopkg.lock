@@ -3,11 +3,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:ef5b0622d834c139454148b8fd0c92bb314828900532b267ae62da9fec109866"
+  digest = "1:7a9140c806333a78122763d08ec6c0d7358c7fff1df8cfbb01881c5dc46e24e5"
   name = "github.com/armon/go-metrics"
   packages = ["."]
   pruneopts = "UT"
-  revision = "3c58d8115a78a6879e5df75ae900846768d36895"
+  revision = "ec5e00d3c878b2a97bbe0884ef45ffd1b4f669f5"
 
 [[projects]]
   branch = "master"
@@ -18,12 +18,12 @@
   revision = "ee938bf735983d53694d79138ad9820efff94c92"
 
 [[projects]]
-  digest = "1:8d983343581370768675191a8695f52d663f50a9234c571128f3d146314892cf"
+  digest = "1:09d3ceb4456b0b463c5730198a9138e383089b27c0c10b1032789a0618a6dfe6"
   name = "github.com/dimfeld/httptreemux"
   packages = ["."]
   pruneopts = "UT"
-  revision = "7f532489e7739b3d49df5c602bf63549881fe753"
-  version = "v5.0.1"
+  revision = "a454a10de4a11f751681a0914461ab9e98c2a3ff"
+  version = "5.0.2"
 
 [[projects]]
   branch = "master"
@@ -34,7 +34,7 @@
   revision = "90ecf730640af15b296b0613b5d74848b3675e53"
 
 [[projects]]
-  digest = "1:24e947bb2bf0f4e86b26b665556f20fee3dfad38fffc687472b54c99bd1ff692"
+  digest = "1:0f5e560989212a91bb793ec8548fe306a094db83ba0f14c9d41f56c9da563ba6"
   name = "github.com/goadesign/goa"
   packages = [
     ".",
@@ -42,9 +42,18 @@
     "design",
     "design/apidsl",
     "dslengine",
+    "goagen/codegen",
+    "goagen/gen_app",
+    "goagen/gen_client",
+    "goagen/gen_controller",
+    "goagen/gen_main",
+    "goagen/gen_schema",
+    "goagen/gen_swagger",
+    "goagen/utils",
     "goatest",
     "middleware",
     "uuid",
+    "version",
   ]
   pruneopts = "UT"
   revision = "d96a9e2548f5803f6bbb0a5ffb0bee24863cd19b"
@@ -59,20 +68,20 @@
   version = "v3.2.0"
 
 [[projects]]
-  digest = "1:f47d6109c2034cb16bd62b220e18afd5aa9d5a1630fe5d937ad96a4fb7cbb277"
+  digest = "1:af105c7c5dc0b4ae41991f122cae860b9600f7d226072c2a83127048c991660c"
   name = "github.com/hashicorp/go-cleanhttp"
   packages = ["."]
   pruneopts = "UT"
-  revision = "e8ab9daed8d1ddd2d3c4efba338fe2eeae2e4f18"
-  version = "v0.5.0"
+  revision = "eda1e5db218aad1db63ca4642c8906b26bcf2744"
+  version = "v0.5.1"
 
 [[projects]]
-  branch = "master"
-  digest = "1:2394f5a25132b3868eff44599cc28d44bdd0330806e34c495d754dd052df612b"
+  digest = "1:2be5a35f0c5b35162c41bb24971e5dcf6ce825403296ee435429cdcc4e1e847e"
   name = "github.com/hashicorp/go-immutable-radix"
   packages = ["."]
   pruneopts = "UT"
-  revision = "7f3cd4390caab3250a57f30efdb2a65dd7649ecf"
+  revision = "27df80928bb34bb1b0d6d0e01b9e679902e7a6b5"
+  version = "v1.0.0"
 
 [[projects]]
   digest = "1:183f00c472fb9b2446659618eebf4899872fa267b92f926539411abdc8b941df"
@@ -82,12 +91,12 @@
   revision = "master"
 
 [[projects]]
-  branch = "master"
-  digest = "1:e0e3eb7886110c57a7c103fbc5fc419b1651d3014655b47b71f26809c2daeb1c"
+  digest = "1:67474f760e9ac3799f740db2c489e6423a4cde45520673ec123ac831ad849cb8"
   name = "github.com/hashicorp/golang-lru"
   packages = ["simplelru"]
   pruneopts = "UT"
-  revision = "0fb14efe8c47ae851c0034ed7a448854d3d34cf3"
+  revision = "7087cb70de9f7a8bc0a10c375cb0d2280a8edf9c"
+  version = "v0.5.1"
 
 [[projects]]
   digest = "1:6c41d4f998a03b6604227ccad36edaed6126c397e5d78709ef4814a1145a6757"
@@ -101,15 +110,16 @@
   version = "v1.2.0"
 
 [[projects]]
-  digest = "1:8ef506fc2bb9ced9b151dafa592d4046063d744c646c1bbe801982ce87e4bc24"
+  digest = "1:bdd53b87de8185da386bae179c84d4848854c6870bacacf6a154fe63e2e750f7"
   name = "github.com/lib/pq"
   packages = [
     ".",
     "oid",
+    "scram",
   ]
   pruneopts = "UT"
-  revision = "4ded0e9383f75c197b3a2aaa6d590ac52df6fd79"
-  version = "v1.0.0"
+  revision = "bc6a3c0594130b1e34005880bc600b6d3f49fa7f"
+  version = "v1.1.1"
 
 [[projects]]
   branch = "master"
@@ -154,7 +164,23 @@
   name = "golang.org/x/net"
   packages = ["websocket"]
   pruneopts = "UT"
-  revision = "8a410e7b638dca158bf9e766925842f6651ff828"
+  revision = "f4e77d36d62c17c2336347bb2670ddbd02d092b7"
+
+[[projects]]
+  branch = "master"
+  digest = "1:da6c6c4f3f9e545f56ee4cba81b29e0e18357376c392f3ca98af546820f2d9eb"
+  name = "golang.org/x/tools"
+  packages = ["go/ast/astutil"]
+  pruneopts = "UT"
+  revision = "3b6f9c0030f769fa3ded8a7f0d9420c71ac20caf"
+
+[[projects]]
+  digest = "1:4d2e5a73dc1500038e504a8d78b986630e3626dc027bc030ba5c75da257cdb96"
+  name = "gopkg.in/yaml.v2"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "51d6538a90f86fe93ac480b35f37b2be17fef232"
+  version = "v2.2.2"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -165,6 +191,12 @@
     "github.com/goadesign/goa/client",
     "github.com/goadesign/goa/design",
     "github.com/goadesign/goa/design/apidsl",
+    "github.com/goadesign/goa/goagen/codegen",
+    "github.com/goadesign/goa/goagen/gen_app",
+    "github.com/goadesign/goa/goagen/gen_client",
+    "github.com/goadesign/goa/goagen/gen_controller",
+    "github.com/goadesign/goa/goagen/gen_main",
+    "github.com/goadesign/goa/goagen/gen_swagger",
     "github.com/goadesign/goa/goatest",
     "github.com/goadesign/goa/middleware",
     "github.com/hashicorp/go-retryablehttp",
