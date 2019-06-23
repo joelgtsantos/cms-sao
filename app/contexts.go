@@ -79,6 +79,39 @@ func (ctx *GetDraftSubmitTrxContext) Gone() error {
 	return nil
 }
 
+// ShowDraftSubmitTrxContext provides the DraftSubmitTrx show action context.
+type ShowDraftSubmitTrxContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+}
+
+// NewShowDraftSubmitTrxContext parses the incoming request URL and body, performs validations and creates the
+// context used by the DraftSubmitTrx controller show action.
+func NewShowDraftSubmitTrxContext(ctx context.Context, r *http.Request, service *goa.Service) (*ShowDraftSubmitTrxContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := ShowDraftSubmitTrxContext{Context: ctx, ResponseData: resp, RequestData: req}
+	return &rctx, err
+}
+
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *ShowDraftSubmitTrxContext) BadRequest(r error) error {
+	if ctx.ResponseData.Header().Get("Content-Type") == "" {
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
+}
+
+// NotImplemented sends a HTTP response with status code 501.
+func (ctx *ShowDraftSubmitTrxContext) NotImplemented() error {
+	ctx.ResponseData.WriteHeader(501)
+	return nil
+}
+
 // GetEntrySubmitTrxContext provides the EntrySubmitTrx get action context.
 type GetEntrySubmitTrxContext struct {
 	context.Context
@@ -141,6 +174,39 @@ func (ctx *GetEntrySubmitTrxContext) NotFound() error {
 // Gone sends a HTTP response with status code 410.
 func (ctx *GetEntrySubmitTrxContext) Gone() error {
 	ctx.ResponseData.WriteHeader(410)
+	return nil
+}
+
+// ShowEntrySubmitTrxContext provides the EntrySubmitTrx show action context.
+type ShowEntrySubmitTrxContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+}
+
+// NewShowEntrySubmitTrxContext parses the incoming request URL and body, performs validations and creates the
+// context used by the EntrySubmitTrx controller show action.
+func NewShowEntrySubmitTrxContext(ctx context.Context, r *http.Request, service *goa.Service) (*ShowEntrySubmitTrxContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := ShowEntrySubmitTrxContext{Context: ctx, ResponseData: resp, RequestData: req}
+	return &rctx, err
+}
+
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *ShowEntrySubmitTrxContext) BadRequest(r error) error {
+	if ctx.ResponseData.Header().Get("Content-Type") == "" {
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
+}
+
+// NotImplemented sends a HTTP response with status code 501.
+func (ctx *ShowEntrySubmitTrxContext) NotImplemented() error {
+	ctx.ResponseData.WriteHeader(501)
 	return nil
 }
 

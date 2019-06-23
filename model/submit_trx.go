@@ -8,5 +8,5 @@ type EntrySubmitTrx struct {
 	UpdatedAt time.Time
 	Status    string
 	EntryID   int
-	ResultID  int
+	ResultID  string
 }

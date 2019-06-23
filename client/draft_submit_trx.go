@@ -50,3 +50,32 @@ func (c *Client) NewGetDraftSubmitTrxRequest(ctx context.Context, path string, t
 	}
 	return req, nil
 }
+
+// ShowDraftSubmitTrxPath computes a request path to the show action of DraftSubmitTrx.
+func ShowDraftSubmitTrxPath() string {
+
+	return fmt.Sprintf("/sao/v1/draft-submit-transaction/")
+}
+
+// ShowDraftSubmitTrx makes a request to the show action endpoint of the DraftSubmitTrx resource
+func (c *Client) ShowDraftSubmitTrx(ctx context.Context, path string) (*http.Response, error) {
+	req, err := c.NewShowDraftSubmitTrxRequest(ctx, path)
+	if err != nil {
+		return nil, err
+	}
+	return c.Client.Do(ctx, req)
+}
+
+// NewShowDraftSubmitTrxRequest create the request corresponding to the show action endpoint of the DraftSubmitTrx resource.
+func (c *Client) NewShowDraftSubmitTrxRequest(ctx context.Context, path string) (*http.Request, error) {
+	scheme := c.Scheme
+	if scheme == "" {
+		scheme = "http"
+	}
+	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	return req, nil
+}

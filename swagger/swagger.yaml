@@ -170,7 +170,7 @@ definitions:
     example:
       createdAt: "1981-11-23T19:41:34Z"
       href: /draft-submit-transaction/1236
-      id: 1236
+      id: 5cf4a17916fdac79059141a0
       links:
         draft:
           href: /drafts/1236
@@ -192,9 +192,8 @@ definitions:
         type: string
       id:
         description: Unique SubmitDraftTransaction ID
-        example: 1236
-        format: int64
-        type: integer
+        example: 5cf4a17916fdac79059141a0
+        type: string
       links:
         $ref: '#/definitions/ComJossemargtSaoDraft-Submit-TransactionLinks'
       status:
@@ -399,7 +398,7 @@ definitions:
     example:
       createdAt: "2006-07-14T09:56:49Z"
       href: /entry-submit-transaction/1236
-      id: 1236
+      id: 5cf4a17916fdac79059141a0
       links:
         entry:
           href: /entries/1236
@@ -421,9 +420,8 @@ definitions:
         type: string
       id:
         description: Unique SubmitEntryTransaction ID
-        example: 1236
-        format: int64
-        type: integer
+        example: 5cf4a17916fdac79059141a0
+        type: string
       links:
         $ref: '#/definitions/ComJossemargtSaoEntry-Submit-TransactionLinks'
       status:
@@ -1162,6 +1160,23 @@ paths:
       summary: get draftresult
       tags:
       - draftresult
+  /draft-submit-transaction/:
+    get:
+      operationId: DraftSubmitTrx#show
+      produces:
+      - application/vnd.goa.error
+      responses:
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "501":
+          description: Not Implemented
+      schemes:
+      - http
+      summary: show DraftSubmitTrx
+      tags:
+      - DraftSubmitTrx
   /draft-submit-transaction/{trxID}:
     get:
       description: Get submitted draft transaction metadata for the given ID
@@ -1407,6 +1422,23 @@ paths:
       summary: get entry
       tags:
       - entry
+  /entry-submit-transaction/:
+    get:
+      operationId: EntrySubmitTrx#show
+      produces:
+      - application/vnd.goa.error
+      responses:
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "501":
+          description: Not Implemented
+      schemes:
+      - http
+      summary: show EntrySubmitTrx
+      tags:
+      - EntrySubmitTrx
   /entry-submit-transaction/{trxID}:
     get:
       description: Get submitted entry transaction metadata for the given ID
@@ -1729,6 +1761,8 @@ responses:
     description: Gone
   NotFound:
     description: Not Found
+  NotImplemented:
+    description: Not Implemented
 schemes:
 - http
 swagger: "2.0"

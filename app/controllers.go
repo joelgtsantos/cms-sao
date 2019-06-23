@@ -30,6 +30,7 @@ func initService(service *goa.Service) {
 type DraftSubmitTrxController interface {
 	goa.Muxer
 	Get(*GetDraftSubmitTrxContext) error
+	Show(*ShowDraftSubmitTrxContext) error
 }
 
 // MountDraftSubmitTrxController "mounts" a DraftSubmitTrx resource controller on the given service.
@@ -51,12 +52,28 @@ func MountDraftSubmitTrxController(service *goa.Service, ctrl DraftSubmitTrxCont
 	}
 	service.Mux.Handle("GET", "/sao/v1/draft-submit-transaction/:trxID", ctrl.MuxHandler("get", h, nil))
 	service.LogInfo("mount", "ctrl", "DraftSubmitTrx", "action", "Get", "route", "GET /sao/v1/draft-submit-transaction/:trxID")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewShowDraftSubmitTrxContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.Show(rctx)
+	}
+	service.Mux.Handle("GET", "/sao/v1/draft-submit-transaction/", ctrl.MuxHandler("show", h, nil))
+	service.LogInfo("mount", "ctrl", "DraftSubmitTrx", "action", "Show", "route", "GET /sao/v1/draft-submit-transaction/")
 }
 
 // EntrySubmitTrxController is the controller interface for the EntrySubmitTrx actions.
 type EntrySubmitTrxController interface {
 	goa.Muxer
 	Get(*GetEntrySubmitTrxContext) error
+	Show(*ShowEntrySubmitTrxContext) error
 }
 
 // MountEntrySubmitTrxController "mounts" a EntrySubmitTrx resource controller on the given service.
@@ -78,6 +95,21 @@ func MountEntrySubmitTrxController(service *goa.Service, ctrl EntrySubmitTrxCont
 	}
 	service.Mux.Handle("GET", "/sao/v1/entry-submit-transaction/:trxID", ctrl.MuxHandler("get", h, nil))
 	service.LogInfo("mount", "ctrl", "EntrySubmitTrx", "action", "Get", "route", "GET /sao/v1/entry-submit-transaction/:trxID")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewShowEntrySubmitTrxContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.Show(rctx)
+	}
+	service.Mux.Handle("GET", "/sao/v1/entry-submit-transaction/", ctrl.MuxHandler("show", h, nil))
+	service.LogInfo("mount", "ctrl", "EntrySubmitTrx", "action", "Show", "route", "GET /sao/v1/entry-submit-transaction/")
 }
 
 // ActionsController is the controller interface for the Actions actions.

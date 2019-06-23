@@ -265,13 +265,15 @@ type ComJossemargtSaoDraftSubmitTransaction struct {
 	// API href for making requests on the entry
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Unique SubmitDraftTransaction ID
-	ID     int    `form:"id" json:"id" yaml:"id" xml:"id"`
+	ID     string `form:"id" json:"id" yaml:"id" xml:"id"`
 	Status string `form:"status" json:"status" yaml:"status" xml:"status"`
 }
 
 // Validate validates the ComJossemargtSaoDraftSubmitTransaction media type instance.
 func (mt *ComJossemargtSaoDraftSubmitTransaction) Validate() (err error) {
-
+	if mt.ID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
+	}
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
@@ -290,7 +292,7 @@ type ComJossemargtSaoDraftSubmitTransactionFull struct {
 	// API href for making requests on the entry
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Unique SubmitDraftTransaction ID
-	ID int `form:"id" json:"id" yaml:"id" xml:"id"`
+	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
 	// Links to related resources
 	Links  *ComJossemargtSaoDraftSubmitTransactionLinks `form:"links,omitempty" json:"links,omitempty" yaml:"links,omitempty" xml:"links,omitempty"`
 	Status string                                       `form:"status" json:"status" yaml:"status" xml:"status"`
@@ -300,7 +302,9 @@ type ComJossemargtSaoDraftSubmitTransactionFull struct {
 
 // Validate validates the ComJossemargtSaoDraftSubmitTransactionFull media type instance.
 func (mt *ComJossemargtSaoDraftSubmitTransactionFull) Validate() (err error) {
-
+	if mt.ID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
+	}
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
@@ -322,12 +326,14 @@ type ComJossemargtSaoDraftSubmitTransactionLink struct {
 	// API href for making requests on the entry
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Unique SubmitDraftTransaction ID
-	ID int `form:"id" json:"id" yaml:"id" xml:"id"`
+	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
 }
 
 // Validate validates the ComJossemargtSaoDraftSubmitTransactionLink media type instance.
 func (mt *ComJossemargtSaoDraftSubmitTransactionLink) Validate() (err error) {
-
+	if mt.ID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
+	}
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
@@ -542,13 +548,15 @@ type ComJossemargtSaoEntrySubmitTransaction struct {
 	// API href for making requests on the entry
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Unique SubmitEntryTransaction ID
-	ID     int    `form:"id" json:"id" yaml:"id" xml:"id"`
+	ID     string `form:"id" json:"id" yaml:"id" xml:"id"`
 	Status string `form:"status" json:"status" yaml:"status" xml:"status"`
 }
 
 // Validate validates the ComJossemargtSaoEntrySubmitTransaction media type instance.
 func (mt *ComJossemargtSaoEntrySubmitTransaction) Validate() (err error) {
-
+	if mt.ID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
+	}
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
@@ -567,7 +575,7 @@ type ComJossemargtSaoEntrySubmitTransactionFull struct {
 	// API href for making requests on the entry
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Unique SubmitEntryTransaction ID
-	ID int `form:"id" json:"id" yaml:"id" xml:"id"`
+	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
 	// Links to related resources
 	Links  *ComJossemargtSaoEntrySubmitTransactionLinks `form:"links,omitempty" json:"links,omitempty" yaml:"links,omitempty" xml:"links,omitempty"`
 	Status string                                       `form:"status" json:"status" yaml:"status" xml:"status"`
@@ -577,7 +585,9 @@ type ComJossemargtSaoEntrySubmitTransactionFull struct {
 
 // Validate validates the ComJossemargtSaoEntrySubmitTransactionFull media type instance.
 func (mt *ComJossemargtSaoEntrySubmitTransactionFull) Validate() (err error) {
-
+	if mt.ID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
+	}
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
@@ -599,12 +609,14 @@ type ComJossemargtSaoEntrySubmitTransactionLink struct {
 	// API href for making requests on the entry
 	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// Unique SubmitEntryTransaction ID
-	ID int `form:"id" json:"id" yaml:"id" xml:"id"`
+	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
 }
 
 // Validate validates the ComJossemargtSaoEntrySubmitTransactionLink media type instance.
 func (mt *ComJossemargtSaoEntrySubmitTransactionLink) Validate() (err error) {
-
+	if mt.ID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
+	}
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}

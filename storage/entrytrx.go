@@ -43,7 +43,7 @@ func (r *defaultEntrySubmitTrxRepository) FindByID(ctx context.Context, id strin
 
 func (r *defaultEntrySubmitTrxRepository) Save(ctx context.Context, trx *model.EntrySubmitTrx) (string, error) {
 	if trx.ID == "" {
-		return r.write.InsertOne(ctx, trx)
+		return r.write.InsertOne(ctx, newEntrySubmitTrx(trx))
 	}
 
 	q, err := NewDocumentDBQuery(ID(trx.ID))
@@ -51,6 +51,6 @@ func (r *defaultEntrySubmitTrxRepository) Save(ctx context.Context, trx *model.E
 		return "", err
 	}
 
-	err = r.write.UpdateOne(ctx, trx, q)
+	err = r.write.UpdateOne(ctx, newEntrySubmitTrx(trx), q)
 	return "", err
 }

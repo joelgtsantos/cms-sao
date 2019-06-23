@@ -210,8 +210,8 @@ var EntrySubmitTrx = MediaType("application/vnd.com.jossemargt.sao.entry-submit-
 	Reference(AbstractEntrySubmitTrx)
 
 	Attributes(func() {
-		Attribute("id", Integer, "Unique SubmitEntryTransaction ID", func() {
-			Example(1236)
+		Attribute("id", String, "Unique SubmitEntryTransaction ID", func() {
+			Example("5cf4a17916fdac79059141a0")
 		})
 		Attribute("href", String, "API href for making requests on the entry", func() {
 			Example("/entry-submit-transaction/1236")
@@ -257,8 +257,8 @@ var DraftSubmitTrx = MediaType("application/vnd.com.jossemargt.sao.draft-submit-
 	Reference(AbstractEntrySubmitTrx)
 
 	Attributes(func() {
-		Attribute("id", Integer, "Unique SubmitDraftTransaction ID", func() {
-			Example(1236)
+		Attribute("id", String, "Unique SubmitDraftTransaction ID", func() {
+			Example("5cf4a17916fdac79059141a0")
 		})
 		Attribute("href", String, "API href for making requests on the entry", func() {
 			Example("/draft-submit-transaction/1236")

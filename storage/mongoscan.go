@@ -13,7 +13,7 @@ type entrySubmitTrx struct {
 	UpdatedAt time.Time          `bson:"updatedAt"`
 	Status    string             `bson:"status"`
 	EntryID   int                `bson:"entryID"`
-	ResultID  int                `bson:"resultID"`
+	ResultID  string             `bson:"resultID"`
 }
 
 func (e entrySubmitTrx) toEntrySubmitTrx() *model.EntrySubmitTrx {
@@ -27,7 +27,7 @@ func (e entrySubmitTrx) toEntrySubmitTrx() *model.EntrySubmitTrx {
 	}
 }
 
-func newEntrySubmitTrx(src model.EntrySubmitTrx) *entrySubmitTrx {
+func newEntrySubmitTrx(src *model.EntrySubmitTrx) *entrySubmitTrx {
 	mEntry := entrySubmitTrx{
 		CreatedAt: src.CreatedAt,
 		UpdatedAt: src.UpdatedAt,

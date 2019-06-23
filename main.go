@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"time"
@@ -13,12 +14,17 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	goup "github.com/ufoscout/go-up"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/jossemargt/cms-sao/app"
 	"github.com/jossemargt/cms-sao/storage"
 )
 
 func main() {
+	appCtx, appCtxCancel := context.WithCancel(context.Background())
+	defer appCtxCancel()
+
 	// Resolve configurations
 	var up goup.GoUp
 	{
@@ -29,6 +35,15 @@ func main() {
 			AddReader(goup.NewEnvReader("SAO_", true, true)).
 			Build()
 	}
+
+	// Create service
+	service := goa.New("SAO v1")
+
+	// Mount middleware
+	service.Use(middleware.RequestID())
+	service.Use(middleware.LogRequest(up.GetBoolOrDefault("server.log.request", false)))
+	service.Use(middleware.ErrorHandler(service, up.GetBoolOrDefault("server.response.tracedump", false)))
+	service.Use(middleware.Recover())
 
 	var httpClient *httpRetryableClient
 	{
@@ -58,7 +73,8 @@ func main() {
 		dbpassword := up.GetStringOrDefault("cms.datasource.password", "")
 		dbsslmode := up.GetStringOrDefault("cms.datasource.sslmode", "require")
 
-		dbConn = sqlx.MustConnect("postgres",
+		var err error
+		dbConn, err = sqlx.Connect("postgres",
 			fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%s sslmode=%s",
 				dbuser,
 				dbpassword,
@@ -68,6 +84,43 @@ func main() {
 				dbsslmode,
 			),
 		)
+
+		if err != nil {
+			service.LogError("startup", "err", err)
+			return
+		}
+	}
+
+	var mongoDB *mongo.Database
+	{
+		dbhost := up.GetStringOrDefault("sao.documentsource.host", "localhost")
+		dbport := up.GetIntOrDefault("sao.documentsource.port", 27017)
+		dbname := up.GetStringOrDefault("sao.documentsource.name", "cmsdb")
+		dbuser := up.GetStringOrDefault("sao.documentsource.username", "cmsuser")
+		dbpassword := up.GetStringOrDefault("sao.documentsource.password", "")
+
+		mongoClient, err := mongo.Connect(appCtx,
+			options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%s@%s:%d/%s",
+				dbuser,
+				dbpassword,
+				dbhost,
+				dbport,
+				dbname,
+			)),
+		)
+
+		if err != nil {
+			service.LogError("startup", "err", err)
+			return
+		}
+
+		err = mongoClient.Ping(appCtx, nil)
+		if err != nil {
+			service.LogError("startup", "err", err)
+			return
+		}
+
+		mongoDB = mongoClient.Database(dbname)
 	}
 
 	// Create resource repositories
@@ -75,15 +128,8 @@ func main() {
 	resultRepository := storage.NewResultRepository(dbConn)
 	draftRepository := storage.NewEntryDraftRepository(dbConn)
 	draftresultRepository := storage.NewDraftResultRepository(dbConn)
-
-	// Create service
-	service := goa.New("SAO v1")
-
-	// Mount middleware
-	service.Use(middleware.RequestID())
-	service.Use(middleware.LogRequest(up.GetBoolOrDefault("server.log.request", false)))
-	service.Use(middleware.ErrorHandler(service, up.GetBoolOrDefault("server.response.tracedump", false)))
-	service.Use(middleware.Recover())
+	entrySubmitTrxRepository := storage.NewEntrySubmitTrxRepository(mongoDB)
+	draftSubmitTrxRepository := storage.NewDraftSubmitTrxRepository(mongoDB)
 
 	// Mount "actions" controller
 	c := NewActionsController(service)
@@ -101,10 +147,10 @@ func main() {
 	c5 := NewResultController(service, resultRepository)
 	app.MountResultController(service, c5)
 	// Mount "submit entry transaction" controller
-	c6 := NewEntrySubmitTrxController(service)
+	c6 := NewEntrySubmitTrxController(service, entrySubmitTrxRepository)
 	app.MountEntrySubmitTrxController(service, c6)
 	// Mount "submit entry draft transaction" controller
-	c7 := NewDraftSubmitTrxController(service)
+	c7 := NewDraftSubmitTrxController(service, draftSubmitTrxRepository)
 	app.MountDraftSubmitTrxController(service, c7)
 
 	// Start service

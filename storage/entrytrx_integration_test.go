@@ -35,7 +35,7 @@ func TestDefaultEntrySubmitTrxRepository_Save(t *testing.T) {
 		UpdatedAt: time.Now(),
 		Status:    "created",
 		EntryID:   -1,
-		ResultID:  -1,
+		ResultID:  "",
 	})
 
 	if err != nil {
@@ -66,7 +66,7 @@ func TestDefaultEntrySubmitTrxRepository_FindByID(t *testing.T) {
 		UpdatedAt: time.Now(),
 		Status:    "created",
 		EntryID:   -1,
-		ResultID:  -1,
+		ResultID:  "",
 	})
 
 	if err != nil {

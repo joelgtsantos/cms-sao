@@ -259,6 +259,13 @@ var _ = Resource("EntrySubmitTrx", func() {
 	BasePath("/entry-submit-transaction")
 	Response(BadRequest, ErrorMedia)
 
+	// FIXME: Implement the index/query endpoint
+	Action("show", func() {
+		Description("")
+		Routing(GET("/"))
+		Response(NotImplemented)
+	})
+
 	Action("get", func() {
 		Description("Get submitted entry transaction metadata for the given ID")
 		Routing(GET("/:trxID"))
@@ -279,6 +286,13 @@ var _ = Resource("DraftSubmitTrx", func() {
 	Description("Represents the process of queueing, compilation and execution of an Entry Draft")
 	BasePath("/draft-submit-transaction")
 	Response(BadRequest, ErrorMedia)
+
+	// FIXME: Implement the index/query endpoint
+	Action("show", func() {
+		Description("")
+		Routing(GET("/"))
+		Response(NotImplemented)
+	})
 
 	Action("get", func() {
 		Description("Get submitted draft transaction metadata for the given ID")

@@ -7,6 +7,16 @@
 
 package app
 
+// DraftSubmitTrxHref returns the resource href.
+func DraftSubmitTrxHref() string {
+	return "/sao/v1/draft-submit-transaction/"
+}
+
+// EntrySubmitTrxHref returns the resource href.
+func EntrySubmitTrxHref() string {
+	return "/sao/v1/entry-submit-transaction/"
+}
+
 // DraftHref returns the resource href.
 func DraftHref() string {
 	return "/sao/v1/drafts/"
