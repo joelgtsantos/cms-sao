@@ -12,12 +12,12 @@ var _ = API("SAO", func() {
 	Host("localhost:8000")
 	Scheme("http")
 	BasePath("/sao/v1")
+	Produces("application/json")
 })
 
 var _ = Resource("entry", func() {
 	Description("A contestant document that has been compiled, evaluated and graded")
 	BasePath("/entries")
-	Response(Unauthorized, ErrorMedia)
 	Response(BadRequest, ErrorMedia)
 
 	Action("show", func() {
@@ -139,7 +139,6 @@ var _ = Resource("result", func() {
 var _ = Resource("draft", func() {
 	Description("A contestant document draft that has been compiled and evaluated")
 	BasePath("/drafts")
-	Response(Unauthorized, ErrorMedia)
 	Response(BadRequest, ErrorMedia)
 
 	Action("show", func() {
@@ -255,6 +254,62 @@ var _ = Resource("draftresult", func() {
 	})
 })
 
+var _ = Resource("EntrySubmitTrx", func() {
+	Description("Represents the process of queueing, compilation, evaluation and grading of an Entry")
+	BasePath("/entry-submit-transaction")
+	Response(BadRequest, ErrorMedia)
+
+	// FIXME: Implement the index/query endpoint
+	Action("show", func() {
+		Description("")
+		Routing(GET("/"))
+		Response(NotImplemented)
+	})
+
+	Action("get", func() {
+		Description("Get submitted entry transaction metadata for the given ID")
+		Routing(GET("/:trxID"))
+		Params(func() {
+			Param("trxD", Integer, "Submit entry transaction ID", func() {
+				Example(123588)
+			})
+		})
+		Response(OK, func() {
+			Media(EntrySubmitTrx, "full")
+		})
+		Response(NotFound)
+		Response(Gone)
+	})
+})
+
+var _ = Resource("DraftSubmitTrx", func() {
+	Description("Represents the process of queueing, compilation and execution of an Entry Draft")
+	BasePath("/draft-submit-transaction")
+	Response(BadRequest, ErrorMedia)
+
+	// FIXME: Implement the index/query endpoint
+	Action("show", func() {
+		Description("")
+		Routing(GET("/"))
+		Response(NotImplemented)
+	})
+
+	Action("get", func() {
+		Description("Get submitted draft transaction metadata for the given ID")
+		Routing(GET("/:trxID"))
+		Params(func() {
+			Param("trxD", Integer, "Submit draft transaction ID", func() {
+				Example(123588)
+			})
+		})
+		Response(OK, func() {
+			Media(DraftSubmitTrx, "full")
+		})
+		Response(NotFound)
+		Response(Gone)
+	})
+})
+
 var _ = Resource("actions", func() {
 	Description("All the non-REST actions supported by this API")
 	BasePath("")
@@ -270,8 +325,8 @@ var _ = Resource("actions", func() {
 			Media(EntryMedia, "full")
 			Headers(func() {
 				Header("Location", String, "href to created entry", func() {
-					Pattern("/entries/\\d+")
-					Example("/entries/124588")
+					Pattern("/entry-submit-transaction/\\d+")
+					Example("/entry-submit-transaction/124588")
 				})
 			})
 		})
@@ -286,8 +341,8 @@ var _ = Resource("actions", func() {
 			Media(EntryMedia, "full")
 			Headers(func() {
 				Header("Location", String, "href to created entry", func() {
-					Pattern("/drafts/\\d+")
-					Example("/drafts/124588")
+					Pattern("/draft-submit-transaction/\\d+")
+					Example("/draft-submit-transaction/124588")
 				})
 			})
 		})

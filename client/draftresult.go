@@ -3,11 +3,7 @@
 // API "SAO": draftresult Resource Client
 //
 // Command:
-// $ goagen
-// --design=github.com/jossemargt/cms-sao/design
-// --notool=true
-// --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
-// --version=v1.4.1
+// $ go generate
 
 package client
 
@@ -73,37 +69,37 @@ func (c *Client) NewShowDraftresultRequest(ctx context.Context, path string, con
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	values := u.Query()
 	if contest != nil {
-		tmp11 := strconv.Itoa(*contest)
-		values.Set("contest", tmp11)
+		tmp50 := strconv.Itoa(*contest)
+		values.Set("contest", tmp50)
 	}
 	if contestSlug != nil {
 		values.Set("contest_slug", *contestSlug)
 	}
 	if entry != nil {
-		tmp12 := strconv.Itoa(*entry)
-		values.Set("entry", tmp12)
+		tmp51 := strconv.Itoa(*entry)
+		values.Set("entry", tmp51)
 	}
 	if page != nil {
-		tmp13 := strconv.Itoa(*page)
-		values.Set("page", tmp13)
+		tmp52 := strconv.Itoa(*page)
+		values.Set("page", tmp52)
 	}
 	if pageSize != nil {
-		tmp14 := strconv.Itoa(*pageSize)
-		values.Set("page_size", tmp14)
+		tmp53 := strconv.Itoa(*pageSize)
+		values.Set("page_size", tmp53)
 	}
 	if sort != nil {
 		values.Set("sort", *sort)
 	}
 	if task != nil {
-		tmp15 := strconv.Itoa(*task)
-		values.Set("task", tmp15)
+		tmp54 := strconv.Itoa(*task)
+		values.Set("task", tmp54)
 	}
 	if taskSlug != nil {
 		values.Set("task_slug", *taskSlug)
 	}
 	if user != nil {
-		tmp16 := strconv.Itoa(*user)
-		values.Set("user", tmp16)
+		tmp55 := strconv.Itoa(*user)
+		values.Set("user", tmp55)
 	}
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("GET", u.String(), nil)

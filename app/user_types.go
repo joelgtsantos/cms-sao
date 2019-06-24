@@ -3,16 +3,13 @@
 // API "SAO": Application User Types
 //
 // Command:
-// $ goagen
-// --design=github.com/jossemargt/cms-sao/design
-// --notool=true
-// --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
-// --version=v1.4.1
+// $ go generate
 
 package app
 
 import (
 	"github.com/goadesign/goa"
+	"time"
 )
 
 // Abstracts the common attributes from EntryPayload and EntryFormPayload
@@ -105,6 +102,47 @@ func (ut *AbstractEntry) Validate() (err error) {
 		err = goa.MergeErrors(err, goa.InvalidPatternError(`type.taskSlug`, ut.TaskSlug, `[_a-zA-Z0-9\-]+`))
 	}
 	return
+}
+
+// Abstracts the common attributes from SubmitEntry and SubmitDraft transactional resources
+type abstractEntrySubmitTrx struct {
+	// Transaction creation timestamp
+	CreatedAt *time.Time `form:"createdAt,omitempty" json:"createdAt,omitempty" yaml:"createdAt,omitempty" xml:"createdAt,omitempty"`
+	Status    *string    `form:"status,omitempty" json:"status,omitempty" yaml:"status,omitempty" xml:"status,omitempty"`
+	// Transaction last update timestamp
+	UpdatedAt *time.Time `form:"updatedAt,omitempty" json:"updatedAt,omitempty" yaml:"updatedAt,omitempty" xml:"updatedAt,omitempty"`
+}
+
+// Finalize sets the default values for abstractEntrySubmitTrx type instance.
+func (ut *abstractEntrySubmitTrx) Finalize() {
+	var defaultStatus = "unprocessed"
+	if ut.Status == nil {
+		ut.Status = &defaultStatus
+	}
+}
+
+// Publicize creates AbstractEntrySubmitTrx from abstractEntrySubmitTrx
+func (ut *abstractEntrySubmitTrx) Publicize() *AbstractEntrySubmitTrx {
+	var pub AbstractEntrySubmitTrx
+	if ut.CreatedAt != nil {
+		pub.CreatedAt = ut.CreatedAt
+	}
+	if ut.Status != nil {
+		pub.Status = *ut.Status
+	}
+	if ut.UpdatedAt != nil {
+		pub.UpdatedAt = ut.UpdatedAt
+	}
+	return &pub
+}
+
+// Abstracts the common attributes from SubmitEntry and SubmitDraft transactional resources
+type AbstractEntrySubmitTrx struct {
+	// Transaction creation timestamp
+	CreatedAt *time.Time `form:"createdAt,omitempty" json:"createdAt,omitempty" yaml:"createdAt,omitempty" xml:"createdAt,omitempty"`
+	Status    string     `form:"status" json:"status" yaml:"status" xml:"status"`
+	// Transaction last update timestamp
+	UpdatedAt *time.Time `form:"updatedAt,omitempty" json:"updatedAt,omitempty" yaml:"updatedAt,omitempty" xml:"updatedAt,omitempty"`
 }
 
 // Embedded representation of an entry compilation result

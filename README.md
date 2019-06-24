@@ -56,10 +56,15 @@ server.error.tracedump | false | When set as true the application will include t
 cms.url | http://localhost/ | The URL where Sao can stablish communication with CMS
 cms.datasource.name | cmsdb | CMS PostgreSQL schema name
 cms.datasource.username | cmsuser | CMS PostgreSQL datasource username
-cms.datasource.password | notsecure | CMS PostgreSQL datasource password
+cms.datasource.password | | CMS PostgreSQL datasource password
 cms.datasource.host | 127.0.0.1 | CMS PostgreSQL host network address
 cms.datasource.port | 5432 | CMS PostgreSQL instance port
 cms.datasource.sslmode | disable | CMS PostgreSQL [ssl mode](https://www.postgresql.org/docs/9.1/libpq-ssl.html) (valid values: require, disable, verify-ca, verify-full)
+documentsource.name | cmsdb | MongoDB database name
+documentsource.usernaname | cmsuser | MongoDB datasource username
+documentsource.password | | MongoDB datasource password
+documentsource.host | 127.0.0.1 | MongoDB host network address
+documentsource.port | 27017 | MongoDB port
 
 ## License
 

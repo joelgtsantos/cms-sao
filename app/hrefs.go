@@ -3,13 +3,19 @@
 // API "SAO": Application Resource Href Factories
 //
 // Command:
-// $ goagen
-// --design=github.com/jossemargt/cms-sao/design
-// --notool=true
-// --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
-// --version=v1.4.1
+// $ go generate
 
 package app
+
+// DraftSubmitTrxHref returns the resource href.
+func DraftSubmitTrxHref() string {
+	return "/sao/v1/draft-submit-transaction/"
+}
+
+// EntrySubmitTrxHref returns the resource href.
+func EntrySubmitTrxHref() string {
+	return "/sao/v1/entry-submit-transaction/"
+}
 
 // DraftHref returns the resource href.
 func DraftHref() string {

@@ -3,11 +3,7 @@
 // API "SAO": actions Resource Client
 //
 // Command:
-// $ goagen
-// --design=github.com/jossemargt/cms-sao/design
-// --notool=true
-// --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
-// --version=v1.4.1
+// $ go generate
 
 package client
 
@@ -130,30 +126,30 @@ func (c *Client) NewSummarizeScoreActionsRequest(ctx context.Context, path strin
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	values := u.Query()
 	if contest != nil {
-		tmp1 := strconv.Itoa(*contest)
-		values.Set("contest", tmp1)
+		tmp40 := strconv.Itoa(*contest)
+		values.Set("contest", tmp40)
 	}
 	if groupBy != nil {
 		values.Set("groupBy", *groupBy)
 	}
 	if page != nil {
-		tmp2 := strconv.Itoa(*page)
-		values.Set("page", tmp2)
+		tmp41 := strconv.Itoa(*page)
+		values.Set("page", tmp41)
 	}
 	if pageSize != nil {
-		tmp3 := strconv.Itoa(*pageSize)
-		values.Set("page_size", tmp3)
+		tmp42 := strconv.Itoa(*pageSize)
+		values.Set("page_size", tmp42)
 	}
 	if sort != nil {
 		values.Set("sort", *sort)
 	}
 	if task != nil {
-		tmp4 := strconv.Itoa(*task)
-		values.Set("task", tmp4)
+		tmp43 := strconv.Itoa(*task)
+		values.Set("task", tmp43)
 	}
 	if user != nil {
-		tmp5 := strconv.Itoa(*user)
-		values.Set("user", tmp5)
+		tmp44 := strconv.Itoa(*user)
+		values.Set("user", tmp44)
 	}
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("GET", u.String(), nil)

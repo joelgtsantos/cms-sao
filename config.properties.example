@@ -13,3 +13,10 @@ cms.datasource.password=you-should-not-add-this-to-git
 cms.datasource.host=127.0.0.1
 cms.datasource.port=5432
 cms.datasource.sslmode=disable
+
+# Sao temporal storage
+documentsource.name=cmsdb
+documentsource.usernaname=cmsuser
+documentsource.password=you-should-not-add-this-to-git
+documentsource.host=127.0.0.1
+documentsource.port=27017

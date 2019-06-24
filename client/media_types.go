@@ -3,17 +3,14 @@
 // API "SAO": Application Media Types
 //
 // Command:
-// $ goagen
-// --design=github.com/jossemargt/cms-sao/design
-// --notool=true
-// --out=$(GOPATH)/src/github.com/jossemargt/cms-sao
-// --version=v1.4.1
+// $ go generate
 
 package client
 
 import (
 	"github.com/goadesign/goa"
 	"net/http"
+	"time"
 )
 
 // Any source code or input to be compiled and executed against the user test case (default view)
@@ -325,6 +322,130 @@ func (c *Client) DecodeComJossemargtSaoDraftResultLinkCollection(resp *http.Resp
 	return decoded, err
 }
 
+// Represents the process of queueing, compilation and execution of an Entry Draft (default view)
+//
+// Identifier: application/vnd.com.jossemargt.sao.draft-submit-transaction+json; view=default
+type ComJossemargtSaoDraftSubmitTransaction struct {
+	// API href for making requests on the entry
+	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
+	// Unique SubmitDraftTransaction ID
+	ID     string `form:"id" json:"id" yaml:"id" xml:"id"`
+	Status string `form:"status" json:"status" yaml:"status" xml:"status"`
+}
+
+// Validate validates the ComJossemargtSaoDraftSubmitTransaction media type instance.
+func (mt *ComJossemargtSaoDraftSubmitTransaction) Validate() (err error) {
+	if mt.ID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
+	}
+	if mt.Href == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
+	}
+	if mt.Status == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "status"))
+	}
+	return
+}
+
+// Represents the process of queueing, compilation and execution of an Entry Draft (full view)
+//
+// Identifier: application/vnd.com.jossemargt.sao.draft-submit-transaction+json; view=full
+type ComJossemargtSaoDraftSubmitTransactionFull struct {
+	// Transaction creation timestamp
+	CreatedAt *time.Time `form:"createdAt,omitempty" json:"createdAt,omitempty" yaml:"createdAt,omitempty" xml:"createdAt,omitempty"`
+	// API href for making requests on the entry
+	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
+	// Unique SubmitDraftTransaction ID
+	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
+	// Links to related resources
+	Links  *ComJossemargtSaoDraftSubmitTransactionLinks `form:"links,omitempty" json:"links,omitempty" yaml:"links,omitempty" xml:"links,omitempty"`
+	Status string                                       `form:"status" json:"status" yaml:"status" xml:"status"`
+	// Transaction last update timestamp
+	UpdatedAt *time.Time `form:"updatedAt,omitempty" json:"updatedAt,omitempty" yaml:"updatedAt,omitempty" xml:"updatedAt,omitempty"`
+}
+
+// Validate validates the ComJossemargtSaoDraftSubmitTransactionFull media type instance.
+func (mt *ComJossemargtSaoDraftSubmitTransactionFull) Validate() (err error) {
+	if mt.ID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
+	}
+	if mt.Href == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
+	}
+	if mt.Status == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "status"))
+	}
+	if mt.Links != nil {
+		if err2 := mt.Links.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	return
+}
+
+// Represents the process of queueing, compilation and execution of an Entry Draft (link view)
+//
+// Identifier: application/vnd.com.jossemargt.sao.draft-submit-transaction+json; view=link
+type ComJossemargtSaoDraftSubmitTransactionLink struct {
+	// API href for making requests on the entry
+	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
+	// Unique SubmitDraftTransaction ID
+	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
+}
+
+// Validate validates the ComJossemargtSaoDraftSubmitTransactionLink media type instance.
+func (mt *ComJossemargtSaoDraftSubmitTransactionLink) Validate() (err error) {
+	if mt.ID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
+	}
+	if mt.Href == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
+	}
+	return
+}
+
+// ComJossemargtSaoDraft-Submit-TransactionLinks contains links to related resources of ComJossemargtSaoDraft-Submit-Transaction.
+type ComJossemargtSaoDraftSubmitTransactionLinks struct {
+	Draft  *ComJossemargtSaoDraftLink       `form:"draft,omitempty" json:"draft,omitempty" yaml:"draft,omitempty" xml:"draft,omitempty"`
+	Result *ComJossemargtSaoDraftResultLink `form:"result,omitempty" json:"result,omitempty" yaml:"result,omitempty" xml:"result,omitempty"`
+}
+
+// Validate validates the ComJossemargtSaoDraftSubmitTransactionLinks type instance.
+func (ut *ComJossemargtSaoDraftSubmitTransactionLinks) Validate() (err error) {
+	if ut.Draft != nil {
+		if err2 := ut.Draft.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	if ut.Result != nil {
+		if err2 := ut.Result.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	return
+}
+
+// DecodeComJossemargtSaoDraftSubmitTransaction decodes the ComJossemargtSaoDraftSubmitTransaction instance encoded in resp body.
+func (c *Client) DecodeComJossemargtSaoDraftSubmitTransaction(resp *http.Response) (*ComJossemargtSaoDraftSubmitTransaction, error) {
+	var decoded ComJossemargtSaoDraftSubmitTransaction
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
+// DecodeComJossemargtSaoDraftSubmitTransactionFull decodes the ComJossemargtSaoDraftSubmitTransactionFull instance encoded in resp body.
+func (c *Client) DecodeComJossemargtSaoDraftSubmitTransactionFull(resp *http.Response) (*ComJossemargtSaoDraftSubmitTransactionFull, error) {
+	var decoded ComJossemargtSaoDraftSubmitTransactionFull
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
+// DecodeComJossemargtSaoDraftSubmitTransactionLink decodes the ComJossemargtSaoDraftSubmitTransactionLink instance encoded in resp body.
+func (c *Client) DecodeComJossemargtSaoDraftSubmitTransactionLink(resp *http.Response) (*ComJossemargtSaoDraftSubmitTransactionLink, error) {
+	var decoded ComJossemargtSaoDraftSubmitTransactionLink
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
 // ComJossemargtSaoDraftCollection is the media type for an array of ComJossemargtSaoDraft (default view)
 //
 // Identifier: application/vnd.com.jossemargt.sao.draft+json; type=collection; view=default
@@ -543,6 +664,130 @@ func (c *Client) DecodeComJossemargtSaoEntryFull(resp *http.Response) (*ComJosse
 // DecodeComJossemargtSaoEntryLink decodes the ComJossemargtSaoEntryLink instance encoded in resp body.
 func (c *Client) DecodeComJossemargtSaoEntryLink(resp *http.Response) (*ComJossemargtSaoEntryLink, error) {
 	var decoded ComJossemargtSaoEntryLink
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
+// Represents the process of queueing, compilation, evaluation and grading of an Entry (default view)
+//
+// Identifier: application/vnd.com.jossemargt.sao.entry-submit-transaction+json; view=default
+type ComJossemargtSaoEntrySubmitTransaction struct {
+	// API href for making requests on the entry
+	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
+	// Unique SubmitEntryTransaction ID
+	ID     string `form:"id" json:"id" yaml:"id" xml:"id"`
+	Status string `form:"status" json:"status" yaml:"status" xml:"status"`
+}
+
+// Validate validates the ComJossemargtSaoEntrySubmitTransaction media type instance.
+func (mt *ComJossemargtSaoEntrySubmitTransaction) Validate() (err error) {
+	if mt.ID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
+	}
+	if mt.Href == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
+	}
+	if mt.Status == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "status"))
+	}
+	return
+}
+
+// Represents the process of queueing, compilation, evaluation and grading of an Entry (full view)
+//
+// Identifier: application/vnd.com.jossemargt.sao.entry-submit-transaction+json; view=full
+type ComJossemargtSaoEntrySubmitTransactionFull struct {
+	// Transaction creation timestamp
+	CreatedAt *time.Time `form:"createdAt,omitempty" json:"createdAt,omitempty" yaml:"createdAt,omitempty" xml:"createdAt,omitempty"`
+	// API href for making requests on the entry
+	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
+	// Unique SubmitEntryTransaction ID
+	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
+	// Links to related resources
+	Links  *ComJossemargtSaoEntrySubmitTransactionLinks `form:"links,omitempty" json:"links,omitempty" yaml:"links,omitempty" xml:"links,omitempty"`
+	Status string                                       `form:"status" json:"status" yaml:"status" xml:"status"`
+	// Transaction last update timestamp
+	UpdatedAt *time.Time `form:"updatedAt,omitempty" json:"updatedAt,omitempty" yaml:"updatedAt,omitempty" xml:"updatedAt,omitempty"`
+}
+
+// Validate validates the ComJossemargtSaoEntrySubmitTransactionFull media type instance.
+func (mt *ComJossemargtSaoEntrySubmitTransactionFull) Validate() (err error) {
+	if mt.ID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
+	}
+	if mt.Href == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
+	}
+	if mt.Status == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "status"))
+	}
+	if mt.Links != nil {
+		if err2 := mt.Links.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	return
+}
+
+// Represents the process of queueing, compilation, evaluation and grading of an Entry (link view)
+//
+// Identifier: application/vnd.com.jossemargt.sao.entry-submit-transaction+json; view=link
+type ComJossemargtSaoEntrySubmitTransactionLink struct {
+	// API href for making requests on the entry
+	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
+	// Unique SubmitEntryTransaction ID
+	ID string `form:"id" json:"id" yaml:"id" xml:"id"`
+}
+
+// Validate validates the ComJossemargtSaoEntrySubmitTransactionLink media type instance.
+func (mt *ComJossemargtSaoEntrySubmitTransactionLink) Validate() (err error) {
+	if mt.ID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "id"))
+	}
+	if mt.Href == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
+	}
+	return
+}
+
+// ComJossemargtSaoEntry-Submit-TransactionLinks contains links to related resources of ComJossemargtSaoEntry-Submit-Transaction.
+type ComJossemargtSaoEntrySubmitTransactionLinks struct {
+	Entry  *ComJossemargtSaoEntryLink  `form:"entry,omitempty" json:"entry,omitempty" yaml:"entry,omitempty" xml:"entry,omitempty"`
+	Result *ComJossemargtSaoResultLink `form:"result,omitempty" json:"result,omitempty" yaml:"result,omitempty" xml:"result,omitempty"`
+}
+
+// Validate validates the ComJossemargtSaoEntrySubmitTransactionLinks type instance.
+func (ut *ComJossemargtSaoEntrySubmitTransactionLinks) Validate() (err error) {
+	if ut.Entry != nil {
+		if err2 := ut.Entry.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	if ut.Result != nil {
+		if err2 := ut.Result.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	return
+}
+
+// DecodeComJossemargtSaoEntrySubmitTransaction decodes the ComJossemargtSaoEntrySubmitTransaction instance encoded in resp body.
+func (c *Client) DecodeComJossemargtSaoEntrySubmitTransaction(resp *http.Response) (*ComJossemargtSaoEntrySubmitTransaction, error) {
+	var decoded ComJossemargtSaoEntrySubmitTransaction
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
+// DecodeComJossemargtSaoEntrySubmitTransactionFull decodes the ComJossemargtSaoEntrySubmitTransactionFull instance encoded in resp body.
+func (c *Client) DecodeComJossemargtSaoEntrySubmitTransactionFull(resp *http.Response) (*ComJossemargtSaoEntrySubmitTransactionFull, error) {
+	var decoded ComJossemargtSaoEntrySubmitTransactionFull
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
+// DecodeComJossemargtSaoEntrySubmitTransactionLink decodes the ComJossemargtSaoEntrySubmitTransactionLink instance encoded in resp body.
+func (c *Client) DecodeComJossemargtSaoEntrySubmitTransactionLink(resp *http.Response) (*ComJossemargtSaoEntrySubmitTransactionLink, error) {
+	var decoded ComJossemargtSaoEntrySubmitTransactionLink
 	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
 	return &decoded, err
 }
