@@ -93,11 +93,11 @@ func main() {
 
 	var mongoDB *mongo.Database
 	{
-		dbhost := up.GetStringOrDefault("sao.documentsource.host", "localhost")
-		dbport := up.GetIntOrDefault("sao.documentsource.port", 27017)
-		dbname := up.GetStringOrDefault("sao.documentsource.name", "cmsdb")
-		dbuser := up.GetStringOrDefault("sao.documentsource.username", "cmsuser")
-		dbpassword := up.GetStringOrDefault("sao.documentsource.password", "")
+		dbhost := up.GetStringOrDefault("documentsource.host", "localhost")
+		dbport := up.GetIntOrDefault("documentsource.port", 27017)
+		dbname := up.GetStringOrDefault("documentsource.name", "cmsdb")
+		dbuser := up.GetStringOrDefault("documentsource.username", "cmsuser")
+		dbpassword := up.GetStringOrDefault("documentsource.password", "")
 
 		mongoClient, err := mongo.Connect(appCtx,
 			options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%s@%s:%d/%s",

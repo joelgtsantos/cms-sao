@@ -42,14 +42,14 @@ func (c *DraftSubmitTrxController) Get(ctx *app.GetDraftSubmitTrxContext) error 
 	if entryTrx.EntryID != 0 {
 		res.Links.Draft = &app.ComJossemargtSaoDraftLink{
 			ID:   entryTrx.EntryID,
-			Href: fmt.Sprintf("%s%s", app.DraftHref(), entryTrx.EntryID),
+			Href: fmt.Sprintf("%s%d", app.DraftHref(), entryTrx.EntryID),
 		}
 	}
 
 	if entryTrx.ResultID != "" {
 		res.Links.Result = &app.ComJossemargtSaoDraftResultLink{
 			ID:   entryTrx.ResultID,
-			Href: fmt.Sprintf("%s%s", app.DraftresultHref(), entryTrx.EntryID),
+			Href: fmt.Sprintf("%s%s", app.DraftresultHref(), entryTrx.ResultID),
 		}
 	}
 
