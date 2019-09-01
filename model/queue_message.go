@@ -14,14 +14,16 @@ type NesoMessage struct {
 		ID string `json:"id"`
 	} `json:"transaction"`
 	EntryPayload struct {
-		ContestSlug string `json:"contestSlug"`
-		TaskSlug    string `json:"taskSlug"`
-		Token       bool   `json:"token"`
-		Sources     []struct {
-			Filename string `json:"filename"`
-			FileID   string `json:"fileid"`
-			Language string `json:"language"`
-			Content  string `json:"content"`
-		} `json:"sources"`
+		ContestSlug string         `json:"contestSlug"`
+		TaskSlug    string         `json:"taskSlug"`
+		Token       bool           `json:"token"`
+		Sources     []*EntrySource `json:"sources"`
 	} `json:"entry"`
+}
+
+type EntrySource struct {
+	Filename string `json:"filename"`
+	FileID   string `json:"fileid"`
+	Language string `json:"language"`
+	Content  string `json:"content"`
 }

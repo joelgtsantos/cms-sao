@@ -38,6 +38,7 @@ var SourceType = Type("EntrySource", func() {
 		names could be "batch.py", "batch.cpp" or "batch.js"`,
 		func() {
 			Example("my_solution.py")
+			Default("")
 		})
 	Attribute("fileid", String,
 		`Also known as filepattern, and is expected to be sent along with the filename. This field is defined by the 
@@ -45,12 +46,16 @@ var SourceType = Type("EntrySource", func() {
 		func() {
 			Example("my_solution.%l")
 			Example("batch.cpp")
+			Default("")
 		})
-	Attribute("content", String, "Source content")
+	Attribute("content", String, "Source content", func() {
+		Default("")
+	})
 	Attribute("language", String,
 		`Identifies the programming language used in the entry's content. This attribute can be ommited for "plain text" files`,
 		func() {
 			Example("Python 3")
+			Default("")
 		})
 })
 

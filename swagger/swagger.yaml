@@ -876,15 +876,18 @@ definitions:
       language: Python 3
     properties:
       content:
+        default: ""
         description: Source content
         example: Et maxime aut velit numquam beatae odio.
         type: string
       fileid:
+        default: ""
         description: "Also known as filepattern, and is expected to be sent along
           with the filename. This field is defined by the \n\t\tTask resource"
         example: batch.cpp
         type: string
       filename:
+        default: ""
         description: "Source file name including its extension. This field's value
           should comply with the name format (fileid) \n\t\tconstraint declared by
           the Task resource. Taking the \"batch.%l\" format as example, the valid
@@ -892,6 +895,7 @@ definitions:
         example: my_solution.py
         type: string
       language:
+        default: ""
         description: Identifies the programming language used in the entry's content.
           This attribute can be ommited for "plain text" files
         example: Python 3

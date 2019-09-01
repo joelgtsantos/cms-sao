@@ -277,6 +277,24 @@ func (ut *entryPayload) Finalize() {
 	if ut.ContestSlug == nil {
 		ut.ContestSlug = &defaultContestSlug
 	}
+	for _, e := range ut.Sources {
+		var defaultContent = ""
+		if e.Content == nil {
+			e.Content = &defaultContent
+		}
+		var defaultFileid = ""
+		if e.Fileid == nil {
+			e.Fileid = &defaultFileid
+		}
+		var defaultFilename = ""
+		if e.Filename == nil {
+			e.Filename = &defaultFilename
+		}
+		var defaultLanguage = ""
+		if e.Language == nil {
+			e.Language = &defaultLanguage
+		}
+	}
 	var defaultTaskSlug = ""
 	if ut.TaskSlug == nil {
 		ut.TaskSlug = &defaultTaskSlug
@@ -392,20 +410,40 @@ type entrySource struct {
 	Language *string `form:"language,omitempty" json:"language,omitempty" yaml:"language,omitempty" xml:"language,omitempty"`
 }
 
+// Finalize sets the default values for entrySource type instance.
+func (ut *entrySource) Finalize() {
+	var defaultContent = ""
+	if ut.Content == nil {
+		ut.Content = &defaultContent
+	}
+	var defaultFileid = ""
+	if ut.Fileid == nil {
+		ut.Fileid = &defaultFileid
+	}
+	var defaultFilename = ""
+	if ut.Filename == nil {
+		ut.Filename = &defaultFilename
+	}
+	var defaultLanguage = ""
+	if ut.Language == nil {
+		ut.Language = &defaultLanguage
+	}
+}
+
 // Publicize creates EntrySource from entrySource
 func (ut *entrySource) Publicize() *EntrySource {
 	var pub EntrySource
 	if ut.Content != nil {
-		pub.Content = ut.Content
+		pub.Content = *ut.Content
 	}
 	if ut.Fileid != nil {
-		pub.Fileid = ut.Fileid
+		pub.Fileid = *ut.Fileid
 	}
 	if ut.Filename != nil {
-		pub.Filename = ut.Filename
+		pub.Filename = *ut.Filename
 	}
 	if ut.Language != nil {
-		pub.Language = ut.Language
+		pub.Language = *ut.Language
 	}
 	return &pub
 }
@@ -413,16 +451,16 @@ func (ut *entrySource) Publicize() *EntrySource {
 // Entry's embed type which represents a source file
 type EntrySource struct {
 	// Source content
-	Content *string `form:"content,omitempty" json:"content,omitempty" yaml:"content,omitempty" xml:"content,omitempty"`
+	Content string `form:"content" json:"content" yaml:"content" xml:"content"`
 	// Also known as filepattern, and is expected to be sent along with the filename. This field is defined by the
 	// 		Task resource
-	Fileid *string `form:"fileid,omitempty" json:"fileid,omitempty" yaml:"fileid,omitempty" xml:"fileid,omitempty"`
+	Fileid string `form:"fileid" json:"fileid" yaml:"fileid" xml:"fileid"`
 	// Source file name including its extension. This field's value should comply with the name format (fileid)
 	// 		constraint declared by the Task resource. Taking the "batch.%l" format as example, the valid source code file
 	// 		names could be "batch.py", "batch.cpp" or "batch.js"
-	Filename *string `form:"filename,omitempty" json:"filename,omitempty" yaml:"filename,omitempty" xml:"filename,omitempty"`
+	Filename string `form:"filename" json:"filename" yaml:"filename" xml:"filename"`
 	// Identifies the programming language used in the entry's content. This attribute can be ommited for "plain text" files
-	Language *string `form:"language,omitempty" json:"language,omitempty" yaml:"language,omitempty" xml:"language,omitempty"`
+	Language string `form:"language" json:"language" yaml:"language" xml:"language"`
 }
 
 // Embedded representation of an entry evaluation result
