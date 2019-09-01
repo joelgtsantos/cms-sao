@@ -277,12 +277,6 @@ func (ut *entryPayload) Finalize() {
 	if ut.ContestSlug == nil {
 		ut.ContestSlug = &defaultContestSlug
 	}
-	for _, e := range ut.Sources {
-		var defaultEncoding = "utf8"
-		if e.Encoding == nil {
-			e.Encoding = &defaultEncoding
-		}
-	}
 	var defaultTaskSlug = ""
 	if ut.TaskSlug == nil {
 		ut.TaskSlug = &defaultTaskSlug
@@ -387,23 +381,15 @@ func (ut *EntryPayload) Validate() (err error) {
 type entrySource struct {
 	// Source content
 	Content *string `form:"content,omitempty" json:"content,omitempty" yaml:"content,omitempty" xml:"content,omitempty"`
-	// Source content's encoding
-	Encoding *string `form:"encoding,omitempty" json:"encoding,omitempty" yaml:"encoding,omitempty" xml:"encoding,omitempty"`
-	// Identifies the programming language used in the entry's content. The special keyword "none" should be used
-	// 		instead when submitting plain text, which are used for user test inputs and  diff based grading
+	// Also known as filepattern, and is expected to be sent along with the filename. This field is defined by the
+	// 		Task resource
+	Fileid *string `form:"fileid,omitempty" json:"fileid,omitempty" yaml:"fileid,omitempty" xml:"fileid,omitempty"`
+	// Source file name including its extension. This field's value should comply with the name format (fileid)
+	// 		constraint declared by the Task resource. Taking the "batch.%l" format as example, the valid source code file
+	// 		names could be "batch.py", "batch.cpp" or "batch.js"
+	Filename *string `form:"filename,omitempty" json:"filename,omitempty" yaml:"filename,omitempty" xml:"filename,omitempty"`
+	// Identifies the programming language used in the entry's content. This attribute can be ommited for "plain text" files
 	Language *string `form:"language,omitempty" json:"language,omitempty" yaml:"language,omitempty" xml:"language,omitempty"`
-	// Source file name including its extension. This field's value should comply with the name format constraint
-	// 		declared by the task resource. Taking the "batch.%l" format as example, the valid source code file names could
-	// 		be "batch.py", "batch.cpp" or "batch.js"
-	Name *string `form:"name,omitempty" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
-}
-
-// Finalize sets the default values for entrySource type instance.
-func (ut *entrySource) Finalize() {
-	var defaultEncoding = "utf8"
-	if ut.Encoding == nil {
-		ut.Encoding = &defaultEncoding
-	}
 }
 
 // Publicize creates EntrySource from entrySource
@@ -412,14 +398,14 @@ func (ut *entrySource) Publicize() *EntrySource {
 	if ut.Content != nil {
 		pub.Content = ut.Content
 	}
-	if ut.Encoding != nil {
-		pub.Encoding = *ut.Encoding
+	if ut.Fileid != nil {
+		pub.Fileid = ut.Fileid
+	}
+	if ut.Filename != nil {
+		pub.Filename = ut.Filename
 	}
 	if ut.Language != nil {
 		pub.Language = ut.Language
-	}
-	if ut.Name != nil {
-		pub.Name = ut.Name
 	}
 	return &pub
 }
@@ -428,15 +414,15 @@ func (ut *entrySource) Publicize() *EntrySource {
 type EntrySource struct {
 	// Source content
 	Content *string `form:"content,omitempty" json:"content,omitempty" yaml:"content,omitempty" xml:"content,omitempty"`
-	// Source content's encoding
-	Encoding string `form:"encoding" json:"encoding" yaml:"encoding" xml:"encoding"`
-	// Identifies the programming language used in the entry's content. The special keyword "none" should be used
-	// 		instead when submitting plain text, which are used for user test inputs and  diff based grading
+	// Also known as filepattern, and is expected to be sent along with the filename. This field is defined by the
+	// 		Task resource
+	Fileid *string `form:"fileid,omitempty" json:"fileid,omitempty" yaml:"fileid,omitempty" xml:"fileid,omitempty"`
+	// Source file name including its extension. This field's value should comply with the name format (fileid)
+	// 		constraint declared by the Task resource. Taking the "batch.%l" format as example, the valid source code file
+	// 		names could be "batch.py", "batch.cpp" or "batch.js"
+	Filename *string `form:"filename,omitempty" json:"filename,omitempty" yaml:"filename,omitempty" xml:"filename,omitempty"`
+	// Identifies the programming language used in the entry's content. This attribute can be ommited for "plain text" files
 	Language *string `form:"language,omitempty" json:"language,omitempty" yaml:"language,omitempty" xml:"language,omitempty"`
-	// Source file name including its extension. This field's value should comply with the name format constraint
-	// 		declared by the task resource. Taking the "batch.%l" format as example, the valid source code file names could
-	// 		be "batch.py", "batch.cpp" or "batch.js"
-	Name *string `form:"name,omitempty" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 }
 
 // Embedded representation of an entry evaluation result

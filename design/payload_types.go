@@ -32,23 +32,26 @@ var AbstractEntry = Type("AbstractEntry", func() {
 
 var SourceType = Type("EntrySource", func() {
 	Description("Entry's embed type which represents a source file")
-	Attribute("name", String,
-		`Source file name including its extension. This field's value should comply with the name format constraint 
-		declared by the task resource. Taking the "batch.%l" format as example, the valid source code file names could 
-		be "batch.py", "batch.cpp" or "batch.js"`,
+	Attribute("filename", String,
+		`Source file name including its extension. This field's value should comply with the name format (fileid) 
+		constraint declared by the Task resource. Taking the "batch.%l" format as example, the valid source code file 
+		names could be "batch.py", "batch.cpp" or "batch.js"`,
 		func() {
 			Example("my_solution.py")
 		})
+	Attribute("fileid", String,
+		`Also known as filepattern, and is expected to be sent along with the filename. This field is defined by the 
+		Task resource`,
+		func() {
+			Example("my_solution.%l")
+			Example("batch.cpp")
+		})
 	Attribute("content", String, "Source content")
 	Attribute("language", String,
-		`Identifies the programming language used in the entry's content. The special keyword "none" should be used 
-		instead when submitting plain text, which are used for user test inputs and  diff based grading`, func() {
-			Example("none")
+		`Identifies the programming language used in the entry's content. This attribute can be ommited for "plain text" files`,
+		func() {
 			Example("Python 3")
 		})
-	Attribute("encoding", String, "Source content's encoding", func() {
-		Default("utf8")
-	})
 })
 
 var EntryPayload = Type("EntryPayload", func() {
