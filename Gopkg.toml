@@ -14,14 +14,6 @@
   name = "go.mongodb.org/mongo-driver"
   version = "1.0.2"
 
-#[[constraint]]
-#  name = "github.com/dghubble/sling"
-#  version = "1.1.0"
-
-[[constraint]]
-  name = "github.com/hashicorp/go-retryablehttp"
-  revision = "master"
-
 [prune]
   go-tests = true
   unused-packages = true

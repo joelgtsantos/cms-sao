@@ -5,12 +5,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"net/http"
-	"time"
 
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
-	"github.com/hashicorp/go-retryablehttp"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	goup "github.com/ufoscout/go-up"
@@ -44,25 +41,6 @@ func main() {
 	service.Use(middleware.LogRequest(up.GetBoolOrDefault("server.log.request", false)))
 	service.Use(middleware.ErrorHandler(service, up.GetBoolOrDefault("server.response.tracedump", false)))
 	service.Use(middleware.Recover())
-
-	var httpClient *httpRetryableClient
-	{
-		httpClient = new(httpRetryableClient)
-		retryable := retryablehttp.NewClient()
-
-		// Max retries
-		retryable.RetryMax = up.GetIntOrDefault("cms.http.retry.limit", 5)
-
-		// Minimal retry wait (in seconds)
-		minWait := up.GetIntOrDefault("cms.http.retry.waitmin", 1)
-		retryable.RetryWaitMin = time.Duration(minWait) * time.Second
-
-		// Max retry wait
-		maxWait := up.GetIntOrDefault("cms.http.retry.waitmax", 30)
-		retryable.RetryWaitMax = time.Duration(maxWait) * time.Second
-
-		httpClient.retryable = retryable
-	}
 
 	var dbConn *sqlx.DB
 	{
@@ -114,8 +92,7 @@ func main() {
 			return
 		}
 
-		err = mongoClient.Ping(appCtx, nil)
-		if err != nil {
+		if err = mongoClient.Ping(appCtx, nil); err != nil {
 			service.LogError("startup", "err", err)
 			return
 		}
@@ -130,9 +107,10 @@ func main() {
 	draftresultRepository := storage.NewDraftResultRepository(dbConn)
 	entrySubmitTrxRepository := storage.NewEntrySubmitTrxRepository(mongoDB)
 	draftSubmitTrxRepository := storage.NewDraftSubmitTrxRepository(mongoDB)
+	nesoQueue := storage.NewQueueWriter(mongoDB)
 
 	// Mount "actions" controller
-	c := NewActionsController(service)
+	c := NewActionsController(service, entrySubmitTrxRepository, draftSubmitTrxRepository, nesoQueue)
 	app.MountActionsController(service, c)
 	// Mount "draft" controller
 	c2 := NewDraftController(service, draftRepository)
@@ -158,19 +136,4 @@ func main() {
 	if err := service.ListenAndServe(serverAddr); err != nil {
 		service.LogError("startup", "err", err)
 	}
-
-}
-
-type httpRetryableClient struct {
-	retryable *retryablehttp.Client
-}
-
-func (c *httpRetryableClient) Do(req *http.Request) (*http.Response, error) {
-	request, err := retryablehttp.NewRequest(req.Method, req.URL.String(), req.Body)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return c.retryable.Do(request)
 }

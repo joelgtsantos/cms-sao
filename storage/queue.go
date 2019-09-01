@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-const queueName = "sao_queue"
+const queueName = "neso_queue"
 
 type QueueWriter interface {
 	Write(ctx context.Context, payload interface{}) error
