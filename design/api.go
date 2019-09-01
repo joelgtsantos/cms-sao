@@ -322,7 +322,7 @@ var _ = Resource("actions", func() {
 		Payload(EntryPayload)
 
 		Response(Created, func() {
-			Media(EntryMedia, "full")
+			Media(EntrySubmitTrx, "full")
 			Headers(func() {
 				Header("Location", String, "href to created entry", func() {
 					Pattern("/entry-submit-transaction/\\d+")
@@ -338,7 +338,7 @@ var _ = Resource("actions", func() {
 		Payload(EntryPayload)
 
 		Response(Created, func() {
-			Media(EntryMedia, "full")
+			Media(DraftSubmitTrx, "full")
 			Headers(func() {
 				Header("Location", String, "href to created entry", func() {
 					Pattern("/draft-submit-transaction/\\d+")

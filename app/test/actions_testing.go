@@ -105,7 +105,7 @@ func SubmitEntryActionsBadRequest(t goatest.TInterface, ctx context.Context, ser
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func SubmitEntryActionsCreated(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ActionsController, payload *app.EntryPayload) (http.ResponseWriter, *app.ComJossemargtSaoEntry) {
+func SubmitEntryActionsCreated(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ActionsController, payload *app.EntryPayload) (http.ResponseWriter, *app.ComJossemargtSaoEntrySubmitTransaction) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -169,12 +169,12 @@ func SubmitEntryActionsCreated(t goatest.TInterface, ctx context.Context, servic
 	if rw.Code != 201 {
 		t.Errorf("invalid response status code: got %+v, expected 201", rw.Code)
 	}
-	var mt *app.ComJossemargtSaoEntry
+	var mt *app.ComJossemargtSaoEntrySubmitTransaction
 	if resp != nil {
 		var __ok bool
-		mt, __ok = resp.(*app.ComJossemargtSaoEntry)
+		mt, __ok = resp.(*app.ComJossemargtSaoEntrySubmitTransaction)
 		if !__ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoEntry", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoEntrySubmitTransaction", resp, resp)
 		}
 		__err = mt.Validate()
 		if __err != nil {
@@ -190,7 +190,7 @@ func SubmitEntryActionsCreated(t goatest.TInterface, ctx context.Context, servic
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func SubmitEntryActionsCreatedFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ActionsController, payload *app.EntryPayload) (http.ResponseWriter, *app.ComJossemargtSaoEntryFull) {
+func SubmitEntryActionsCreatedFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ActionsController, payload *app.EntryPayload) (http.ResponseWriter, *app.ComJossemargtSaoEntrySubmitTransactionFull) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -254,12 +254,12 @@ func SubmitEntryActionsCreatedFull(t goatest.TInterface, ctx context.Context, se
 	if rw.Code != 201 {
 		t.Errorf("invalid response status code: got %+v, expected 201", rw.Code)
 	}
-	var mt *app.ComJossemargtSaoEntryFull
+	var mt *app.ComJossemargtSaoEntrySubmitTransactionFull
 	if resp != nil {
 		var __ok bool
-		mt, __ok = resp.(*app.ComJossemargtSaoEntryFull)
+		mt, __ok = resp.(*app.ComJossemargtSaoEntrySubmitTransactionFull)
 		if !__ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoEntryFull", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoEntrySubmitTransactionFull", resp, resp)
 		}
 		__err = mt.Validate()
 		if __err != nil {
@@ -275,7 +275,7 @@ func SubmitEntryActionsCreatedFull(t goatest.TInterface, ctx context.Context, se
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func SubmitEntryActionsCreatedLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ActionsController, payload *app.EntryPayload) (http.ResponseWriter, *app.ComJossemargtSaoEntryLink) {
+func SubmitEntryActionsCreatedLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ActionsController, payload *app.EntryPayload) (http.ResponseWriter, *app.ComJossemargtSaoEntrySubmitTransactionLink) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -339,12 +339,12 @@ func SubmitEntryActionsCreatedLink(t goatest.TInterface, ctx context.Context, se
 	if rw.Code != 201 {
 		t.Errorf("invalid response status code: got %+v, expected 201", rw.Code)
 	}
-	var mt *app.ComJossemargtSaoEntryLink
+	var mt *app.ComJossemargtSaoEntrySubmitTransactionLink
 	if resp != nil {
 		var __ok bool
-		mt, __ok = resp.(*app.ComJossemargtSaoEntryLink)
+		mt, __ok = resp.(*app.ComJossemargtSaoEntrySubmitTransactionLink)
 		if !__ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoEntryLink", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoEntrySubmitTransactionLink", resp, resp)
 		}
 		__err = mt.Validate()
 		if __err != nil {
@@ -511,7 +511,7 @@ func SubmitEntryDraftActionsBadRequest(t goatest.TInterface, ctx context.Context
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func SubmitEntryDraftActionsCreated(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ActionsController, payload *app.EntryPayload) (http.ResponseWriter, *app.ComJossemargtSaoEntry) {
+func SubmitEntryDraftActionsCreated(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ActionsController, payload *app.EntryPayload) (http.ResponseWriter, *app.ComJossemargtSaoDraftSubmitTransaction) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -575,12 +575,12 @@ func SubmitEntryDraftActionsCreated(t goatest.TInterface, ctx context.Context, s
 	if rw.Code != 201 {
 		t.Errorf("invalid response status code: got %+v, expected 201", rw.Code)
 	}
-	var mt *app.ComJossemargtSaoEntry
+	var mt *app.ComJossemargtSaoDraftSubmitTransaction
 	if resp != nil {
 		var __ok bool
-		mt, __ok = resp.(*app.ComJossemargtSaoEntry)
+		mt, __ok = resp.(*app.ComJossemargtSaoDraftSubmitTransaction)
 		if !__ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoEntry", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoDraftSubmitTransaction", resp, resp)
 		}
 		__err = mt.Validate()
 		if __err != nil {
@@ -596,7 +596,7 @@ func SubmitEntryDraftActionsCreated(t goatest.TInterface, ctx context.Context, s
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func SubmitEntryDraftActionsCreatedFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ActionsController, payload *app.EntryPayload) (http.ResponseWriter, *app.ComJossemargtSaoEntryFull) {
+func SubmitEntryDraftActionsCreatedFull(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ActionsController, payload *app.EntryPayload) (http.ResponseWriter, *app.ComJossemargtSaoDraftSubmitTransactionFull) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -660,12 +660,12 @@ func SubmitEntryDraftActionsCreatedFull(t goatest.TInterface, ctx context.Contex
 	if rw.Code != 201 {
 		t.Errorf("invalid response status code: got %+v, expected 201", rw.Code)
 	}
-	var mt *app.ComJossemargtSaoEntryFull
+	var mt *app.ComJossemargtSaoDraftSubmitTransactionFull
 	if resp != nil {
 		var __ok bool
-		mt, __ok = resp.(*app.ComJossemargtSaoEntryFull)
+		mt, __ok = resp.(*app.ComJossemargtSaoDraftSubmitTransactionFull)
 		if !__ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoEntryFull", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoDraftSubmitTransactionFull", resp, resp)
 		}
 		__err = mt.Validate()
 		if __err != nil {
@@ -681,7 +681,7 @@ func SubmitEntryDraftActionsCreatedFull(t goatest.TInterface, ctx context.Contex
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func SubmitEntryDraftActionsCreatedLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ActionsController, payload *app.EntryPayload) (http.ResponseWriter, *app.ComJossemargtSaoEntryLink) {
+func SubmitEntryDraftActionsCreatedLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.ActionsController, payload *app.EntryPayload) (http.ResponseWriter, *app.ComJossemargtSaoDraftSubmitTransactionLink) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -745,12 +745,12 @@ func SubmitEntryDraftActionsCreatedLink(t goatest.TInterface, ctx context.Contex
 	if rw.Code != 201 {
 		t.Errorf("invalid response status code: got %+v, expected 201", rw.Code)
 	}
-	var mt *app.ComJossemargtSaoEntryLink
+	var mt *app.ComJossemargtSaoDraftSubmitTransactionLink
 	if resp != nil {
 		var __ok bool
-		mt, __ok = resp.(*app.ComJossemargtSaoEntryLink)
+		mt, __ok = resp.(*app.ComJossemargtSaoDraftSubmitTransactionLink)
 		if !__ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoEntryLink", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.ComJossemargtSaoDraftSubmitTransactionLink", resp, resp)
 		}
 		__err = mt.Validate()
 		if __err != nil {

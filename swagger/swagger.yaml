@@ -1593,7 +1593,7 @@ paths:
         schema:
           $ref: '#/definitions/EntryPayload'
       produces:
-      - application/vnd.com.jossemargt.sao.entry+json
+      - application/vnd.com.jossemargt.sao.draft-submit-transaction+json
       - application/vnd.goa.error
       responses:
         "201":
@@ -1604,7 +1604,7 @@ paths:
               pattern: /draft-submit-transaction/\d+
               type: string
           schema:
-            $ref: '#/definitions/ComJossemargtSaoEntryFull'
+            $ref: '#/definitions/ComJossemargtSaoDraft-Submit-TransactionFull'
         "400":
           description: Bad Request
           schema:
@@ -1630,7 +1630,7 @@ paths:
         schema:
           $ref: '#/definitions/EntryPayload'
       produces:
-      - application/vnd.com.jossemargt.sao.entry+json
+      - application/vnd.com.jossemargt.sao.entry-submit-transaction+json
       - application/vnd.goa.error
       responses:
         "201":
@@ -1641,7 +1641,7 @@ paths:
               pattern: /entry-submit-transaction/\d+
               type: string
           schema:
-            $ref: '#/definitions/ComJossemargtSaoEntryFull'
+            $ref: '#/definitions/ComJossemargtSaoEntry-Submit-TransactionFull'
         "400":
           description: Bad Request
           schema:

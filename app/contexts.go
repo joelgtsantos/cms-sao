@@ -231,9 +231,9 @@ func NewSubmitEntryActionsContext(ctx context.Context, r *http.Request, service 
 }
 
 // CreatedFull sends a HTTP response with status code 201.
-func (ctx *SubmitEntryActionsContext) CreatedFull(r *ComJossemargtSaoEntryFull) error {
+func (ctx *SubmitEntryActionsContext) CreatedFull(r *ComJossemargtSaoEntrySubmitTransactionFull) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
-		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.entry+json")
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.entry-submit-transaction+json")
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 201, r)
 }
@@ -273,9 +273,9 @@ func NewSubmitEntryDraftActionsContext(ctx context.Context, r *http.Request, ser
 }
 
 // CreatedFull sends a HTTP response with status code 201.
-func (ctx *SubmitEntryDraftActionsContext) CreatedFull(r *ComJossemargtSaoEntryFull) error {
+func (ctx *SubmitEntryDraftActionsContext) CreatedFull(r *ComJossemargtSaoDraftSubmitTransactionFull) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
-		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.entry+json")
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.com.jossemargt.sao.draft-submit-transaction+json")
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 201, r)
 }
